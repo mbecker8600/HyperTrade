@@ -1,6 +1,6 @@
 {
   "python.analysis.autoImportCompletions": true,
-  "python.analysis.typeCheckingMode": "off",
+  "python.analysis.typeCheckingMode": "strict",
   "editor.formatOnSave": true,
   "files.autoSave": "onFocusChange"
 }
