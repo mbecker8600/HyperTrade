@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfinancial_trading=self.webpackChunkfinancial_trading||[]).push([[9654],{2688:a=>{a.exports=JSON.parse('{"metadata":{"permalink":"/FinancialTrading/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":4,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
