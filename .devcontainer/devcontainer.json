@@ -12,7 +12,8 @@
 			"packages": "curl,vim"
 		},
 		"ghcr.io/devcontainers-community/features/bazel:1": {},
-		"ghcr.io/devcontainers/features/nvidia-cuda:1": {}
+		"ghcr.io/devcontainers/features/nvidia-cuda:1": {},
+		"ghcr.io/devcontainers/features/node:1": {}
 	},
 	"customizations": {
 		"vscode": {
