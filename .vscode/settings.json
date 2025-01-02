@@ -2,5 +2,7 @@
   "python.analysis.autoImportCompletions": true,
   "python.analysis.typeCheckingMode": "off",
   "editor.formatOnSave": true,
-  "files.autoSave": "onFocusChange"
+  "files.autoSave": "onFocusChange",
+  "mypy-type-checker.reportingScope": "workspace",
+  "mypy-type-checker.preferDaemon": true
 }

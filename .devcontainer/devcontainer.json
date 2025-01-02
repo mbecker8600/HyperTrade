@@ -34,7 +34,7 @@
         "ms-toolsai.jupyter",
         "mechatroner.rainbow-csv",
         "redhat.vscode-yaml",
-        "ms-python.mypy-type-checker"
+        "matangover.mypy"
       ]
     }
   },
