@@ -20,3 +20,8 @@ linting.bazelrc
 ##################
 infrastructure/**/.terraform/**
 **/*.tfstate.backup
+
+##################
+# Pyre
+##################
+**/.pyre/
