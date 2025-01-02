@@ -11,10 +11,6 @@ jobs:
   build:
     name: Build Docusaurus
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: docs/financial-trading
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,8 +22,10 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+        working-directory: docs/financial-trading
       - name: Build website
         run: yarn build
+        working-directory: docs/financial-trading
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
