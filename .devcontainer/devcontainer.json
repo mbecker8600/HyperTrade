@@ -29,7 +29,8 @@
 				"GitHub.copilot",
 				"GitHub.remotehub",
 				"GitHub.vscode-pull-request-github",
-				"GitHub.codespaces"
+				"GitHub.codespaces",
+				"github.vscode-github-actions"
 			]
 		}
 	}
