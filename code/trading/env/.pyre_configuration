@@ -3,5 +3,6 @@
   "source_directories": [
     "."
   ],
-  "typeshed": "/workspaces/typeshed"
+  "typeshed": "/workspaces/typeshed",
+  "strict": true
 }
