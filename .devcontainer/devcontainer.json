@@ -9,7 +9,7 @@
 		"ghcr.io/devcontainers/features/go:1": {},
 		"ghcr.io/devcontainers/features/python:1": {},
 		"ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-			"packages": "curl,vim"
+			"packages": "curl,vim,watchman"
 		},
 		"ghcr.io/devcontainers-community/features/bazel:1": {},
 		"ghcr.io/devcontainers/features/nvidia-cuda:1": {},
@@ -30,14 +30,18 @@
 				"GitHub.remotehub",
 				"GitHub.vscode-pull-request-github",
 				"GitHub.codespaces",
-				"github.vscode-github-actions"
+				"github.vscode-github-actions",
+				"ms-toolsai.jupyter",
+				"mechatroner.rainbow-csv",
+				"redhat.vscode-yaml",
+				"fb-pyre-check.pyre-vscode"
 			]
 		}
-	}
+	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a",
+	"postCreateCommand": "sh .devcontainer/postCreateCommand.sh"
 	// Configure tool-specific properties.
 	// "customizations": {},
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
