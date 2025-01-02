@@ -13,6 +13,24 @@
 		},
 		"ghcr.io/devcontainers-community/features/bazel:1": {},
 		"ghcr.io/devcontainers/features/nvidia-cuda:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"donjayamanne.githistory",
+				"golang.go",
+				"ms-python.python",
+				"DavidAnson.vscode-markdownlint",
+				"ms-python.autopep8",
+				"BazelBuild.vscode-bazel",
+				"esbenp.prettier-vscode",
+				"eamodio.gitlens",
+				"GitHub.copilot",
+				"GitHub.remotehub",
+				"GitHub.vscode-pull-request-github",
+				"GitHub.codespaces"
+			]
+		}
 	}
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
