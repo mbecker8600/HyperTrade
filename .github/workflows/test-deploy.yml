@@ -3,7 +3,7 @@ name: Test deployment
 on:
   pull_request:
     branches:
-      - main
+      - master
     # Review gh actions docs if you want to further define triggers, paths, etc
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: bash
         working-directory: docs/financial-trading
     steps:
       - uses: actions/checkout@v4
@@ -23,6 +22,7 @@ jobs:
         with:
           node-version: 18
           cache: yarn
+          cache-dependency-path: docs/financial-trading/yarn.lock
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
