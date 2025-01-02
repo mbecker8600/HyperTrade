@@ -11,19 +11,19 @@ jobs:
   test-deploy:
     name: Test deployment
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs/financial-trading
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          cache-dependency-path: docs/financial-trading/yarn.json
           node-version: 18
           cache: yarn
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-        working-directory: docs/financial-trading
       - name: Test build website
         run: yarn build
-        working-directory: docs/financial-trading
