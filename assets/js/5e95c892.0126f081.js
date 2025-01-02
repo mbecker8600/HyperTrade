@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfinancial_trading=self.webpackChunkfinancial_trading||[]).push([[9647],{7121:(e,a,n)=>{n.r(a),n.d(a,{default:()=>l});n(6540);var r=n(4164),s=n(1213),c=n(7559),i=n(2831),t=n(781),u=n(4848);function l(e){return(0,u.jsx)(s.e3,{className:(0,r.A)(c.G.wrapper.docsPages),children:(0,u.jsx)(t.A,{children:(0,i.v)(e.route.routes)})})}}}]);
