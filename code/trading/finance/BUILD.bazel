@@ -11,5 +11,23 @@ py_library(
     name = "commission",
     srcs = ["commission.py"],
     data = [],
+    deps = [
+        ":order",
+        ":transaction",
+        "//code/trading/assets",
+    ],
+)
+
+py_library(
+    name = "order",
+    srcs = ["order.py"],
+    data = [],
+    deps = ["//code/trading/assets"],
+)
+
+py_library(
+    name = "transaction",
+    srcs = ["transaction.py"],
+    data = [],
     deps = ["//code/trading/assets"],
 )
