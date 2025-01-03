@@ -4,6 +4,8 @@ from collections import defaultdict
 from six import with_metaclass
 from toolz import merge
 
+from code.trading.assets.assets import Equity, Future
+
 DEFAULT_PER_SHARE_COST = 0.001               # 0.1 cents per share
 DEFAULT_PER_CONTRACT_COST = 0.85             # $0.85 per future contract
 DEFAULT_PER_DOLLAR_COST = 0.0015             # 0.15 cents per dollar

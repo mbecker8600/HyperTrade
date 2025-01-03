@@ -1,6 +1,15 @@
+package(default_visibility = ["//visibility:public"])
+
 py_library(
     name = "constants",
     srcs = ["constants.py"],
     data = [],
     deps = [],
+)
+
+py_library(
+    name = "commission",
+    srcs = ["commission.py"],
+    data = [],
+    deps = ["//code/trading/assets"],
 )

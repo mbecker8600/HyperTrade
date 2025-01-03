@@ -1,0 +1,8 @@
+py_test(
+    name = "commission_tests",
+    srcs = ["commission_tests.py"],
+    data = [],
+    deps = [
+        "//code/trading/finance:commission",
+    ],
+)
