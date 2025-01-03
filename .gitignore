@@ -22,6 +22,6 @@ infrastructure/**/.terraform/**
 **/*.tfstate.backup
 
 ##################
-# Pyre
+# mypy
 ##################
-**/.pyre/
+**/.mypy_cache/

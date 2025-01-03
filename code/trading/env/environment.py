@@ -1,11 +1,39 @@
-import pandas as pd
+from __future__ import annotations
 
 
-def testing() -> None:
-    print("Testing")
+from typing import Dict, Optional, Any
+
+import torch
+from tensordict import TensorDict, TensorDictBase
+from torchrl.data import Categorical, Composite, NonTensor, Unbounded
+
+from torchrl.envs import EnvBase
+
+from torchrl.envs.utils import _classproperty
 
 
-if __name__ == "__main__":
-    print("Hello, World!")
-    testing()
-    pd.DataFrame()
+class TradingEnvironment(EnvBase):
+    metadata = {
+        "render_modes": ["human", "rgb_array"],
+        "render_fps": 30,
+    }
+    batch_locked = False
+
+    def __init__(self, td_params: Optional[TensorDict] = None, seed: Optional[int | float] = None, device: str = "cpu") -> None:
+        if td_params is None:
+            td_params = self.gen_params()
+
+        super().__init__(device=device, batch_size=[])
+        self._make_spec(td_params)
+        if seed is None:
+            seed = torch.empty((), dtype=torch.int64).random_().item()
+        self.set_seed(seed)
+
+    # Helpers: _make_step and gen_params
+    gen_params = staticmethod(gen_params)
+    _make_spec = _make_spec
+
+    # Mandatory methods: _step, _reset and _set_seed
+    _reset = _reset
+    _step = staticmethod(_step)
+    _set_seed = _set_seed
