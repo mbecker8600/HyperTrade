@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: PR Merge to Master
 
 on:
   push:
@@ -8,7 +8,8 @@ on:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
 jobs:
-  build:
+  # Build documentation #
+  build-docs:
     name: Build Docusaurus
     runs-on: ubuntu-latest
     defaults:
@@ -34,9 +35,9 @@ jobs:
         with:
           path: build
 
-  deploy:
+  deploy-docs:
     name: Deploy to GitHub Pages
-    needs: build
+    needs: build-docs
     defaults:
       run:
         working-directory: docs/financial-trading
@@ -56,3 +57,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+  # End build documentation #

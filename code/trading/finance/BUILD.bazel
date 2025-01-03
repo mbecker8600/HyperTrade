@@ -1,0 +1,6 @@
+py_library(
+    name = "constants",
+    srcs = ["constants.py"],
+    data = [],
+    deps = [],
+)

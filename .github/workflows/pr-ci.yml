@@ -1,4 +1,4 @@
-name: Test deployment
+name: PR Continuous Integration
 
 on:
   pull_request:
@@ -8,8 +8,29 @@ on:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
 jobs:
-  test-deploy:
-    name: Test deployment
+  # Build and test bazel targets #
+  setup-bazel:
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os:
+          - macos
+          - ubuntu
+          - windows
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+      - if: failure() && runner.debug == '1'
+        uses: mxschmitt/action-tmate@v3
+      - name: Build all targets
+        run: bazel build //...
+      - name: Test all targets
+        run: bazel build //...
+  # Build and test bazel targets #
+
+  # Test documentation deploy #
+  test-docs-deploy:
+    name: Test docs deployment
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -28,3 +49,4 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Test build website
         run: yarn build
+  # End test documentation deploy #

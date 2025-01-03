@@ -1,9 +1,9 @@
 load("@python_deps//:requirements.bzl", "requirement")
 
 py_binary(
-    name = "environment",
-    srcs = ["environment.py"],
+    name = "env",
+    srcs = ["env.py"],
     data = [],
-    main = "environment.py",
+    main = "env.py",
     deps = [],
 )
