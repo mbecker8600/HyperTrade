@@ -1,1 +1,1 @@
-# Financial Trading
+# HyperTrade
