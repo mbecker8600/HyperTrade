@@ -1,7 +1,7 @@
 
 from datetime import datetime
 
-from code.trading.assets.assets import Asset
+from hypertrade.libs.finance.assets.assets import Asset
 
 
 class Transaction():

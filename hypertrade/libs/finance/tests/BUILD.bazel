@@ -3,6 +3,6 @@ py_test(
     srcs = ["commission_tests.py"],
     data = [],
     deps = [
-        "//code/trading/finance:commission",
+        "//hypertrade/libs/finance:commission",
     ],
 )

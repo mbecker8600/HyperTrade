@@ -14,7 +14,7 @@ py_library(
     deps = [
         ":order",
         ":transaction",
-        "//code/trading/assets",
+        "//hypertrade/libs/finance/assets",
     ],
 )
 
@@ -22,12 +22,12 @@ py_library(
     name = "order",
     srcs = ["order.py"],
     data = [],
-    deps = ["//code/trading/assets"],
+    deps = ["//hypertrade/libs/finance/assets"],
 )
 
 py_library(
     name = "transaction",
     srcs = ["transaction.py"],
     data = [],
-    deps = ["//code/trading/assets"],
+    deps = ["//hypertrade/libs/finance/assets"],
 )

@@ -1,6 +1,6 @@
 import unittest
 
-from code.trading.finance.commission import NoCommission
+from hypertrade.libs.finance.commission import NoCommission
 
 
 class TestNoCommisionModel(unittest.TestCase):

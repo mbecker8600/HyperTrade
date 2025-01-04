@@ -1,8 +1,8 @@
 from abc import abstractmethod, ABCMeta
 
-from code.trading.assets.assets import Equity, Future
-from code.trading.finance.order import Order
-from code.trading.finance.transaction import Transaction
+from hypertrade.libs.finance.assets.assets import Equity, Future
+from hypertrade.libs.finance.order import Order
+from hypertrade.libs.finance.transaction import Transaction
 
 DEFAULT_PER_SHARE_COST = 0.001               # 0.1 cents per share
 DEFAULT_PER_CONTRACT_COST = 0.85             # $0.85 per future contract
