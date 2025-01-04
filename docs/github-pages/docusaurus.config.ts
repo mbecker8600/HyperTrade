@@ -5,20 +5,20 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'HyperTrade',
+  tagline: 'Financial Trading Platform',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
   url: 'https://mbecker8600.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/FinancialTrading/',
+  baseUrl: '/HyperTrade/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'mbecker8600', // Usually your GitHub org/user name.
-  projectName: 'FinancialTrading', // Usually your repo name.
+  projectName: 'HyperTrade', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',

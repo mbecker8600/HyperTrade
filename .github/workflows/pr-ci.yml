@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: docs/financial-trading
+        working-directory: docs/github-pages
     steps:
       - uses: actions/checkout@v4
         with:
@@ -54,7 +54,7 @@ jobs:
         with:
           node-version: 18
           cache: yarn
-          cache-dependency-path: docs/financial-trading/yarn.lock
+          cache-dependency-path: docs/github-pages/yarn.lock
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
