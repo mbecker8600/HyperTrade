@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: PR Merge to Master
 
 on:
   push:
@@ -8,7 +8,39 @@ on:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
 jobs:
-  build:
+  # Build and test bazel targets #
+  bazel-build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        # Check out this repo's code.
+        # https://github.com/actions/checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Get Bazel
+        # Install Bazel.
+        # https://github.com/bazel-contrib/setup-bazel
+        uses: bazel-contrib/setup-bazel@0.8.1
+        with:
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Store build cache per workflow.
+          disk-cache: ${{ github.workflow }}
+          # Share repository cache between workflows.
+          repository-cache: true
+      - name: Bazel Build
+        # Always use bazelisk rather than bazel to
+        # guarantee that the correct version of Bazel
+        # (sourced from .bazelversion) is used.
+        run: bazelisk build ...
+      - name: Bazel Test
+        run: bazelisk test ...
+  # Build and test bazel targets #
+
+  # Build documentation #
+  build-docs:
     name: Build Docusaurus
     runs-on: ubuntu-latest
     defaults:
@@ -34,9 +66,9 @@ jobs:
         with:
           path: build
 
-  deploy:
+  deploy-docs:
     name: Deploy to GitHub Pages
-    needs: build
+    needs: build-docs
     defaults:
       run:
         working-directory: docs/financial-trading
@@ -56,3 +88,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+  # End build documentation #

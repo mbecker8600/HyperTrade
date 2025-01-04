@@ -13,13 +13,8 @@ from torchrl.envs.utils import _classproperty
 
 
 class TradingEnvironment(EnvBase):
-    metadata = {
-        "render_modes": ["human", "rgb_array"],
-        "render_fps": 30,
-    }
-    batch_locked = False
 
-    def __init__(self, td_params: Optional[TensorDict] = None, seed: Optional[int | float] = None, device: str = "cpu") -> None:
+    def __init__(self, td_params: Optional[TensorDict] = None, seed: Optional[int] = None, device: str = "cpu") -> None:
         if td_params is None:
             td_params = self.gen_params()
 
