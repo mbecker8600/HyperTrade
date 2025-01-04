@@ -1,9 +1,7 @@
 {
   "python.analysis.autoImportCompletions": true,
-  "python.analysis.typeCheckingMode": "off",
   "editor.formatOnSave": true,
   "files.autoSave": "onFocusChange",
   "mypy-type-checker.reportingScope": "workspace",
-  "mypy-type-checker.preferDaemon": true,
-  "python.analysis.extraPaths": ["bazel-bin", "./bazel-ubuntu"]
+  "mypy-type-checker.preferDaemon": true
 }
