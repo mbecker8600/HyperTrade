@@ -23,7 +23,6 @@
         "ms-python.python",
         "DavidAnson.vscode-markdownlint",
         "ms-python.autopep8",
-        "BazelBuild.vscode-bazel",
         "esbenp.prettier-vscode",
         "eamodio.gitlens",
         "GitHub.copilot",
@@ -34,7 +33,8 @@
         "ms-toolsai.jupyter",
         "mechatroner.rainbow-csv",
         "redhat.vscode-yaml",
-        "matangover.mypy"
+        "matangover.mypy",
+        "BazelBuild.vscode-bazel"
       ]
     }
   },

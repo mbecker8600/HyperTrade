@@ -1,0 +1,10 @@
+{
+  "configurations": [
+    {
+      "type": "debugpy",
+      "request": "attach",
+      "name": "Attach to a running debugpy",
+      "debugServer": 5678
+    }
+  ]
+}
