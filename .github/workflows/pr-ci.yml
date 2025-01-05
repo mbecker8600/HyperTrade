@@ -20,10 +20,11 @@ jobs:
           fetch-depth: 0
           submodules: recursive
       - name: Get Python
+        # Set up Python and install dependencies.
         uses: actions/setup-python@v5
         with:
           cache: "pip" # caching pip dependencies
-      - run: pip install -r requirements.txt
+      - run: pip install -r third-party/requirements.txt
       - name: Get Bazel
         # Install Bazel.
         # https://github.com/bazel-contrib/setup-bazel
