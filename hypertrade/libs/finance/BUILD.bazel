@@ -38,3 +38,10 @@ py_library(
     data = [],
     deps = [],
 )
+
+py_library(
+    name = "accounting",
+    srcs = ["accounting.py"],
+    data = [],
+    deps = ["//hypertrade/libs/finance/assets"],
+)

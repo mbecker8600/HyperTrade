@@ -9,6 +9,6 @@ from loguru import logger
 import sys
 
 
-def setup_logging(level: str = "INFO", colorize: bool = True) -> None:
+def initialize_logging(level: str = "INFO", colorize: bool = True) -> None:
     logger.add(
         sys.stderr, format="{time} {level} {message}", filter="my_module", level=level, colorize=colorize)

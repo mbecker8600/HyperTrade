@@ -6,7 +6,7 @@ It is purely manual at this point and meant more for debugging issues with loggi
 """
 
 from loguru import logger
-from hypertrade.libs.logging.setup import setup_logging
+from hypertrade.libs.logging.setup import initialize_logging
 
 # Debug testing
 # import debugpy
@@ -24,5 +24,5 @@ if __name__ == "__main__":
 
     """
 
-    setup_logging()
+    initialize_logging()
     logger.info("Logging setup complete")

@@ -6,3 +6,13 @@ py_test(
         "//hypertrade/libs/finance:commission",
     ],
 )
+
+py_test(
+    name = "accounting_tests",
+    srcs = ["accounting_tests.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/finance:accounting",
+    ],
+)
