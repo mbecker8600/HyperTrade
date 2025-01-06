@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass
 
-import debugpy
 import pandas as pd
 
 from hypertrade.libs.finance.assets.assets import Asset
@@ -52,6 +51,40 @@ Positions = dict[Asset, Position]
 
 
 class Portfolio:
+    """Object providing read-only access to current portfolio state.
+
+    This object only provide a point in time view of the portfolio. It does not
+    provide functionality for placing orders, modifying positions, or any other
+    actions. It is only used to provide information about the current state of
+    the portfolio at any given point in time.
+
+    Parameters: 
+        start_date : pd.Timestamp
+            The start date for the period being recorded.
+        capital_base : float
+            The starting value for the portfolio. This will be used as the starting
+            cash, current cash, and portfolio value.
+
+    Attributes:
+        positions : hypertrade.libs.finance.accounting.Positions
+            Dict-like object containing information about currently-held positions.
+        cash : float
+            Amount of cash currently held in portfolio.
+        portfolio_value : float
+            Current liquidation value of the portfolio's holdings.
+            This is equal to ``cash + sum(shares * price)``
+        starting_cash : float
+            Amount of cash in the portfolio at the start of the backtest.
+
+    Properties:
+        capital_used : float
+            Amount of capital used in the current period.
+        current_portfolio_weights : pd.Series
+            Series containing the percentage of the portfolio invested in each asset.
+            The index is the asset symbol and the values are the percentage of the
+            portfolio invested in each asset.
+    """
+
     def __init__(self, start_date: pd.Timestamp = None, capital_base: float = 0.0) -> None:
         self.cash_flow = 0.0
         self.starting_cash = capital_base
