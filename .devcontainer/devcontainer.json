@@ -13,7 +13,8 @@
     },
     "ghcr.io/devcontainers-community/features/bazel:1": {},
     "ghcr.io/devcontainers/features/nvidia-cuda:1": {},
-    "ghcr.io/devcontainers/features/node:1": {}
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/rust:1": {}
   },
   "customizations": {
     "vscode": {
@@ -34,7 +35,8 @@
         "mechatroner.rainbow-csv",
         "redhat.vscode-yaml",
         "matangover.mypy",
-        "BazelBuild.vscode-bazel"
+        "BazelBuild.vscode-bazel",
+        "rust-lang.rust-analyzer"
       ]
     }
   },

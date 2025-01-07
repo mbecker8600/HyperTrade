@@ -1,0 +1,8 @@
+py_binary(
+    name = "cli",
+    srcs = ["cli.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/logging:py_setup",
+    ],
+)
