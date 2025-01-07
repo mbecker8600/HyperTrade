@@ -46,7 +46,7 @@ class TestPortfolio(unittest.TestCase):
         portfolio.positions_value = 1000.0
 
         weights = portfolio.current_portfolio_weights
-        self.assertEquals(weights[google_asset], 1.0)
+        self.assertEqual(weights[google_asset], 1.0)
 
 
 if __name__ == "__main__":

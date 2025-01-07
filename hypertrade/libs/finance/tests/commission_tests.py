@@ -13,7 +13,8 @@ class TestNoCommisionModel(unittest.TestCase):
 
     def test_no_commision_returns_zero(self) -> None:
         """NoCommission Commision Model should return zero for all trades"""
-        dummy_asset: Asset = Asset(symbol="AAPL", asset_name="Apple Inc.")
+        dummy_asset: Asset = Asset(
+            sid=1, symbol="AAPL", asset_name="Apple Inc.")
         dummy_order: Order = Order(
             dt=datetime(2001, 8, 1), asset=dummy_asset, amount=100)
         dummy_txn: Transaction = Transaction(asset=dummy_asset, amount=100,
