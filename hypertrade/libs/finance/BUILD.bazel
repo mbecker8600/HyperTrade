@@ -31,3 +31,17 @@ py_library(
     data = [],
     deps = ["//hypertrade/libs/finance/assets"],
 )
+
+py_library(
+    name = "ledger",
+    srcs = ["ledger.py"],
+    data = [],
+    deps = [],
+)
+
+py_library(
+    name = "accounting",
+    srcs = ["accounting.py"],
+    data = [],
+    deps = ["//hypertrade/libs/finance/assets"],
+)

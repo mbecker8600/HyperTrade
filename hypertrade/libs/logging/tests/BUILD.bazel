@@ -1,0 +1,17 @@
+py_test(
+    name = "setup_tests",
+    srcs = ["setup_tests.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/logging:py_setup",
+    ],
+)
+
+py_binary(
+    name = "main_tests",
+    srcs = ["main_tests.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/logging:py_setup",
+    ],
+)

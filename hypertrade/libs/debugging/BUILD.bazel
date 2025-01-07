@@ -1,0 +1,8 @@
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "python_debugger",
+    srcs = ["__init__.py"],
+    data = [],
+    deps = [],
+)

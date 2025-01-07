@@ -2,6 +2,7 @@
   "python.analysis.autoImportCompletions": true,
   "editor.formatOnSave": true,
   "files.autoSave": "onFocusChange",
+  "bazel.buildifierFixOnFormat": true,
   "mypy-type-checker.reportingScope": "workspace",
   "mypy-type-checker.preferDaemon": true
 }
