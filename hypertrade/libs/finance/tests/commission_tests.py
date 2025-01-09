@@ -3,7 +3,7 @@ import unittest
 
 from datetime import datetime
 
-from hypertrade.libs.finance.assets.assets import Asset
+from hypertrade.libs.finance.assets import Asset
 from hypertrade.libs.finance.commission import NoCommission
 from hypertrade.libs.finance.order import Order
 from hypertrade.libs.finance.transaction import Transaction

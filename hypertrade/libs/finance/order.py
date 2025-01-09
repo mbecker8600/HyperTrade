@@ -4,7 +4,7 @@ import enum
 import uuid
 from datetime import datetime
 
-from hypertrade.libs.finance.assets.assets import Asset
+from hypertrade.libs.finance.assets import Asset
 
 
 class ORDER_STATUS(enum.Enum):

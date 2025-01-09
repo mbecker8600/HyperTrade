@@ -1,7 +1,7 @@
 import unittest
 
 from hypertrade.libs.finance.accounting import Portfolio, Position
-from hypertrade.libs.finance.assets.assets import Asset
+from hypertrade.libs.finance.assets import Asset
 
 
 class TestPortfolio(unittest.TestCase):

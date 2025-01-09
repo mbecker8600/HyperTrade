@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABCMeta
 
-from hypertrade.libs.finance.assets.assets import Equity, Future
+from hypertrade.libs.finance.assets import Equity, Future
 from hypertrade.libs.finance.order import Order
 from hypertrade.libs.finance.transaction import Transaction
 

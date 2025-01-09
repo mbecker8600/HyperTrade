@@ -12,9 +12,9 @@ py_library(
     srcs = ["commission.py"],
     data = [],
     deps = [
+        ":assets",
         ":order",
         ":transaction",
-        "//hypertrade/libs/finance/assets",
     ],
 )
 
@@ -22,14 +22,14 @@ py_library(
     name = "order",
     srcs = ["order.py"],
     data = [],
-    deps = ["//hypertrade/libs/finance/assets"],
+    deps = [":assets"],
 )
 
 py_library(
     name = "transaction",
     srcs = ["transaction.py"],
     data = [],
-    deps = ["//hypertrade/libs/finance/assets"],
+    deps = [":assets"],
 )
 
 py_library(
@@ -43,5 +43,26 @@ py_library(
     name = "accounting",
     srcs = ["accounting.py"],
     data = [],
-    deps = ["//hypertrade/libs/finance/assets"],
+    deps = [":assets"],
+)
+
+py_library(
+    name = "time",
+    srcs = ["time.py"],
+    data = [],
+    deps = [],
+)
+
+py_library(
+    name = "simulation",
+    srcs = ["simulation.py"],
+    data = [],
+    deps = [":time"],
+)
+
+py_library(
+    name = "assets",
+    srcs = ["assets.py"],
+    data = [],
+    deps = [],
 )
