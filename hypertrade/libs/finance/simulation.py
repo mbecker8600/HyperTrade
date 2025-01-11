@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Tuple
 
 import pandas as pd
 
+from hypertrade.libs.finance.event import EVENT
 from hypertrade.libs.finance.time import Frequency, TradingClock
 
 
@@ -27,10 +29,10 @@ class Simulator():
     def __iter__(self) -> Simulator:
         return self
 
-    def __next__(self) -> SimulationState:
-        current_time = next(self.clock)
+    def __next__(self) -> Tuple[EVENT, SimulationState]:
+        event, current_time = next(self.clock)
         prices = self._retrieve_prices(current_time)
-        return SimulationState(current_time=current_time, current_prices=prices)
+        return event, SimulationState(current_time=current_time, current_prices=prices)
 
     def _retrieve_prices(self, current_time: datetime) -> pd.Series:
         # TODO: Get prices at current time

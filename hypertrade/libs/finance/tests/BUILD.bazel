@@ -38,3 +38,15 @@ py_test(
         "//hypertrade/libs/finance:simulation",
     ],
 )
+
+py_test(
+    name = "event_tests",
+    srcs = ["event_tests.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/finance:event",
+        "//hypertrade/libs/finance:order",
+        "//hypertrade/libs/logging:py_setup",
+    ],
+)

@@ -53,6 +53,7 @@ torchrl==0.6.0
 trading-calendars==2.1.1
 triton==3.1.0
 typeguard==2.13.3
+types-python-dateutil==2.9.0.20241206
 typing-inspect==0.9.0
 typing_extensions==4.12.2
 tzdata==2024.2

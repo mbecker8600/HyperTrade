@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+from hypertrade.libs.finance.event import EVENT
 from hypertrade.libs.finance.time import TradingClock
 
 
@@ -9,8 +10,9 @@ class TestTradingClock(unittest.TestCase):
         """Basic initialization of the Portfolio object"""
         clock = TradingClock(start_time=datetime(
             2001, 1, 1), end_time=datetime(2001, 1, 5))
-
-        self.assertEqual(next(clock), datetime(2001, 1, 2))
+        event, time = next(clock)
+        self.assertEqual(time, datetime(2001, 1, 2))
+        self.assertEqual(event, EVENT.MARKET_OPEN)
 
 
 if __name__ == "__main__":

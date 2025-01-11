@@ -50,19 +50,29 @@ py_library(
     name = "time",
     srcs = ["time.py"],
     data = [],
-    deps = [],
+    deps = [":event"],
 )
 
 py_library(
     name = "simulation",
     srcs = ["simulation.py"],
     data = [],
-    deps = [":time"],
+    deps = [
+        ":event",
+        ":time",
+    ],
 )
 
 py_library(
     name = "assets",
     srcs = ["assets.py"],
+    data = [],
+    deps = [],
+)
+
+py_library(
+    name = "event",
+    srcs = ["event.py"],
     data = [],
     deps = [],
 )
