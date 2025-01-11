@@ -11,7 +11,7 @@ from hypertrade.libs.finance.time import Frequency, TradingClock
 
 
 @dataclass
-class SimulationState():
+class SimulationState:
     current_time: datetime
     """The current time of the simulation"""
 
@@ -20,11 +20,17 @@ class SimulationState():
     """
 
 
-class Simulator():
+class Simulator:
 
-    def __init__(self, start_time: datetime, end_time: datetime, frequency: Frequency = Frequency.DAILY) -> None:
+    def __init__(
+        self,
+        start_time: datetime,
+        end_time: datetime,
+        frequency: Frequency = Frequency.DAILY,
+    ) -> None:
         self.clock = TradingClock(
-            start_time=start_time, end_time=end_time, frequency=frequency)
+            start_time=start_time, end_time=end_time, frequency=frequency
+        )
 
     def __iter__(self) -> Simulator:
         return self
@@ -36,5 +42,4 @@ class Simulator():
 
     def _retrieve_prices(self, current_time: datetime) -> pd.Series:
         # TODO: Get prices at current time
-        return pd.Series([100.0, 200.0], index=[
-            "GOOGL", "AAPL"])
+        return pd.Series([100.0, 200.0], index=["GOOGL", "AAPL"])

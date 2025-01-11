@@ -11,8 +11,9 @@ class TestSimulator(unittest.TestCase):
 
     def test_basic_simulation(self) -> None:
         """Basic initialization of the Portfolio object"""
-        simulator = Simulator(start_time=datetime(
-            2001, 1, 1), end_time=datetime(2001, 1, 5))
+        simulator = Simulator(
+            start_time=datetime(2001, 1, 1), end_time=datetime(2001, 1, 5)
+        )
 
         event: EVENT
         state: SimulationState

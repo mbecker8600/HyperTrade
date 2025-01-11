@@ -11,4 +11,9 @@ import sys
 
 def initialize_logging(level: str = "INFO", colorize: bool = True) -> None:
     logger.add(
-        sys.stderr, format="{time} {level} {message}", filter="my_module", level=level, colorize=colorize)
+        sys.stderr,
+        format="{time} {level} {message}",
+        filter="my_module",
+        level=level,
+        colorize=colorize,
+    )

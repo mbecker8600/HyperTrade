@@ -1,5 +1,3 @@
-
-
 from datetime import datetime
 
 from hypertrade.libs.finance.simulation import Simulator
@@ -7,7 +5,12 @@ from hypertrade.libs.finance.time import Frequency
 
 
 class TradingEngine:
-    def __init__(self, start_time: datetime, end_time: datetime, frequency: Frequency = Frequency.DAILY) -> None:
+    def __init__(
+        self,
+        start_time: datetime,
+        end_time: datetime,
+        frequency: Frequency = Frequency.DAILY,
+    ) -> None:
         self.simulation = Simulator(start_time, end_time, frequency)
 
     def run(self) -> None:

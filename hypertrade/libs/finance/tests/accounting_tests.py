@@ -29,17 +29,14 @@ class TestPortfolio(unittest.TestCase):
         portfolio = Portfolio(capital_base=1000.0)
 
         google_asset = Asset(
-            sid=1,
-            symbol='GOOGL',
-            asset_name='Google',
-            price_multiplier=1.0
+            sid=1, symbol="GOOGL", asset_name="Google", price_multiplier=1.0
         )
         google_position = Position(
             asset=google_asset,
             amount=10,
             cost_basis=1000.0,
             last_sale_price=100.0,
-            last_sale_date='2021-01-01'
+            last_sale_date="2021-01-01",
         )
 
         portfolio.positions[google_asset] = google_position

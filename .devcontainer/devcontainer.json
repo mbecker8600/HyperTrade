@@ -36,7 +36,8 @@
         "redhat.vscode-yaml",
         "matangover.mypy",
         "BazelBuild.vscode-bazel",
-        "rust-lang.rust-analyzer"
+        "rust-lang.rust-analyzer",
+        "ms-python.black-formatter"
       ]
     }
   },

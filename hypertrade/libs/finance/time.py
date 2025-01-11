@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 from datetime import datetime, timedelta
@@ -13,7 +12,12 @@ class Frequency(enum.Enum):
 
 
 class TradingClock:
-    def __init__(self, start_time: datetime, end_time: datetime, frequency: Frequency = Frequency.DAILY) -> None:
+    def __init__(
+        self,
+        start_time: datetime,
+        end_time: datetime,
+        frequency: Frequency = Frequency.DAILY,
+    ) -> None:
         self.start_time = start_time
         self.current_time = start_time
         self.end_time = end_time

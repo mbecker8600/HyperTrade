@@ -1,11 +1,11 @@
-
-
 import pandas as pd
 
 
-class BacktestEngine():
+class BacktestEngine:
 
-    def __init__(self, start_date: pd.Timestamp = None, capital_base: float = 0.0) -> None:
+    def __init__(
+        self, start_date: pd.Timestamp = None, capital_base: float = 0.0
+    ) -> None:
         self.cash_flow = 0.0
         self.starting_cash = capital_base
         self.portfolio_value = capital_base
