@@ -3,13 +3,17 @@ import datetime
 import heapq
 from typing import (
     TYPE_CHECKING,
+    Any,
     Callable,
     Dict,
     List,
     Optional,
     Protocol,
     Tuple,
+    Type,
+    TypeVar,
     runtime_checkable,
+    Generic,
 )
 from pandas import Timestamp
 import exchange_calendars as xcals
@@ -26,24 +30,88 @@ if TYPE_CHECKING:
     from loguru import Record
 
 
+class EVENT_TYPE(enum.Enum):
+    """Registry of all events that can be subscribed to ensure easy discoveryability for anyone looking for
+    Events to subscribe to.
+
+    Each event should specify three things:
+    1. what it does
+    2. what class publishes it
+    3. what data object should be used when handling the event. This should be type safe using generics
+
+    Note, if the event doesn't have data (and data is Optional[T]), the typing on the event should be
+    Event[None] to indicate there is no data available.
+
+    """
+
+    MARKET_OPEN = 1
+    """MARKET_OPEN
+    Description: 
+    Publisher: 
+    Data: None 
+    """
+    MARKET_CLOSE = 2
+    """MARKET_CLOSE
+    Description: 
+    Publisher: 
+    Data: None
+    """
+    ORDER_PLACED = 3
+    """ORDER_PLACED
+    Description: 
+    Publisher: 
+    Data: 
+    """
+    ORDER_FULFILLED = 4
+    """ORDER_FULFILLED
+    Description: 
+    Publisher: 
+    Data: 
+    """
+    PORTFOLIO_UPDATE = 5
+    """PORTFOLIO_UPDATE
+    Description: 
+    Publisher: 
+    Data: 
+    """
+
+
+T = TypeVar("T")
+
+
+class Event(Generic[T]):
+    """
+    Type-safe event with generic data.
+    """
+
+    def __init__(
+        self,
+        event_type: EVENT_TYPE,
+        time: Optional[Timestamp] = None,
+        data: Optional[T] = None,
+    ):
+        """
+        Args:
+            event_type (EVENT_TYPE): Type of event being scheduled
+            time (pd.Timestamp): Time the event should occur
+                Should be set when scheduled in the EventManager
+            data (Generic[T]): Data passed to subscribers
+        """
+        self.event_type = event_type
+        self.time = time
+        self.data = data
+
+
 class Frequency(enum.Enum):
     DAILY = 1
 
 
-class EVENT(enum.Enum):
-    MARKET_OPEN = 1
-    MARKET_CLOSE = 2
-    ORDER_PLACED = 3
-    ORDER_FULFILLED = 4
-    PORTFOLIO_UPDATE = 5
-
-
 @runtime_checkable
-class SupportsEventHandling(Protocol):
-    def handle_event(self, time: datetime.datetime, event: EVENT) -> None: ...
+class SupportsEventHandling(Generic[T], Protocol):
+    def handle_event(self, event: Event[T]) -> None: ...
 
 
-EventHandlerFn = Callable[[datetime.datetime, EVENT], None]
+EventHandlerFn = Callable[[Event[Any]], None]
 
 
 class MarketEvents:
@@ -73,25 +141,26 @@ class MarketEvents:
         self.frequency = frequency
         self.tz = pytz.timezone(tz)
 
-    def next_market_event(self, time: Timestamp) -> Tuple[Timestamp, EVENT]:
+    def next_market_event(self, time: Timestamp) -> Event[T]:
         """
         Returns the next market event after the given time.
         """
         if self.frequency == Frequency.DAILY:
             if time.time() < datetime.time(9, 30, tzinfo=self.tz):
-                return (
-                    self.calendar.next_open(time).tz_convert(self.tz),
-                    EVENT.MARKET_OPEN,
+                return Event(
+                    event_type=EVENT_TYPE.MARKET_OPEN,
+                    time=self.calendar.next_open(time).tz_convert(self.tz),
                 )
+
             elif time.time() < datetime.time(16, 0, tzinfo=self.tz):
-                return (
-                    self.calendar.next_close(time).tz_convert(self.tz),
-                    EVENT.MARKET_CLOSE,
+                return Event(
+                    event_type=EVENT_TYPE.MARKET_CLOSE,
+                    time=self.calendar.next_close(time).tz_convert(self.tz),
                 )
             else:
-                return (
-                    self.calendar.next_open(time).tz_convert(self.tz),
-                    EVENT.MARKET_OPEN,
+                return Event(
+                    event_type=EVENT_TYPE.MARKET_OPEN,
+                    time=self.calendar.next_open(time).tz_convert(self.tz),
                 )
 
 
@@ -132,13 +201,11 @@ class EventManager:
         self.end_time = end_time
 
         # private attributes
-        self._subscribers: Dict[EVENT, List[EventHandlerFn]] = {
-            EVENT.ORDER_FULFILLED: []
-        }
+        self._subscribers: Dict[EVENT_TYPE, List[EventHandlerFn]] = {}
         self._market_events = MarketEvents(
             exchange=exchange, frequency=frequency, tz=tz
         )
-        self._event_queue: List[Tuple[datetime.datetime, EVENT]] = []
+        self._event_queue: List[Tuple[datetime.datetime, Event[Any]]] = []
 
         # Register the event manager as a service
         self._service_locator = ServiceLocator[EventManager]()
@@ -178,7 +245,10 @@ class EventManager:
         )
 
     def subscribe(
-        self, event: EVENT, subscriber: SupportsEventHandling | EventHandlerFn
+        self,
+        event: EVENT_TYPE,
+        subscriber: SupportsEventHandling[Any] | EventHandlerFn,
+        data_type: Optional[Type[T]] = None,
     ) -> None:
         """
         Subscribes a component to a specific event type.
@@ -199,56 +269,64 @@ class EventManager:
         else:
             self._subscribers[event].append(subscriber)
 
-    def _publish(self, time: datetime.datetime, event: EVENT) -> None:
+    def _publish(self, event: Event[Any]) -> None:
         """
         Publishes an event to all subscribers of that event type.
         """
 
-        logger.bind(event=True).info(f"Publishing {event} at {time}")
-        if event in self._subscribers:
-            for subscriber in self._subscribers[event]:
-                logger.bind(event=True).info(f"Dispatching {event} to {subscriber}")
-                subscriber(time, event)
+        logger.bind(event=True).info(f"Publishing {event.event_type} at {event.time}")
+        if event.event_type in self._subscribers:
+            for subscriber in self._subscribers[event.event_type]:
+                logger.bind(event=True).info(
+                    f"Dispatching {event.event_type} to {subscriber}"
+                )
+                subscriber(event)
 
     def schedule_event(
-        self, event: EVENT, delay: Optional[datetime.timedelta] = None
+        self, event: Event[Any], delay: Optional[datetime.timedelta] = None
     ) -> None:
         """
         Schedules an event to be published after a delay.
         """
         event_time = self.current_time + delay if delay else self.current_time
+        event.time = event_time
         heapq.heappush(self._event_queue, (event_time, event))
 
     def __iter__(self) -> EventManager:
         return self
 
     def _update_current_time(self, time: Timestamp) -> None:
+        logger.bind(event=True).info(
+            f"Advancing time from {self.current_time} --> {time}"
+        )
         self.current_time = time
-        logger.bind(event=True).info(f"Current Time: {time}")
 
-    def __next__(self) -> Tuple[Timestamp, EVENT]:
+    def __next__(self) -> Event[Any]:
 
         # Get the next market event and time to see if any schedule events need to be run
         # before it.
-        market_event_time, market_event = self._market_events.next_market_event(
+        next_market_event: Event[Any] = self._market_events.next_market_event(
             self.current_time
         )
 
+        assert (
+            next_market_event.time is not None
+        ), "next_market_event came back with None time. Something went wrong"
         # Drain event queue if there are events scheduled and it's time to handle them
-        if self._event_queue and self._event_queue[0][0] <= market_event_time:
+        if self._event_queue and self._event_queue[0][0] <= next_market_event.time:
             event_time, event = heapq.heappop(self._event_queue)
             # advance time to the next event time
             self._update_current_time(event_time)
-            self._publish(event_time, event)
-            return event_time, event
+            self._publish(event)
+            return event
 
         # If the next market event is after the end time, end the simulation
-        if market_event_time > self.end_time:
+        if next_market_event.time > self.end_time:
             raise StopIteration
 
         # If there are no scheduled events that can be run, look for next market event
         # and advance time to that event
         # advance time to the next market event
-        self._update_current_time(market_event_time)
-        self._publish(market_event_time, market_event)
-        return market_event_time, market_event
+        self._update_current_time(next_market_event.time)
+        self._publish(next_market_event)
+        return next_market_event
