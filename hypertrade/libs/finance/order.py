@@ -1,10 +1,9 @@
-
 from typing import Optional
 import enum
 import uuid
 from datetime import datetime
 
-from hypertrade.libs.finance.assets.assets import Asset
+from hypertrade.libs.finance.assets import Asset
 
 
 class ORDER_STATUS(enum.Enum):
@@ -17,8 +16,15 @@ class ORDER_STATUS(enum.Enum):
 
 class Order:
 
-    def __init__(self, dt: datetime, asset: Asset, amount: int, filled: int = 0,
-                 commission: int = 0, id: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        dt: datetime,
+        asset: Asset,
+        amount: int,
+        filled: int = 0,
+        commission: int = 0,
+        id: Optional[str] = None,
+    ) -> None:
         """
         @dt - datetime.datetime that the order was placed
         @asset - asset for the order.

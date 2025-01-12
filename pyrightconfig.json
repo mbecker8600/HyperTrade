@@ -1,6 +1,6 @@
 {
-  "exclude": ["**/node_modules", "**/bazel-out", "**/bazel-bin", "**/bazel-ubuntu"],
-  "ignore": ["**/node_modules", "**/bazel-out", "**/bazel-bin", "**/bazel-ubuntu"],
+  "exclude": ["**/node_modules", "**/bazel-out", "**/bazel-bin", "**/bazel-ubuntu", "**/__pycache__"],
+  "ignore": ["**/node_modules", "**/bazel-out", "**/bazel-bin", "**/bazel-ubuntu", "**/__pycache__"],
   // "extraPaths": ["bazel-bin", "./bazel-ubuntu"],
   "typeCheckingMode": "off"
 }
