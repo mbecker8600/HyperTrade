@@ -19,33 +19,13 @@ py_test(
 )
 
 py_test(
-    name = "time_tests",
-    srcs = ["time_tests.py"],
-    data = [],
-    deps = [
-        "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/finance:time",
-    ],
-)
-
-py_test(
-    name = "simulation_tests",
-    srcs = ["simulation_tests.py"],
-    data = [],
-    deps = [
-        "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/finance:order",
-        "//hypertrade/libs/finance:simulation",
-    ],
-)
-
-py_test(
     name = "event_tests",
     srcs = ["event_tests.py"],
     data = [],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
         "//hypertrade/libs/finance:event",
+        "//hypertrade/libs/finance:locator",
         "//hypertrade/libs/finance:order",
         "//hypertrade/libs/logging:py_setup",
     ],

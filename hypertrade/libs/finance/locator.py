@@ -1,7 +1,14 @@
 from __future__ import annotations
-from typing import Dict, Generic, Optional, TypeVar
+from typing import Dict, Generic, Optional, Protocol, TypeVar, runtime_checkable
 
-T = TypeVar("T")  # Define a generic type variable
+
+@runtime_checkable
+class SupportsServiceRegistration(Protocol):
+    SERVICE_NAME: str
+
+
+# Define a generic type that supports service registration
+T = TypeVar("T", bound=SupportsServiceRegistration)
 
 
 class ServiceLocator(Generic[T]):
@@ -19,10 +26,11 @@ class ServiceLocator(Generic[T]):
         """
         if cls._instance is None:
             cls._instance = super(ServiceLocator, cls).__new__(cls)
+            cls._instance._services = {}
         return cls._instance
 
     def __init__(self) -> None:
-        self._services: Dict[str, T] = {}
+        self._services: Dict[str, T]
 
     def register(self, name: str, service: T) -> None:
         """
@@ -34,7 +42,7 @@ class ServiceLocator(Generic[T]):
         """
         Retrieves a service by its name.
         """
-        if self._services.get(name) is None:
+        service = self._services.get(name)
+        if service is None:
             raise ValueError(f"Service {name} not found")
-
-        return self._services.get(name)
+        return service
