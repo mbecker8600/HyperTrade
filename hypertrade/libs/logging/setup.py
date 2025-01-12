@@ -8,12 +8,15 @@ It should be called at the beginning of the project to setup the logger within t
 from loguru import logger
 import sys
 
+SIMULATION_TIME_KEY: str = "simulation_time"
+
 
 def initialize_logging(level: str = "INFO", colorize: bool = True) -> None:
+    logger.remove()
     logger.add(
         sys.stderr,
-        format="{time} {level} {message}",
-        filter="my_module",
+        format="{time:YYYY-MM-DD at HH:mm:ss} | {level:7s} | {name}:{line} | {message}",
         level=level,
         colorize=colorize,
     )
+    logger.info("Logging setup complete")

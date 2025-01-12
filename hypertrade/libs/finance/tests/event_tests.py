@@ -12,7 +12,7 @@ from hypertrade.libs.service.locator import ServiceLocator
 from hypertrade.libs.logging.setup import initialize_logging
 
 
-# import hypertrade.libs.debugging  # donotcommit
+import hypertrade.libs.debugging  # donotcommit
 
 
 class MockNoEventPublishHandler:

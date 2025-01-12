@@ -185,6 +185,7 @@ class EventManager:
             event_time, event = heapq.heappop(self._event_queue)
             # advance time to the next event time
             self.current_time = event_time
+            logger.bind(simulation_time=123).info("TESTING")
             self._publish(event_time, event)
             return event_time, event
 
