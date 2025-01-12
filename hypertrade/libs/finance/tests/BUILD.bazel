@@ -25,8 +25,8 @@ py_test(
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
         "//hypertrade/libs/finance:event",
-        "//hypertrade/libs/finance:locator",
         "//hypertrade/libs/finance:order",
         "//hypertrade/libs/logging:py_setup",
+        "//hypertrade/libs/service:locator",
     ],
 )

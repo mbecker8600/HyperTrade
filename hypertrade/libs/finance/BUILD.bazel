@@ -57,14 +57,7 @@ py_library(
     name = "event",
     srcs = ["event.py"],
     data = [],
-    deps = [":locator"],
-)
-
-py_library(
-    name = "locator",
-    srcs = ["locator.py"],
-    data = [],
-    deps = [],
+    deps = ["//hypertrade/libs/service:locator"],
 )
 
 py_library(

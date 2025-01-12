@@ -8,7 +8,7 @@ import pytz
 import pandas as pd
 
 from hypertrade.libs.finance.event import EVENT, EventManager
-from hypertrade.libs.finance.locator import ServiceLocator
+from hypertrade.libs.service.locator import ServiceLocator
 from hypertrade.libs.logging.setup import initialize_logging
 
 
@@ -164,6 +164,13 @@ class TestEventManager(unittest.TestCase):
 
             mock_strategy_handler.assert_called_once()
             mock_order_handler.assert_called_once()
+
+    # TODO: Add tests for multiple subscribers to the same event publish events with different delay
+    # to make sure the time is still synchronized properly.
+
+    # TODO: Add tests for improper start/end dates
+
+    # TODO: Add test for various timezones
 
 
 if __name__ == "__main__":

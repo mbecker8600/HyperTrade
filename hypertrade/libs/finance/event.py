@@ -9,7 +9,7 @@ import enum
 from loguru import logger
 import pytz
 
-from hypertrade.libs.finance.locator import ServiceLocator
+from hypertrade.libs.service.locator import ServiceLocator
 
 
 class Frequency(enum.Enum):
