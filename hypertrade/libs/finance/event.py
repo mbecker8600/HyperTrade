@@ -1,7 +1,16 @@
 from __future__ import annotations
 import datetime
 import heapq
-from typing import Callable, Dict, List, Optional, Protocol, Tuple, runtime_checkable
+from typing import (
+    TYPE_CHECKING,
+    Callable,
+    Dict,
+    List,
+    Optional,
+    Protocol,
+    Tuple,
+    runtime_checkable,
+)
 from pandas import Timestamp
 import exchange_calendars as xcals
 
@@ -10,6 +19,11 @@ from loguru import logger
 import pytz
 
 from hypertrade.libs.service.locator import ServiceLocator
+
+import os
+
+if TYPE_CHECKING:
+    from loguru import Record
 
 
 class Frequency(enum.Enum):
@@ -21,6 +35,7 @@ class EVENT(enum.Enum):
     MARKET_CLOSE = 2
     ORDER_PLACED = 3
     ORDER_FULFILLED = 4
+    PORTFOLIO_UPDATE = 5
 
 
 @runtime_checkable
@@ -92,6 +107,7 @@ class EventManager:
         exchange: str = "XNYS",
         frequency: Frequency = Frequency.DAILY,
         tz: str = "America/New_York",
+        event_log_dir: str = "/tmp/logs/hypertrade/events",
     ) -> None:
         """Initialize the event manager.
 
@@ -128,6 +144,39 @@ class EventManager:
         self._service_locator = ServiceLocator[EventManager]()
         self._service_locator.register(EventManager.SERVICE_NAME, self)
 
+        self._configure_event_logging(event_log_dir=event_log_dir)
+
+    def _format_with_sim_time(self, record: Record) -> str:
+        """
+        Custom formatter function to add simulation time.
+        """
+        sim_time = self.current_time
+        formatted_time = sim_time.strftime("%Y-%m-%d %H:%M:%S")
+        return "{time} - SimTime: {sim_time} - {level:7s} - {message}\n".format(
+            time=record["time"].strftime("%Y-%m-%d %H:%M:%S"),
+            sim_time=formatted_time,
+            level=record["level"].name,
+            message=record["message"],
+        )
+
+    def _filter_event_logs(self, record: Record) -> bool:
+        """
+        Filter function to include only event logs.
+        """
+        return "event" in record["extra"]  # Check for "event" key in record["extra"]
+
+    def _configure_event_logging(self, event_log_dir: str) -> None:
+        """
+        Configures a separate handler for the event logging in a separate location.
+        """
+
+        # Configure Loguru
+        logger.add(
+            os.path.join(event_log_dir, "events.log"),
+            format=self._format_with_sim_time,
+            filter=self._filter_event_logs,  # Add the filter
+        )
+
     def subscribe(
         self, event: EVENT, subscriber: SupportsEventHandling | EventHandlerFn
     ) -> None:
@@ -141,7 +190,7 @@ class EventManager:
                 (i.e. has a handle_event method) or a function that takes a time and event as
                 arguments. See SupportsEventHandling and EventHandlerFn for the method signature.
         """
-        logger.debug(f"Subscribing {subscriber} to {event}")
+        logger.bind(event=True).info(f"Subscribing {subscriber} to {event}")
         if event not in self._subscribers:
             self._subscribers[event] = []
 
@@ -154,10 +203,11 @@ class EventManager:
         """
         Publishes an event to all subscribers of that event type.
         """
-        logger.debug(f"Publishing {event} at {time}")
+
+        logger.bind(event=True).info(f"Publishing {event} at {time}")
         if event in self._subscribers:
             for subscriber in self._subscribers[event]:
-                logger.debug(f"Dispatching {event} to {subscriber}")
+                logger.bind(event=True).info(f"Dispatching {event} to {subscriber}")
                 subscriber(time, event)
 
     def schedule_event(
@@ -172,6 +222,10 @@ class EventManager:
     def __iter__(self) -> EventManager:
         return self
 
+    def _update_current_time(self, time: Timestamp) -> None:
+        self.current_time = time
+        logger.bind(event=True).info(f"Current Time: {time}")
+
     def __next__(self) -> Tuple[Timestamp, EVENT]:
 
         # Get the next market event and time to see if any schedule events need to be run
@@ -184,8 +238,7 @@ class EventManager:
         if self._event_queue and self._event_queue[0][0] <= market_event_time:
             event_time, event = heapq.heappop(self._event_queue)
             # advance time to the next event time
-            self.current_time = event_time
-            logger.bind(simulation_time=123).info("TESTING")
+            self._update_current_time(event_time)
             self._publish(event_time, event)
             return event_time, event
 
@@ -196,6 +249,6 @@ class EventManager:
         # If there are no scheduled events that can be run, look for next market event
         # and advance time to that event
         # advance time to the next market event
-        self.current_time = market_event_time
+        self._update_current_time(market_event_time)
         self._publish(market_event_time, market_event)
         return market_event_time, market_event

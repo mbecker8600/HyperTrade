@@ -12,7 +12,7 @@ from hypertrade.libs.service.locator import ServiceLocator
 from hypertrade.libs.logging.setup import initialize_logging
 
 
-import hypertrade.libs.debugging  # donotcommit
+# import hypertrade.libs.debugging  # donotcommit
 
 
 class MockNoEventPublishHandler:
@@ -40,7 +40,9 @@ class MockOrderHandler:
 class MockPortfolioHandler:
 
     def handle_event(self, time: datetime, event: EVENT) -> None:
-        pass
+        service_locator = ServiceLocator[EventManager]()
+        event_manager = service_locator.get(EventManager.SERVICE_NAME)
+        event_manager.schedule_event(EVENT.PORTFOLIO_UPDATE, delay=timedelta(seconds=1))
 
 
 class TestEventManager(unittest.TestCase):
@@ -155,7 +157,7 @@ class TestEventManager(unittest.TestCase):
                 order_placed_time, pd.Timestamp("2020-01-02 09:30:03", tz=nytz)
             )
 
-            # Third event is market close
+            # Fourth event is market close
             market_close_time, market_close_event = next(event_manager)
             self.assertEquals(market_close_event, EVENT.MARKET_CLOSE)
             self.assertEquals(
@@ -165,8 +167,75 @@ class TestEventManager(unittest.TestCase):
             mock_strategy_handler.assert_called_once()
             mock_order_handler.assert_called_once()
 
-    # TODO: Add tests for multiple subscribers to the same event publish events with different delay
-    # to make sure the time is still synchronized properly.
+    def test_simulation_with_unordered_publishing(self) -> None:
+        "Test scheduled events with longer delay are not scheduled before shorter delay"
+        nytz = pytz.timezone("America/New_York")
+        start_time = pd.Timestamp("2020-01-02", tz=nytz)
+        end_time = pd.Timestamp("2020-01-03", tz=nytz)
+
+        event_manager = EventManager(start_time=start_time, end_time=end_time)
+        strategy_handler = MockStrategyHandler()
+        order_handler = MockOrderHandler()
+        portfolio_handler = MockPortfolioHandler()
+        with patch.object(
+            MockStrategyHandler,
+            "handle_event",
+            wraps=strategy_handler.handle_event,
+        ) as mock_strategy_handler, patch.object(
+            MockOrderHandler,
+            "handle_event",
+            wraps=order_handler.handle_event,
+        ) as mock_order_handler, patch.object(
+            MockPortfolioHandler,
+            "handle_event",
+            wraps=portfolio_handler.handle_event,
+        ) as mock_portfolio_handler:
+            event_manager.subscribe(EVENT.MARKET_OPEN, strategy_handler.handle_event)
+
+            # Since the order handler is subscribed first, but delays for multiple seconds
+            # this should ensure that the proper event processing based on timestamps
+            # is happening
+            event_manager.subscribe(EVENT.ORDER_PLACED, order_handler.handle_event)
+            event_manager.subscribe(EVENT.ORDER_PLACED, portfolio_handler.handle_event)
+
+            # First event is market open
+            market_open_time, market_open_event = next(event_manager)
+            self.assertEquals(market_open_event, EVENT.MARKET_OPEN)
+            self.assertEquals(
+                market_open_time, pd.Timestamp("2020-01-02 09:30", tz=nytz)
+            )
+
+            # Second event is from the strategy handler, no delay so time is the same
+            order_placed_time, order_placed_event = next(event_manager)
+            self.assertEquals(order_placed_event, EVENT.ORDER_PLACED)
+            self.assertEquals(
+                order_placed_time, pd.Timestamp("2020-01-02 09:30", tz=nytz)
+            )
+
+            # Third event is from the portfolio handler, since it only has a delay of 1
+            port_update_time, port_update_event = next(event_manager)
+            self.assertEquals(port_update_event, EVENT.PORTFOLIO_UPDATE)
+            self.assertEquals(
+                port_update_time, pd.Timestamp("2020-01-02 09:30:01", tz=nytz)
+            )
+
+            # Fourth event is from the order handler, since it has a delay of 3
+            order_placed_time, order_placed_event = next(event_manager)
+            self.assertEquals(order_placed_event, EVENT.ORDER_FULFILLED)
+            self.assertEquals(
+                order_placed_time, pd.Timestamp("2020-01-02 09:30:03", tz=nytz)
+            )
+
+            # Third event is market close
+            market_close_time, market_close_event = next(event_manager)
+            self.assertEquals(market_close_event, EVENT.MARKET_CLOSE)
+            self.assertEquals(
+                market_close_time, pd.Timestamp("2020-01-02 16:00", tz=nytz)
+            )
+
+            mock_strategy_handler.assert_called_once()
+            mock_order_handler.assert_called_once()
+            mock_portfolio_handler.assert_called_once()
 
     # TODO: Add tests for improper start/end dates
 
