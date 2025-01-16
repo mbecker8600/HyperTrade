@@ -84,8 +84,12 @@ class TestEventManager(unittest.TestCase):
             "handle_event",
             wraps=no_event_handler.handle_event,
         ) as mock:
-            event_manager.subscribe(EVENT_TYPE.MARKET_OPEN, no_event_handler)
-            event_manager.subscribe(EVENT_TYPE.MARKET_CLOSE, no_event_handler)
+            event_manager.subscribe(
+                EVENT_TYPE.MARKET_OPEN, no_event_handler.handle_event
+            )
+            event_manager.subscribe(
+                EVENT_TYPE.MARKET_CLOSE, no_event_handler.handle_event
+            )
 
             for event in event_manager:
                 logger.info(f"Event: {event.event_type} at {event.time}")

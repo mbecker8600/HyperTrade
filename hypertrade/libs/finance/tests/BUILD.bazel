@@ -9,12 +9,13 @@ py_test(
 )
 
 py_test(
-    name = "accounting_tests",
-    srcs = ["accounting_tests.py"],
+    name = "portfolio_tests",
+    srcs = ["portfolio_tests.py"],
     data = [],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/finance:accounting",
+        "//hypertrade/libs/finance:assets",
+        "//hypertrade/libs/finance:portfolio",
     ],
 )
 

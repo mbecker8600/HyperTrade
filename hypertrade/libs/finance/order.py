@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime
 
 from hypertrade.libs.finance.assets import Asset
+from hypertrade.libs.service.locator import register_service
 
 
 class ORDER_STATUS(enum.Enum):
@@ -40,3 +41,12 @@ class Order:
     @staticmethod
     def make_id() -> str:
         return uuid.uuid4().hex
+
+
+ORDER_SERVICE_NAME = "portfolio_service"
+
+
+@register_service(ORDER_SERVICE_NAME)
+class OrderManager:
+
+    SERVICE_NAME = ORDER_SERVICE_NAME

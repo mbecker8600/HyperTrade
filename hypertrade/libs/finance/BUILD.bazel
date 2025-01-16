@@ -22,7 +22,10 @@ py_library(
     name = "order",
     srcs = ["order.py"],
     data = [],
-    deps = [":assets"],
+    deps = [
+        ":assets",
+        "//hypertrade/libs/service:locator",
+    ],
 )
 
 py_library(
@@ -65,4 +68,15 @@ py_library(
     srcs = ["engine.py"],
     data = [],
     deps = [":event"],
+)
+
+py_library(
+    name = "portfolio",
+    srcs = ["portfolio.py"],
+    data = [],
+    deps = [
+        ":assets",
+        ":event",
+        "//hypertrade/libs/service:locator",
+    ],
 )

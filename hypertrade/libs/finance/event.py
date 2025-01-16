@@ -12,7 +12,7 @@ from typing import (
     Tuple,
     Type,
     TypeVar,
-    runtime_checkable,
+    overload,
     Generic,
 )
 from pandas import Timestamp
@@ -22,7 +22,7 @@ import enum
 from loguru import logger
 import pytz
 
-from hypertrade.libs.service.locator import ServiceLocator
+from hypertrade.libs.service.locator import ServiceLocator, register_service
 
 import os
 
@@ -47,13 +47,13 @@ class EVENT_TYPE(enum.Enum):
     MARKET_OPEN = 1
     """MARKET_OPEN
     Description: 
-    Publisher: 
+    Publisher: :py:class:`~hypertrade.libs.finance.event.MarketEvents`
     Data: None 
     """
     MARKET_CLOSE = 2
     """MARKET_CLOSE
     Description: 
-    Publisher: 
+    Publisher: :py:class:`~hypertrade.libs.finance.event.MarketEvents`
     Data: None
     """
     ORDER_PLACED = 3
@@ -70,6 +70,12 @@ class EVENT_TYPE(enum.Enum):
     """
     PORTFOLIO_UPDATE = 5
     """PORTFOLIO_UPDATE
+    Description: 
+    Publisher: 
+    Data: 
+    """
+    PRICE_CHANGE = 6
+    """PRICE_CHANGE
     Description: 
     Publisher: 
     Data: 
@@ -106,12 +112,7 @@ class Frequency(enum.Enum):
     DAILY = 1
 
 
-@runtime_checkable
-class SupportsEventHandling(Generic[T], Protocol):
-    def handle_event(self, event: Event[T]) -> None: ...
-
-
-EventHandlerFn = Callable[[Event[Any]], None]
+EventHandlerFn = Callable[[Event[Any]], None]  # More general type for methods
 
 
 class MarketEvents:
@@ -164,10 +165,14 @@ class MarketEvents:
                 )
 
 
+EVENT_SERVICE_NAME = "event_manager"
+
+
+@register_service(EVENT_SERVICE_NAME)
 class EventManager:
     """Handles event creation, scheduling (with timestamps), and dispatching to subscribers"""
 
-    SERVICE_NAME = "event_manager"
+    SERVICE_NAME = EVENT_SERVICE_NAME
 
     def __init__(
         self,
@@ -207,10 +212,6 @@ class EventManager:
         )
         self._event_queue: List[Tuple[datetime.datetime, Event[Any]]] = []
 
-        # Register the event manager as a service
-        self._service_locator = ServiceLocator[EventManager]()
-        self._service_locator.register(EventManager.SERVICE_NAME, self)
-
         self._configure_event_logging(event_log_dir=event_log_dir)
 
     def _format_with_sim_time(self, record: Record) -> str:
@@ -247,8 +248,7 @@ class EventManager:
     def subscribe(
         self,
         event: EVENT_TYPE,
-        subscriber: SupportsEventHandling[Any] | EventHandlerFn,
-        data_type: Optional[Type[T]] = None,
+        subscriber: EventHandlerFn,
     ) -> None:
         """
         Subscribes a component to a specific event type.
@@ -264,10 +264,7 @@ class EventManager:
         if event not in self._subscribers:
             self._subscribers[event] = []
 
-        if isinstance(subscriber, SupportsEventHandling):
-            self._subscribers[event].append(subscriber.handle_event)
-        else:
-            self._subscribers[event].append(subscriber)
+        self._subscribers[event].append(subscriber)
 
     def _publish(self, event: Event[Any]) -> None:
         """
