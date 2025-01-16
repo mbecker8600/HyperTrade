@@ -67,12 +67,27 @@ py_library(
     name = "engine",
     srcs = ["engine.py"],
     data = [],
-    deps = [":event"],
+    deps = [
+        ":event",
+        ":market",
+        ":portfolio",
+    ],
 )
 
 py_library(
     name = "portfolio",
     srcs = ["portfolio.py"],
+    data = [],
+    deps = [
+        ":assets",
+        ":event",
+        "//hypertrade/libs/service:locator",
+    ],
+)
+
+py_library(
+    name = "market",
+    srcs = ["market.py"],
     data = [],
     deps = [
         ":assets",

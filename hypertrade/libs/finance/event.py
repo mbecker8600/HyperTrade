@@ -107,6 +107,9 @@ class Event(Generic[T]):
         self.time = time
         self.data = data
 
+    def __repr__(self) -> str:
+        return f"Event Type: {self.event_type}, Time: {self.time}, Data: {self.data}"
+
 
 class Frequency(enum.Enum):
     DAILY = 1
@@ -293,10 +296,11 @@ class EventManager:
         return self
 
     def _update_current_time(self, time: Timestamp) -> None:
-        logger.bind(event=True).info(
-            f"Advancing time from {self.current_time} --> {time}"
-        )
-        self.current_time = time
+        if self.current_time != time:
+            logger.bind(event=True).info(
+                f"Advancing time from {self.current_time} --> {time}"
+            )
+            self.current_time = time
 
     def __next__(self) -> Event[Any]:
 

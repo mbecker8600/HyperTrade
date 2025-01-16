@@ -1,6 +1,8 @@
 import pandas as pd
 
+from hypertrade.libs.finance.assets import Asset
 from hypertrade.libs.finance.event import EventManager, Frequency
+from hypertrade.libs.finance.market import MarketPriceSimulator
 from hypertrade.libs.finance.portfolio import PortfolioManager
 
 
@@ -14,6 +16,9 @@ class TradingEngine:
     ) -> None:
         self.event_manager = EventManager(start_time=start_time, end_time=end_time)
         self.portfolio_manager = PortfolioManager(start_time, capital_base)
+        self.market_price_simulator = MarketPriceSimulator(
+            universe=[Asset(1, "GOOGL", "Google")]
+        )
 
     def run(self) -> None:
 

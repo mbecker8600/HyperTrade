@@ -31,3 +31,14 @@ py_test(
         "//hypertrade/libs/service:locator",
     ],
 )
+
+py_test(
+    name = "engine_tests",
+    srcs = ["engine_tests.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/finance:engine",
+        "//hypertrade/libs/logging:py_setup",
+    ],
+)

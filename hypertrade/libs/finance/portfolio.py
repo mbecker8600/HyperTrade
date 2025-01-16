@@ -1,10 +1,12 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
+from loguru import logger
 import pandas as pd
 
 from hypertrade.libs.finance.assets import Asset
-from hypertrade.libs.finance.event import EVENT_TYPE, EventManager
+from hypertrade.libs.finance.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.finance.market import PriceChangeData
 from hypertrade.libs.service.locator import ServiceLocator, register_service
 
 
@@ -115,4 +117,4 @@ class PortfolioManager:
         event_manager.subscribe(EVENT_TYPE.PRICE_CHANGE, self.handle_price_change)
 
     def handle_price_change(self, event: Event[PriceChangeData]) -> None:
-        pass
+        logger.debug(f"Handling price change for event: {event}")
