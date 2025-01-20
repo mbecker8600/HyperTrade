@@ -4,11 +4,13 @@ click==8.1.8
 cloudpickle==3.1.0
 dataclasses-json==0.5.7
 debugpy==1.8.11
+exceptiongroup==1.2.2
 exchange_calendars==4.7
 filelock==3.16.1
 fsspec==2024.12.0
 idna==3.10
 inflection==0.5.1
+iniconfig==2.0.0
 Jinja2==3.1.5
 korean-lunar-calendar==0.3.1
 libcst==1.5.1
@@ -40,9 +42,13 @@ orjson==3.10.13
 packaging==24.2
 pandas==2.2.3
 pandas-datareader==0.10.0
+pluggy==1.5.0
 psutil==6.1.1
+py-cpuinfo==9.0.0
 Pygments==2.18.0
 pyluach==2.2.0
+pytest==8.3.4
+pytest-benchmark==5.1.0
 python-dateutil==2.9.0.post0
 pytz==2024.2
 PyYAML==6.0.2

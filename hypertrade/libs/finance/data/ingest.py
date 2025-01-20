@@ -1,12 +1,11 @@
 from typing import List
 from loguru import logger
-from urllib.request import urlopen
-import os
 import nasdaqdatalink
 import pandas as pd
 
 from hypertrade.libs.logging.setup import initialize_logging
-import hypertrade.libs.debugging  # donotcommit
+
+# import hypertrade.libs.debugging  # donotcommit
 
 
 def bulk_fetch(
@@ -20,6 +19,18 @@ def bulk_fetch(
         table,
         ticker=symbol,
     )
+    data.reset_index(inplace=True)
+    data.drop("None", axis=1, inplace=True)
+    data.set_index("date", inplace=True)
+
+    # impute adjustments
+    split_multiplier = data["closeadj"] / data["close"]
+    data["open"] = data["open"] * split_multiplier
+    data["high"] = data["high"] * split_multiplier
+    data["low"] = data["low"] * split_multiplier
+    data["close"] = data["closeadj"]
+    data.drop("closeadj", axis=1, inplace=True)
+    data.drop("closeunadj", axis=1, inplace=True)
 
     data.to_csv(
         path_or_buf=destFileRef,
@@ -34,4 +45,6 @@ if __name__ == "__main__":
 
     """
     initialize_logging()
-    bulk_fetch()
+    bulk_fetch(
+        destFileRef="/workspaces/HyperTrade/hypertrade/libs/finance/data/tests/data/ohlvc/sample.csv"
+    )

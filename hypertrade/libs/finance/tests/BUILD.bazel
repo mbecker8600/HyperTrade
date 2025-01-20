@@ -35,10 +35,11 @@ py_test(
 py_test(
     name = "engine_tests",
     srcs = ["engine_tests.py"],
-    data = [],
+    data = ["//hypertrade/libs/finance/data/tests:data/ohlvc/sample.csv"],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
         "//hypertrade/libs/finance:engine",
+        "//hypertrade/libs/finance/data:datasource",
         "//hypertrade/libs/logging:py_setup",
     ],
 )

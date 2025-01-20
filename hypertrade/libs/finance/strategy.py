@@ -6,8 +6,9 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import pandas as pd
 
+from hypertrade.libs.finance.assets import Asset
+from hypertrade.libs.finance.data.datasource import Dataset
 from hypertrade.libs.finance.event import EVENT_TYPE, Event, EventManager
-from hypertrade.libs.finance.market import CurrentPrices, HistoricalData
 from hypertrade.libs.finance.order import Order
 from hypertrade.libs.finance.portfolio import Portfolio, PortfolioManager
 from hypertrade.libs.service.locator import ServiceLocator
@@ -40,25 +41,32 @@ class StrategyBuilder:
         self._data_sources: List[Callable[[Event[Any]], Tuple[DATA_TYPE, Any]]] = []
         self._strategy_function: Optional[StrategyFunction] = None
         self.events: List[EVENT_TYPE] = []
+        self.assets: List[Asset] = []
 
     def on_event(self, event: EVENT_TYPE) -> StrategyBuilder:
         self.events.append(event)
         return self
 
-    def with_current_prices(self) -> StrategyBuilder:
+    def with_assets(self, assets: List[Asset]) -> StrategyBuilder:
+        self.assets = assets
+        return self
+
+    def with_current_prices(self, data: Dataset) -> StrategyBuilder:
         self._data_sources.append(
             lambda event: (
                 DATA_TYPE.CURRENT_PRICES,
-                CurrentPrices.fetch(event.time),
+                data.fetch_current_price(event.time, assets=self.assets),
             )
         )
         return self
 
-    def with_historical_data(self, lookback_period: pd.Timedelta) -> StrategyBuilder:
+    def with_historical_data(
+        self, lookback_period: pd.Timedelta, data: Dataset
+    ) -> StrategyBuilder:
         self._data_sources.append(
             lambda event: (
                 DATA_TYPE.HISTORICAL_PRICES,
-                HistoricalData.fetch(event.time, lookback_period),
+                data.fetch(event.time, lookback=lookback_period, assets=self.assets),
             )
         )
         return self
@@ -73,6 +81,15 @@ class StrategyBuilder:
     #     return self
 
     def build(self, strategy_function: StrategyFunction) -> TradingStrategy:
+        """Builds a TradingStrategy that can be used within the HyperTrade trading engine.
+
+        Args:
+            - strategy_function (StrategyFunction): A callable that accepts
+
+        Raises:
+
+
+        """
         self._strategy_function = strategy_function
         return TradingStrategy(self)
 

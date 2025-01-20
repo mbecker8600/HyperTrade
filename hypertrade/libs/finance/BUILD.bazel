@@ -82,6 +82,7 @@ py_library(
     deps = [
         ":assets",
         ":event",
+        ":market",
         "//hypertrade/libs/service:locator",
     ],
 )
