@@ -2,7 +2,7 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import Generic, TypeVar
 import unittest
-from datetime import datetime, timedelta
+from datetime import timedelta
 from unittest.mock import patch
 from loguru import logger
 import pytz

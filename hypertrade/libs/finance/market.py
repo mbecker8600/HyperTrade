@@ -46,3 +46,17 @@ class MarketPriceSimulator:
     def _get_prices(self, time: pd.Timestamp) -> pd.Series:
         # TODO: Go get prices from data source
         return pd.Series({asset: 100 for asset in self.universe})
+
+
+class CurrentPrices:
+    @staticmethod
+    def fetch(timestamp: pd.Timestamp) -> pd.Series:
+
+        return CurrentPrices(prices={...})
+
+
+class HistoricalData:
+    @staticmethod
+    def fetch(timestamp: pd.Timestamp, lookback_period: pd.Timedelta) -> pd.DataFrame:
+        # ... logic to fetch historical data ...
+        return HistoricalData(historical_prices={...})

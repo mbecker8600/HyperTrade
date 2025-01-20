@@ -71,6 +71,7 @@ py_library(
         ":event",
         ":market",
         ":portfolio",
+        ":strategy",
     ],
 )
 
@@ -92,6 +93,19 @@ py_library(
     deps = [
         ":assets",
         ":event",
+        "//hypertrade/libs/service:locator",
+    ],
+)
+
+py_library(
+    name = "strategy",
+    srcs = ["strategy.py"],
+    data = [],
+    deps = [
+        ":event",
+        ":market",
+        ":order",
+        ":portfolio",
         "//hypertrade/libs/service:locator",
     ],
 )

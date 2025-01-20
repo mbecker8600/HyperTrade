@@ -8,11 +8,8 @@ from typing import (
     Dict,
     List,
     Optional,
-    Protocol,
     Tuple,
-    Type,
     TypeVar,
-    overload,
     Generic,
 )
 from pandas import Timestamp
@@ -22,7 +19,7 @@ import enum
 from loguru import logger
 import pytz
 
-from hypertrade.libs.service.locator import ServiceLocator, register_service
+from hypertrade.libs.service.locator import register_service
 
 import os
 

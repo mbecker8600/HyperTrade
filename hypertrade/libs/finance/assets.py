@@ -18,6 +18,9 @@ class Asset:
             return False
         return self.sid == other.sid
 
+    def __repr__(self) -> str:
+        return self.symbol
+
 
 class Equity(Asset):
     pass

@@ -4,6 +4,7 @@ from hypertrade.libs.finance.assets import Asset
 from hypertrade.libs.finance.event import EventManager, Frequency
 from hypertrade.libs.finance.market import MarketPriceSimulator
 from hypertrade.libs.finance.portfolio import PortfolioManager
+from hypertrade.libs.finance.strategy import StrategyBuilder, StrategyFunction
 
 
 class TradingEngine:
@@ -11,6 +12,8 @@ class TradingEngine:
         self,
         start_time: pd.Timestamp,
         end_time: pd.Timestamp,
+        strategy_builder: StrategyBuilder,
+        strategy_function: StrategyFunction,
         frequency: Frequency = Frequency.DAILY,
         capital_base: float = 0.0,
     ) -> None:
@@ -18,6 +21,9 @@ class TradingEngine:
         self.portfolio_manager = PortfolioManager(start_time, capital_base)
         self.market_price_simulator = MarketPriceSimulator(
             universe=[Asset(1, "GOOGL", "Google")]
+        )
+        self.trading_strategy = strategy_builder.build(
+            strategy_function=strategy_function
         )
 
     def run(self) -> None:
