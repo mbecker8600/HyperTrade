@@ -113,8 +113,10 @@ class PortfolioManager:
         self.portfolio = Portfolio(start_date=start_date, capital_base=capital_base)
 
         service_locator = ServiceLocator[EventManager]()
-        event_manager = service_locator.get(EventManager.SERVICE_NAME)
-        event_manager.subscribe(EVENT_TYPE.PRICE_CHANGE, self.handle_price_change)
+        self.event_manager = service_locator.get(EventManager.SERVICE_NAME)
+        self.event_manager.subscribe(EVENT_TYPE.PRICE_CHANGE, self.handle_price_change)
 
     def handle_price_change(self, event: Event[PriceChangeData]) -> None:
-        logger.debug(f"Handling price change for event: {event}")
+        logger.bind(simulation_time=self.event_manager.current_time).debug(
+            f"Handling price change for event: {event}"
+        )

@@ -1,6 +1,6 @@
 import unittest
 
-from datetime import datetime
+import pandas as pd
 
 from hypertrade.libs.finance.assets import Asset
 from hypertrade.libs.finance.commission import NoCommission
@@ -14,12 +14,12 @@ class TestNoCommisionModel(unittest.TestCase):
         """NoCommission Commision Model should return zero for all trades"""
         dummy_asset: Asset = Asset(sid=1, symbol="AAPL", asset_name="Apple Inc.")
         dummy_order: Order = Order(
-            dt=datetime(2001, 8, 1), asset=dummy_asset, amount=100
+            order_placed=pd.Timestamp("2001-08-01"), asset=dummy_asset, amount=100
         )
         dummy_txn: Transaction = Transaction(
             asset=dummy_asset,
             amount=100,
-            dt=datetime(2001, 8, 1),
+            dt=pd.Timestamp("2001-08-01"),
             price=100.0,
             order_id="1234",
         )

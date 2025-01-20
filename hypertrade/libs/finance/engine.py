@@ -1,8 +1,10 @@
+from loguru import logger
 import pandas as pd
 
 from hypertrade.libs.finance.assets import Asset
 from hypertrade.libs.finance.event import EventManager, Frequency
 from hypertrade.libs.finance.market import MarketPriceSimulator
+from hypertrade.libs.finance.order import OrderManager
 from hypertrade.libs.finance.portfolio import PortfolioManager
 from hypertrade.libs.finance.strategy import StrategyBuilder, StrategyFunction
 
@@ -18,15 +20,16 @@ class TradingEngine:
         capital_base: float = 0.0,
     ) -> None:
         self.event_manager = EventManager(start_time=start_time, end_time=end_time)
+
         self.portfolio_manager = PortfolioManager(start_time, capital_base)
         self.market_price_simulator = MarketPriceSimulator(
             universe=[Asset(1, "GOOGL", "Google")]
         )
+        self.order_manager = OrderManager()
         self.trading_strategy = strategy_builder.build(
             strategy_function=strategy_function
         )
 
     def run(self) -> None:
-
         for event in self.event_manager:
             pass

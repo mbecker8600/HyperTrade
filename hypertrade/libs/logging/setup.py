@@ -15,8 +15,16 @@ def initialize_logging(level: str = "INFO", colorize: bool = True) -> None:
     logger.remove()
     logger.add(
         sys.stderr,
-        format="{time:YYYY-MM-DD at HH:mm:ss} | {level:7s} | {name}:{line} | {message}",
+        format="<green>{time:YYYY-MM-DD HH:mm:ss} | <b>{extra[simulation_time]}</></> | <level> {level:7s} </> | {name}:{line} | <cyan> {message}</>",
         level=level,
         colorize=colorize,
     )
+    logger.configure(extra={"simulation_time": None})
+    logger.level("TRACE", color="<light-blue>")
+    logger.level("DEBUG", color="<blue>")
+    logger.level("INFO", color="<white>", icon="✏️")
+    logger.level("SUCCESS", color="<green>")
+    logger.level("WARNING", color="<yellow>")
+    logger.level("ERROR", color="<light-red>")
+    logger.level("CRITICAL", color="<RED><bold>")
     logger.info("Logging setup complete")

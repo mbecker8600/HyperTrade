@@ -30,14 +30,18 @@ class MarketPriceSimulator:
         self.universe = universe
 
     def handle_market_close(self, event: Event[None]) -> None:
-        logger.debug(f"Handling price changes at {event}")
+        logger.bind(simulation_time=self.event_manager.current_time).debug(
+            f"Handling price changes at {event}"
+        )
         prices = self._get_prices(event.time)
         self.event_manager.schedule_event(
             Event(EVENT_TYPE.PRICE_CHANGE, data=PriceChangeData(prices=prices))
         )
 
     def handle_market_open(self, event: Event[None]) -> None:
-        logger.debug(f"Handling price changes at {event}")
+        logger.bind(simulation_time=self.event_manager.current_time).debug(
+            f"Handling price changes at {event}"
+        )
         prices = self._get_prices(event.time)
         self.event_manager.schedule_event(
             Event(EVENT_TYPE.PRICE_CHANGE, data=PriceChangeData(prices=prices))

@@ -12,6 +12,7 @@ from typing import (
     TypeVar,
     Generic,
 )
+import uuid
 from pandas import Timestamp
 import exchange_calendars as xcals
 
@@ -103,9 +104,26 @@ class Event(Generic[T]):
         self.event_type = event_type
         self.time = time
         self.data = data
+        self.id = Event.make_id()
+
+    @staticmethod
+    def make_id() -> str:
+        return uuid.uuid4().hex
 
     def __repr__(self) -> str:
         return f"Event Type: {self.event_type}, Time: {self.time}, Data: {self.data}"
+
+    def __lt__(self, other: Event[Any]) -> bool:
+        assert isinstance(
+            other, Event
+        ), f"Events should only compare to other events, but {type(other)} as passed."
+        return self.id < other.id
+
+    def __le__(self, other: Event[Any]) -> bool:
+        assert isinstance(
+            other, Event
+        ), f"Events should only compare to other events, but {type(other)} as passed."
+        return self.id <= other.id
 
 
 class Frequency(enum.Enum):
@@ -202,7 +220,7 @@ class EventManager:
 
         """
         # public attributes
-        self.current_time = start_time
+        self._current_time = start_time
         self.end_time = end_time
 
         # private attributes
@@ -214,11 +232,15 @@ class EventManager:
 
         self._configure_event_logging(event_log_dir=event_log_dir)
 
+    @property
+    def current_time(self) -> Timestamp:
+        return self._current_time
+
     def _format_with_sim_time(self, record: Record) -> str:
         """
         Custom formatter function to add simulation time.
         """
-        sim_time = self.current_time
+        sim_time = self._current_time
         formatted_time = sim_time.strftime("%Y-%m-%d %H:%M:%S")
         return "{time} - SimTime: {sim_time} - {level:7s} - {message}\n".format(
             time=record["time"].strftime("%Y-%m-%d %H:%M:%S"),
@@ -260,7 +282,9 @@ class EventManager:
                 (i.e. has a handle_event method) or a function that takes a time and event as
                 arguments. See SupportsEventHandling and EventHandlerFn for the method signature.
         """
-        logger.bind(event=True).info(f"Subscribing {subscriber} to {event}")
+        logger.bind(event=True, simulation_time=self.current_time).info(
+            f"Subscribing {subscriber} to {event}"
+        )
         if event not in self._subscribers:
             self._subscribers[event] = []
 
@@ -271,10 +295,12 @@ class EventManager:
         Publishes an event to all subscribers of that event type.
         """
 
-        logger.bind(event=True).info(f"Publishing {event.event_type} at {event.time}")
+        logger.bind(event=True, simulation_time=self.current_time).debug(
+            f"Publishing {event.event_type}"
+        )
         if event.event_type in self._subscribers:
             for subscriber in self._subscribers[event.event_type]:
-                logger.bind(event=True).info(
+                logger.bind(event=True, simulation_time=self.current_time).trace(
                     f"Dispatching {event.event_type} to {subscriber}"
                 )
                 subscriber(event)
@@ -285,7 +311,7 @@ class EventManager:
         """
         Schedules an event to be published after a delay.
         """
-        event_time = self.current_time + delay if delay else self.current_time
+        event_time = self._current_time + delay if delay else self._current_time
         event.time = event_time
         heapq.heappush(self._event_queue, (event_time, event))
 
@@ -293,18 +319,18 @@ class EventManager:
         return self
 
     def _update_current_time(self, time: Timestamp) -> None:
-        if self.current_time != time:
-            logger.bind(event=True).info(
-                f"Advancing time from {self.current_time} --> {time}"
+        if self._current_time != time:
+            logger.bind(event=True, simulation_time=self.current_time).info(
+                f"Advancing time from {self._current_time} --> {time}"
             )
-            self.current_time = time
+            self._current_time = time
 
     def __next__(self) -> Event[Any]:
 
         # Get the next market event and time to see if any schedule events need to be run
         # before it.
         next_market_event: Event[Any] = self._market_events.next_market_event(
-            self.current_time
+            self._current_time
         )
 
         assert (

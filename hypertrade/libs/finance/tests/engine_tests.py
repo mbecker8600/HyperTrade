@@ -24,15 +24,17 @@ from hypertrade.libs.logging.setup import initialize_logging
 # import hypertrade.libs.debugging  # donotcommit
 
 
-def buy_hold_strategy(context: StrategyContext, data: StrategyData) -> Optional[Order]:
+def buy_hold_strategy(context: StrategyContext, data: StrategyData) -> None:
 
     logger.info(f"Current time: {context.time}")
     logger.info(f"Current prices: {data.data[DATA_TYPE.CURRENT_PRICES]}")
 
     if not context.portfolio.positions:
-        pass
+        context.order_manager.place_order(
+            asset=Asset(sid=1, symbol="GE", asset_name="General Electric"), amount=1
+        )
 
-    return None
+    logger.info(f"Current portfolio value: {context.portfolio.portfolio_value}")
 
 
 class TestTradingEngine(unittest.TestCase):
@@ -87,5 +89,5 @@ class TestTradingEngine(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    initialize_logging(level="DEBUG")
+    initialize_logging(level="TRACE")
     unittest.main()

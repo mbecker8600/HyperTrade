@@ -1,11 +1,11 @@
-from datetime import datetime
+import pandas as pd
 
 from hypertrade.libs.finance.assets import Asset
 
 
 class Transaction:
     def __init__(
-        self, asset: Asset, amount: int, dt: datetime, price: float, order_id: str
+        self, asset: Asset, amount: int, dt: pd.Timestamp, price: float, order_id: str
     ) -> None:
         self.asset = asset
         self.amount = amount

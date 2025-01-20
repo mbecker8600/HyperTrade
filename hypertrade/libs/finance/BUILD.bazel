@@ -24,6 +24,7 @@ py_library(
     data = [],
     deps = [
         ":assets",
+        ":event",
         "//hypertrade/libs/service:locator",
     ],
 )
@@ -70,6 +71,7 @@ py_library(
     deps = [
         ":event",
         ":market",
+        ":order",
         ":portfolio",
         ":strategy",
     ],
