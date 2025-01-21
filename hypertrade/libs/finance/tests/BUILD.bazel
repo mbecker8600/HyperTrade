@@ -1,14 +1,4 @@
 py_test(
-    name = "commission_tests",
-    srcs = ["commission_tests.py"],
-    data = [],
-    deps = [
-        "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/finance:commission",
-    ],
-)
-
-py_test(
     name = "portfolio_tests",
     srcs = ["portfolio_tests.py"],
     data = [],
@@ -26,7 +16,7 @@ py_test(
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
         "//hypertrade/libs/finance:event",
-        "//hypertrade/libs/finance:order",
+        "//hypertrade/libs/finance/execute:types",
         "//hypertrade/libs/logging:py_setup",
         "//hypertrade/libs/service:locator",
     ],

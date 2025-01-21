@@ -4,7 +4,7 @@ import pandas as pd
 
 from hypertrade.libs.finance.assets import Asset
 from hypertrade.libs.finance.execute.commission import NoCommission
-from hypertrade.libs.finance.execute.broker import Order, Transaction
+from hypertrade.libs.finance.execute.types import Order, Transaction
 
 
 class TestNoCommisionModel(unittest.TestCase):

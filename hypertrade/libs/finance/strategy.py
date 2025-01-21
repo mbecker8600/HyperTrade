@@ -9,7 +9,7 @@ import pandas as pd
 from hypertrade.libs.finance.assets import Asset
 from hypertrade.libs.finance.data.datasource import Dataset
 from hypertrade.libs.finance.event import EVENT_TYPE, Event, EventManager
-from hypertrade.libs.finance.order import Order, OrderManager
+from hypertrade.libs.finance.execute.broker import BrokerService
 from hypertrade.libs.finance.portfolio import Portfolio, PortfolioManager
 from hypertrade.libs.service.locator import ServiceLocator
 
@@ -25,7 +25,7 @@ class StrategyContext:
     portfolio: Portfolio
     time: pd.Timestamp
     event: EVENT_TYPE
-    order_manager: OrderManager
+    broker_service: BrokerService
 
 
 @dataclass
@@ -125,14 +125,14 @@ class TradingStrategy:
             .get(PortfolioManager.SERVICE_NAME)
             .portfolio
         )
-        order_manager: OrderManager = ServiceLocator[OrderManager]().get(
-            OrderManager.SERVICE_NAME
+        broker_service: BrokerService = ServiceLocator[BrokerService]().get(
+            BrokerService.SERVICE_NAME
         )
         context = StrategyContext(
             portfolio=portfolio,
             time=event.time,
             event=event.event_type,
-            order_manager=order_manager,
+            broker_service=broker_service,
         )
         order = self._strategy_function(context, market_data)
         if order is not None:

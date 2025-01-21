@@ -12,7 +12,6 @@ from hypertrade.libs.finance.assets import Asset
 from hypertrade.libs.finance.data.datasource import CSVDataSource, OHLCVDataset
 from hypertrade.libs.finance.engine import TradingEngine
 from hypertrade.libs.finance.event import EVENT_TYPE
-from hypertrade.libs.finance.order import Order
 from hypertrade.libs.finance.strategy import (
     DATA_TYPE,
     StrategyData,
@@ -30,7 +29,7 @@ def buy_hold_strategy(context: StrategyContext, data: StrategyData) -> None:
     logger.info(f"Current prices: {data.data[DATA_TYPE.CURRENT_PRICES]}")
 
     if not context.portfolio.positions:
-        context.order_manager.place_order(
+        context.broker_service.place_order(
             asset=Asset(sid=1, symbol="GE", asset_name="General Electric"), amount=1
         )
 
@@ -80,6 +79,7 @@ class TestTradingEngine(unittest.TestCase):
             engine = TradingEngine(
                 start_time=start_time,
                 end_time=end_time,
+                prices_dataset=ohlvc_dataset,
                 capital_base=1000,
                 strategy_function=buy_hold_strategy,
                 strategy_builder=strategy_builder,

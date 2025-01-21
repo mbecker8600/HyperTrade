@@ -8,35 +8,6 @@ py_library(
 )
 
 py_library(
-    name = "commission",
-    srcs = ["commission.py"],
-    data = [],
-    deps = [
-        ":assets",
-        ":order",
-        ":transaction",
-    ],
-)
-
-py_library(
-    name = "order",
-    srcs = ["order.py"],
-    data = [],
-    deps = [
-        ":assets",
-        ":event",
-        "//hypertrade/libs/service:locator",
-    ],
-)
-
-py_library(
-    name = "transaction",
-    srcs = ["transaction.py"],
-    data = [],
-    deps = [":assets"],
-)
-
-py_library(
     name = "ledger",
     srcs = ["ledger.py"],
     data = [],
@@ -44,8 +15,8 @@ py_library(
 )
 
 py_library(
-    name = "accounting",
-    srcs = ["accounting.py"],
+    name = "account",
+    srcs = ["account.py"],
     data = [],
     deps = [":assets"],
 )
@@ -71,9 +42,10 @@ py_library(
     deps = [
         ":event",
         ":market",
-        ":order",
         ":portfolio",
         ":strategy",
+        "//hypertrade/libs/finance/data:datasource",
+        "//hypertrade/libs/finance/execute:broker",
     ],
 )
 
@@ -85,6 +57,7 @@ py_library(
         ":assets",
         ":event",
         ":market",
+        "//hypertrade/libs/finance/execute:types",
         "//hypertrade/libs/service:locator",
     ],
 )
@@ -107,8 +80,8 @@ py_library(
     deps = [
         ":event",
         ":market",
-        ":order",
         ":portfolio",
+        "//hypertrade/libs/finance/execute:broker",
         "//hypertrade/libs/service:locator",
     ],
 )

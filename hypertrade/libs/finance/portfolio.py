@@ -5,6 +5,7 @@ from loguru import logger
 import pandas as pd
 
 from hypertrade.libs.finance.assets import Asset
+from hypertrade.libs.finance.execute.types import Transaction
 from hypertrade.libs.finance.event import EVENT_TYPE, Event, EventManager
 from hypertrade.libs.finance.market import PriceChangeData
 from hypertrade.libs.service.locator import ServiceLocator, register_service
@@ -119,4 +120,9 @@ class PortfolioManager:
     def handle_price_change(self, event: Event[PriceChangeData]) -> None:
         logger.bind(simulation_time=self.event_manager.current_time).debug(
             f"Handling price change for event: {event}"
+        )
+
+    def update_positions(self, event: Event[Transaction]) -> None:
+        logger.bind(simulation_time=self.event_manager.current_time).debug(
+            f"Updating portfolio positions: {event}"
         )

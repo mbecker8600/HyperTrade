@@ -1,0 +1,34 @@
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "broker",
+    srcs = ["broker.py"],
+    data = [],
+    deps = [
+        ":commission",
+        ":types",
+        "//hypertrade/libs/finance:assets",
+        "//hypertrade/libs/finance:event",
+        "//hypertrade/libs/finance/data:datasource",
+        "//hypertrade/libs/service:locator",
+    ],
+)
+
+py_library(
+    name = "commission",
+    srcs = ["commission.py"],
+    data = [],
+    deps = [
+        ":types",
+        "//hypertrade/libs/finance:assets",
+    ],
+)
+
+py_library(
+    name = "types",
+    srcs = ["types.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/finance:assets",
+    ],
+)
