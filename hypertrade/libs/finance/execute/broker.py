@@ -7,7 +7,7 @@ from hypertrade.libs.finance.data.datasource import Dataset
 from hypertrade.libs.finance.assets import Asset
 from hypertrade.libs.finance.execute.commission import CommissionModel, NoCommission
 from hypertrade.libs.finance.event import EVENT_TYPE, Event, EventManager
-from hypertrade.libs.finance.execute.types import Order
+from hypertrade.libs.finance.execute.types import Order, Transaction
 from hypertrade.libs.service.locator import ServiceLocator, register_service
 
 
@@ -58,13 +58,15 @@ class BrokerService:
         logger.bind(simulation_time=current_time).debug(
             f"Executing trade order for order: {event.data}"
         )
-        order = event.data
-        current_price = self.dataset.fetch_current_price(current_time, order.asset)
+        assert event.data is not None, "Order data is None"
+        order: Order = event.data
+        current_price = self.dataset.fetch_current_price(current_time, [order.asset])
         transaction = Transaction(
             dt=current_time + self.execution_delay,
             order_id=order.id,
             asset=order.asset,
             amount=order.amount,
+            price=current_price,
         )
         self.event_manager.schedule_event(
             Event(event_type=EVENT_TYPE.ORDER_FULFILLED, data=transaction),
