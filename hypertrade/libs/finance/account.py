@@ -33,3 +33,7 @@ class Account:
     leverage = 0.0
     net_leverage = 0.0
     net_liquidation = 0.0
+
+
+class AccountManager:
+    pass

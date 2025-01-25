@@ -28,7 +28,7 @@ def buy_hold_strategy(context: StrategyContext, data: StrategyData) -> None:
     logger.info(f"Current time: {context.time}")
     logger.info(f"Current prices: {data.data[DATA_TYPE.CURRENT_PRICES]}")
 
-    if not context.portfolio.positions:
+    if context.portfolio.positions.empty:
         context.broker_service.place_order(
             asset=Asset(sid=1, symbol="GE", asset_name="General Electric"), amount=1
         )

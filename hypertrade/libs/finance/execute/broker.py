@@ -60,13 +60,20 @@ class BrokerService:
         )
         assert event.data is not None, "Order data is None"
         order: Order = event.data
-        current_price = self.dataset.fetch_current_price(current_time, [order.asset])
+        current_price = float(
+            self.dataset.fetch_current_price(current_time, [order.asset]).loc[
+                order.asset.symbol
+            ]
+        )
         transaction = Transaction(
             dt=current_time + self.execution_delay,
             order_id=order.id,
             asset=order.asset,
             amount=order.amount,
             price=current_price,
+        )
+        logger.bind(simulation_time=current_time).debug(
+            f"Trade executed for {order}: {current_price}"
         )
         self.event_manager.schedule_event(
             Event(event_type=EVENT_TYPE.ORDER_FULFILLED, data=transaction),

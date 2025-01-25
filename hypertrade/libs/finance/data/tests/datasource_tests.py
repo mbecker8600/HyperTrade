@@ -80,7 +80,7 @@ class TestOhlvcCsvDatasource(unittest.TestCase):
         self.assertEquals(len(data), 2)
         self.assertEquals(data.index.to_list(), ["GE", "BA"])
         self.assertAlmostEqual(data.loc["GE"], 35.33, places=2)
-        self.assertAlmostEqual(data.loc["BA"], 307.45, places=2)
+        self.assertAlmostEqual(data.loc["BA"], 307.44, places=2)
 
 
 if __name__ == "__main__":

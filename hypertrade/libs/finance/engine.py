@@ -23,7 +23,7 @@ class TradingEngine:
     ) -> None:
         self.event_manager = EventManager(start_time=start_time, end_time=end_time)
 
-        self.portfolio_manager = PortfolioManager(start_time, capital_base)
+        self.portfolio_manager = PortfolioManager(prices_dataset, capital_base)
         self.market_price_simulator = MarketPriceSimulator(
             universe=[Asset(1, "GOOGL", "Google")]
         )

@@ -15,10 +15,8 @@ def bulk_fetch(
 ) -> None:
 
     logger.info("fetching from %s" % table)
-    data: pd.DataFrame = nasdaqdatalink.get_table(
-        table,
-        ticker=symbol,
-    )
+    data: pd.DataFrame = nasdaqdatalink.get_table(table, ticker=symbol)
+    logger.info("Data fetched from source. Beginning post processing")
     data.reset_index(inplace=True)
     data.drop("None", axis=1, inplace=True)
     data.set_index("date", inplace=True)
@@ -31,6 +29,7 @@ def bulk_fetch(
     data["close"] = data["closeadj"]
     data.drop("closeadj", axis=1, inplace=True)
     data.drop("closeunadj", axis=1, inplace=True)
+    data = data.round(2)
 
     data.to_csv(
         path_or_buf=destFileRef,

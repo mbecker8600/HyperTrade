@@ -53,7 +53,7 @@ class Dataset(ABC):
     def fetch_current_price(
         self,
         timestamp: pd.Timestamp,
-        assets: List[Asset],
+        assets: List[Asset] | List[str],
     ) -> pd.Series: ...
 
 
@@ -150,11 +150,12 @@ class OHLCVDataset(Dataset):
     def fetch_current_price(
         self,
         timestamp: pd.Timestamp,
-        assets: List[Asset],
+        assets: List[Asset] | List[str],
     ) -> pd.Series:
         """ """
         # Filter to assets we care about
-        asset_list = [asset.symbol for asset in assets]
+        if isinstance(assets[0], Asset):
+            assets = [asset.symbol for asset in assets]  # type: ignore
 
         # Since OHLVC has a coarse understanding of prices, we have to pick the nearest
         # time without looking into the future.
@@ -163,13 +164,11 @@ class OHLCVDataset(Dataset):
             previous_close = self.calendar.previous_close(timestamp)
             previous_data = self.source._fetch(previous_close)
             return previous_data.droplevel("date")["close"].loc(axis=0)[
-                pd.IndexSlice[asset_list]
+                pd.IndexSlice[assets]
             ]
         elif timestamp.time() < datetime.time(16, 00, tzinfo=self.tz):
             data = self.source._fetch(timestamp)
-            return data.droplevel("date")["open"].loc(axis=0)[pd.IndexSlice[asset_list]]
+            return data.droplevel("date")["open"].loc(axis=0)[pd.IndexSlice[assets]]
         else:
             data = self.source._fetch(timestamp)
-            return data.droplevel("date")["close"].loc(axis=0)[
-                pd.IndexSlice[asset_list]
-            ]
+            return data.droplevel("date")["close"].loc(axis=0)[pd.IndexSlice[assets]]

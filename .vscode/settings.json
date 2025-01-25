@@ -7,6 +7,7 @@
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true
   },
+  "python.defaultInterpreterPath": "/usr/bin/python3",
   "mypy-type-checker.reportingScope": "workspace",
   "mypy-type-checker.preferDaemon": true
 }
