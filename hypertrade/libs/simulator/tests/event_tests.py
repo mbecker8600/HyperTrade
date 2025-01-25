@@ -9,7 +9,7 @@ import pytz
 
 import pandas as pd
 
-from hypertrade.libs.finance.event import EVENT_TYPE, EventManager, Event
+from hypertrade.libs.simulator.event import EVENT_TYPE, EventManager, Event
 from hypertrade.libs.service.locator import ServiceLocator
 from hypertrade.libs.logging.setup import initialize_logging
 

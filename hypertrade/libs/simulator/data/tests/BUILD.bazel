@@ -3,10 +3,10 @@ package(default_visibility = ["//visibility:public"])
 py_test(
     name = "datasource_tests",
     srcs = ["datasource_tests.py"],
-    data = ["//hypertrade/libs/finance/data/tests:data/ohlvc/sample.csv"],
+    data = ["//hypertrade/libs/simulator/data/tests:data/ohlvc/sample.csv"],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/finance/data:datasource",
+        "//hypertrade/libs/simulator/data:datasource",
         "//hypertrade/libs/logging:py_setup",
     ],
 )

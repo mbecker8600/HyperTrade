@@ -3,11 +3,11 @@ from typing import Type
 from loguru import logger
 import pandas as pd
 
-from hypertrade.libs.finance.data.datasource import Dataset
-from hypertrade.libs.finance.assets import Asset
-from hypertrade.libs.finance.execute.commission import CommissionModel, NoCommission
-from hypertrade.libs.finance.event import EVENT_TYPE, Event, EventManager
-from hypertrade.libs.finance.execute.types import Order, Transaction
+from hypertrade.libs.simulator.data.datasource import Dataset
+from hypertrade.libs.simulator.assets import Asset
+from hypertrade.libs.simulator.execute.commission import CommissionModel, NoCommission
+from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.execute.types import Order, Transaction
 from hypertrade.libs.service.locator import ServiceLocator, register_service
 
 

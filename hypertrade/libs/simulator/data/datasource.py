@@ -7,7 +7,7 @@ import pandas as pd
 import pytz
 import exchange_calendars as xcals
 
-from hypertrade.libs.finance.assets import (
+from hypertrade.libs.simulator.assets import (
     Asset,
 )
 

@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import pandas as pd
 
-from hypertrade.libs.finance.assets import Asset
+from hypertrade.libs.simulator.assets import Asset
 
 
 @dataclass

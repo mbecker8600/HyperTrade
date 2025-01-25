@@ -2,9 +2,9 @@ import unittest
 
 import pandas as pd
 
-from hypertrade.libs.finance.assets import Asset
-from hypertrade.libs.finance.execute.commission import NoCommission
-from hypertrade.libs.finance.execute.types import Order, Transaction
+from hypertrade.libs.simulator.assets import Asset
+from hypertrade.libs.simulator.execute.commission import NoCommission
+from hypertrade.libs.simulator.execute.types import Order, Transaction
 
 
 class TestNoCommisionModel(unittest.TestCase):

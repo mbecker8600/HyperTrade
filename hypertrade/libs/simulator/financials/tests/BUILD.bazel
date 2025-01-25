@@ -1,0 +1,13 @@
+py_test(
+    name = "portfolio_tests",
+    srcs = ["portfolio_tests.py"],
+    data = ["//hypertrade/libs/simulator/data/tests:data/ohlvc/sample.csv"],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/simulator:assets",
+        "//hypertrade/libs/simulator:event",
+        "//hypertrade/libs/simulator/financials:portfolio",
+        "//hypertrade/libs/simulator/data:datasource",
+        "//hypertrade/libs/logging:py_setup",
+    ],
+)

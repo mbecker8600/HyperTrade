@@ -3,8 +3,8 @@ from typing import List
 
 from loguru import logger
 import pandas as pd
-from hypertrade.libs.finance.assets import Asset
-from hypertrade.libs.finance.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.assets import Asset
+from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
 from hypertrade.libs.service.locator import ServiceLocator, register_service
 
 

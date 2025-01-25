@@ -4,6 +4,6 @@ py_test(
     data = [],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/finance/execute:commission",
+        "//hypertrade/libs/simulator/execute:commission",
     ],
 )

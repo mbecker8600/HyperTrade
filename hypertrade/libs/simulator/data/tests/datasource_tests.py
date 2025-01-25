@@ -5,8 +5,8 @@ import pandas as pd
 import numpy as np
 import pytz
 
-from hypertrade.libs.finance.assets import Asset
-from hypertrade.libs.finance.data.datasource import CSVDataSource, OHLCVDataset
+from hypertrade.libs.simulator.assets import Asset
+from hypertrade.libs.simulator.data.datasource import CSVDataSource, OHLCVDataset
 from hypertrade.libs.logging.setup import initialize_logging
 
 # import hypertrade.libs.debugging  # donotcommit

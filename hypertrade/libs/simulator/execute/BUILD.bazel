@@ -7,9 +7,9 @@ py_library(
     deps = [
         ":commission",
         ":types",
-        "//hypertrade/libs/finance:assets",
-        "//hypertrade/libs/finance:event",
-        "//hypertrade/libs/finance/data:datasource",
+        "//hypertrade/libs/simulator:assets",
+        "//hypertrade/libs/simulator:event",
+        "//hypertrade/libs/simulator/data:datasource",
         "//hypertrade/libs/service:locator",
     ],
 )
@@ -20,7 +20,7 @@ py_library(
     data = [],
     deps = [
         ":types",
-        "//hypertrade/libs/finance:assets",
+        "//hypertrade/libs/simulator:assets",
     ],
 )
 
@@ -29,6 +29,16 @@ py_library(
     srcs = ["types.py"],
     data = [],
     deps = [
-        "//hypertrade/libs/finance:assets",
+        "//hypertrade/libs/simulator:assets",
     ],
 )
+
+py_library(
+    name = "ledger",
+    srcs = ["ledger.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/simulator:assets",
+    ],
+)
+

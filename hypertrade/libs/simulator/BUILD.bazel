@@ -7,19 +7,7 @@ py_library(
     deps = [],
 )
 
-py_library(
-    name = "ledger",
-    srcs = ["ledger.py"],
-    data = [],
-    deps = [],
-)
 
-py_library(
-    name = "account",
-    srcs = ["account.py"],
-    data = [],
-    deps = [":assets"],
-)
 
 py_library(
     name = "assets",
@@ -42,23 +30,10 @@ py_library(
     deps = [
         ":event",
         ":market",
-        ":portfolio",
+        "//hypertrade/libs/simulator/financials:portfolio",
         ":strategy",
-        "//hypertrade/libs/finance/data:datasource",
-        "//hypertrade/libs/finance/execute:broker",
-    ],
-)
-
-py_library(
-    name = "portfolio",
-    srcs = ["portfolio.py"],
-    data = [],
-    deps = [
-        ":assets",
-        ":event",
-        ":market",
-        "//hypertrade/libs/finance/execute:types",
-        "//hypertrade/libs/service:locator",
+        "//hypertrade/libs/simulator/data:datasource",
+        "//hypertrade/libs/simulator/execute:broker",
     ],
 )
 
@@ -80,8 +55,8 @@ py_library(
     deps = [
         ":event",
         ":market",
-        ":portfolio",
-        "//hypertrade/libs/finance/execute:broker",
+        "//hypertrade/libs/simulator/financials:portfolio",
+        "//hypertrade/libs/simulator/execute:broker",
         "//hypertrade/libs/service:locator",
     ],
 )

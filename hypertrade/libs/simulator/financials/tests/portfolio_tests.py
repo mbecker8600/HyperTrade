@@ -6,11 +6,11 @@ import pytz
 import pandas as pd
 from loguru import logger
 
-from hypertrade.libs.finance.assets import Asset
-from hypertrade.libs.finance.data.datasource import CSVDataSource, OHLCVDataset
-from hypertrade.libs.finance.event import EVENT_TYPE, Event, EventManager
-from hypertrade.libs.finance.execute.types import Transaction
-from hypertrade.libs.finance.portfolio import Portfolio, PortfolioManager
+from hypertrade.libs.simulator.assets import Asset
+from hypertrade.libs.simulator.data.datasource import CSVDataSource, OHLCVDataset
+from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.execute.types import Transaction
+from hypertrade.libs.simulator.financials.portfolio import Portfolio, PortfolioManager
 
 from hypertrade.libs.logging.setup import initialize_logging
 
@@ -22,7 +22,7 @@ class TestPortfolioService(unittest.TestCase):
         logger.debug("Test setup")
         # Use sample data for testing
         ws = os.path.dirname(__file__)
-        sample_data_path = os.path.join(ws, "../data/tests/data/ohlvc/sample.csv")
+        sample_data_path = os.path.join(ws, "../../data/tests/data/ohlvc/sample.csv")
 
         # Create an OCHLV data source using a CSV file
         csv_source = CSVDataSource(sample_data_path, index_col=["date", "ticker"])
@@ -57,7 +57,7 @@ class TestPortfolioService(unittest.TestCase):
         weights = self.portfolio_manager.portfolio.current_portfolio_weights
         self.assertTrue(weights.empty)
 
-    def test_buy_hold(self) -> None:
+    def test_buy_hold_multiple_positions(self) -> None:
         """Test buying and holding a single asset"""
         logger.debug("Testing buying and holding a single asset")
         # Buy 1 share of Boeing
@@ -79,6 +79,47 @@ class TestPortfolioService(unittest.TestCase):
         self.assertEqual(self.portfolio_manager.portfolio.cash, 1000.0 - 290.18)
         self.assertEqual(self.portfolio_manager.portfolio.positions_value, 290.18)
         self.assertEqual(self.portfolio_manager.portfolio.portfolio_value, 1000.0)
+        self.event_manager.schedule_event(
+            Event(
+                event_type=EVENT_TYPE.ORDER_FULFILLED,
+                data=Transaction(
+                    amount=1,
+                    asset=Asset(
+                        sid=2,
+                        symbol="GE",
+                        asset_name="General Electric",
+                        price_multiplier=1.0,
+                    ),
+                    dt=pd.Timestamp("2018-12-26 09:30:00"),
+                    price=32.88,
+                    order_id="testing",
+                ),
+            )
+        )
+        next(self.event_manager)  # Simulate to the next market event
+        self.assertEqual(self.portfolio_manager.portfolio.cash, 1000.0 - 290.18 - 32.88)
+        self.assertEqual(
+            self.portfolio_manager.portfolio.positions_value, 290.18 + 32.88
+        )
+        self.assertEqual(self.portfolio_manager.portfolio.portfolio_value, 1000.0)
+
+        next(self.event_manager)  # Simulate to the next market event
+        self.event_manager.schedule_event(
+            Event(
+                event_type=EVENT_TYPE.PRICE_CHANGE,
+                data=None,
+            )
+        )
+        next(self.event_manager)  # advanced to price change event
+        self.assertEqual(self.portfolio_manager.portfolio.cash, 1000.0 - 290.18 - 32.88)
+        self.assertEqual(
+            self.portfolio_manager.portfolio.positions_value,
+            305.06 + 34.76,  # closing prices on 2018-12-26
+        )
+        self.assertEqual(
+            self.portfolio_manager.portfolio.portfolio_value,
+            self.portfolio_manager.portfolio.cash + 305.06 + 34.76,
+        )
 
 
 class TestPortfolio(unittest.TestCase):
@@ -87,7 +128,7 @@ class TestPortfolio(unittest.TestCase):
         logger.debug("Test setup")
         # Use sample data for testing
         ws = os.path.dirname(__file__)
-        sample_data_path = os.path.join(ws, "../data/tests/data/ohlvc/sample.csv")
+        sample_data_path = os.path.join(ws, "../../data/tests/data/ohlvc/sample.csv")
 
         # Create an OCHLV data source using a CSV file
         csv_source = CSVDataSource(sample_data_path, index_col=["date", "ticker"])

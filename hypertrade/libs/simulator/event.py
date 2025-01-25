@@ -45,13 +45,13 @@ class EVENT_TYPE(enum.Enum):
     MARKET_OPEN = 1
     """MARKET_OPEN
     Description: 
-    Publisher: :py:class:`~hypertrade.libs.finance.event.MarketEvents`
+    Publisher: :py:class:`~hypertrade.libs.simulator.event.MarketEvents`
     Data: None 
     """
     MARKET_CLOSE = 2
     """MARKET_CLOSE
     Description: 
-    Publisher: :py:class:`~hypertrade.libs.finance.event.MarketEvents`
+    Publisher: :py:class:`~hypertrade.libs.simulator.event.MarketEvents`
     Data: None
     """
     ORDER_PLACED = 3

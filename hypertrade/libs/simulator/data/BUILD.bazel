@@ -4,7 +4,7 @@ py_library(
     name = "datasource",
     srcs = ["datasource.py"],
     data = [],
-    deps = ["//hypertrade/libs/finance:assets"],
+    deps = ["//hypertrade/libs/simulator:assets"],
 )
 
 py_binary(
@@ -13,7 +13,7 @@ py_binary(
     data = [],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/finance:assets",
+        "//hypertrade/libs/simulator:assets",
         "//hypertrade/libs/logging:py_setup",
     ],
 )
