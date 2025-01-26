@@ -31,9 +31,11 @@ py_library(
         ":event",
         ":market",
         "//hypertrade/libs/simulator/financials:portfolio",
+        "//hypertrade/libs/simulator/financials:performance",
         ":strategy",
         "//hypertrade/libs/simulator/data:datasource",
         "//hypertrade/libs/simulator/execute:broker",
+        "//hypertrade/libs/simulator/execute:ledger",
     ],
 )
 

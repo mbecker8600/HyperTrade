@@ -11,3 +11,13 @@ py_test(
         "//hypertrade/libs/logging:py_setup",
     ],
 )
+
+py_test(
+    name = "performance_tests",
+    srcs = ["performance_tests.py"],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/simulator/financials:performance",
+        "//hypertrade/libs/logging:py_setup",
+    ],
+)

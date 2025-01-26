@@ -4,6 +4,11 @@ import pandas as pd
 from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.data.datasource import Dataset
 from hypertrade.libs.simulator.event import EventManager, Frequency
+from hypertrade.libs.simulator.execute.ledger import LedgerService
+from hypertrade.libs.simulator.financials.performance import (
+    PerformanceTracker,
+    PerformanceTrackingService,
+)
 from hypertrade.libs.simulator.market import MarketPriceSimulator
 from hypertrade.libs.simulator.execute.broker import BrokerService
 from hypertrade.libs.simulator.financials.portfolio import PortfolioManager
@@ -28,6 +33,8 @@ class TradingEngine:
             universe=[Asset(1, "GOOGL", "Google")]
         )
         self.order_manager = BrokerService(dataset=prices_dataset)
+        self.ledger_service = LedgerService()
+        self.performance_tracking_service = PerformanceTrackingService()
         self.trading_strategy = strategy_builder.build(
             strategy_function=strategy_function
         )

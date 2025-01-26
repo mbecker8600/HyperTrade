@@ -14,6 +14,7 @@ py_library(
     deps = [
         "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator:event",
+        ":portfolio",
     ],
 )
 
@@ -27,5 +28,6 @@ py_library(
         "//hypertrade/libs/simulator:market",
         "//hypertrade/libs/simulator/execute:types",
         "//hypertrade/libs/service:locator",
+        "//hypertrade/libs/simulator/data:datasource",
     ],
 )

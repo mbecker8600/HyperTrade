@@ -46,13 +46,8 @@ class TestPortfolioService(unittest.TestCase):
         self.assertEqual(self.portfolio_manager.portfolio.starting_cash, 1000.0)
         self.assertEqual(self.portfolio_manager.portfolio.cash, 1000.0)
         self.assertEqual(self.portfolio_manager.portfolio.portfolio_value, 1000.0)
-        self.assertEqual(self.portfolio_manager.portfolio.pnl, 0.0)
-        self.assertEqual(self.portfolio_manager.portfolio.returns, 0.0)
         self.assertTrue(self.portfolio_manager.portfolio.positions.empty)
         self.assertEqual(self.portfolio_manager.portfolio.positions_value, 0.0)
-        self.assertEqual(self.portfolio_manager.portfolio.positions_exposure, 0.0)
-        self.assertEqual(self.portfolio_manager.portfolio.cash_flow, 0.0)
-        self.assertEqual(self.portfolio_manager.portfolio.capital_used, 0.0)
 
         weights = self.portfolio_manager.portfolio.current_portfolio_weights
         self.assertTrue(weights.empty)
@@ -150,13 +145,8 @@ class TestPortfolio(unittest.TestCase):
         self.assertEqual(portfolio.starting_cash, 1000.0)
         self.assertEqual(portfolio.cash, 1000.0)
         self.assertEqual(portfolio.portfolio_value, 1000.0)
-        self.assertEqual(portfolio.pnl, 0.0)
-        self.assertEqual(portfolio.returns, 0.0)
         self.assertTrue(portfolio.positions.empty)
         self.assertEqual(portfolio.positions_value, 0.0)
-        self.assertEqual(portfolio.positions_exposure, 0.0)
-        self.assertEqual(portfolio.cash_flow, 0.0)
-        self.assertEqual(portfolio.capital_used, 0.0)
 
         weights = portfolio.current_portfolio_weights
         self.assertTrue(weights.empty)

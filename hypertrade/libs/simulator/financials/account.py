@@ -7,7 +7,6 @@ import pandas as pd
 from hypertrade.libs.simulator.assets import Asset
 
 
-@dataclass
 class Account:
     """
     The account object tracks information about the trading account. The

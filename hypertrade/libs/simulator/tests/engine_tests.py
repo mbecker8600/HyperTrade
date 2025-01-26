@@ -24,16 +24,16 @@ from hypertrade.libs.logging.setup import initialize_logging
 
 
 def buy_hold_strategy(context: StrategyContext, data: StrategyData) -> None:
+    with logger.contextualize(simulation_time=context.time):
+        logger.info(f"Current time: {context.time}")
+        logger.info(f"Current prices: {data.data[DATA_TYPE.CURRENT_PRICES]}")
 
-    logger.info(f"Current time: {context.time}")
-    logger.info(f"Current prices: {data.data[DATA_TYPE.CURRENT_PRICES]}")
+        if context.portfolio.positions.empty:
+            context.broker_service.place_order(
+                asset=Asset(sid=1, symbol="GE", asset_name="General Electric"), amount=1
+            )
 
-    if context.portfolio.positions.empty:
-        context.broker_service.place_order(
-            asset=Asset(sid=1, symbol="GE", asset_name="General Electric"), amount=1
-        )
-
-    logger.info(f"Current portfolio value: {context.portfolio.portfolio_value}")
+        logger.info(f"Current portfolio value: {context.portfolio.portfolio_value}")
 
 
 class TestTradingEngine(unittest.TestCase):
@@ -43,7 +43,8 @@ class TestTradingEngine(unittest.TestCase):
 
         Test:
             - 3 days of trading (26th - 28th)
-
+            - Using sample data
+            - Using buy_hold_strategy
         """
         nytz = pytz.timezone("America/New_York")
         start_time = pd.Timestamp("2018-12-26", tz=nytz)

@@ -15,7 +15,7 @@ def initialize_logging(level: str = "INFO", colorize: bool = True) -> None:
     logger.remove()
     logger.add(
         sys.stderr,
-        format="<green>{time:YYYY-MM-DD HH:mm:ss} | <b>{extra[simulation_time]}</></> | <level> {level:7s} </> | {name}:{line} | <cyan> {message}</>",
+        format="<green>{time:YYYY-MM-DD HH:mm:ss} | <b>{extra[simulation_time]}</></> | <level> {level:7s} </> | {name:40s}:{line:5d} | <cyan> {message}</>",
         level=level,
         colorize=colorize,
     )

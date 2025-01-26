@@ -24,43 +24,62 @@ class Portfolio:
     actions. It is only used to provide information about the current state of
     the portfolio at any given point in time.
 
-    Parameters:
-        capital_base : float
-            The starting value for the portfolio. This will be used as the starting
-            cash, current cash, and portfolio value.
+    attributes
+    ----------
+        positions : pd.DataFrame
+            Current position values for each lot held in the portfolio.
+            - Multi-indexed DataFrame by (symbol, time)
+            - Columns are 'amount' and 'cost_basis'
+            - Example:
+                index                           amount      cost_basis
+                AAPL    2004-01-12 09:30:00     100         22.50
+                AAPL    2004-01-20 16:00:00     10          27.00
+                GE      2004-02-10 09:30:00     2           50.50
 
-    Attributes:
-        positions: pd.Dataframe
-            Dict-like object containing information about currently-held positions.
+
         cash : float
             Amount of cash currently held in portfolio.
+
         portfolio_value : float
             Current liquidation value of the portfolio's holdings.
             This is equal to ``cash + sum(shares * price)``
+
         starting_cash : float
             Amount of cash in the portfolio at the start of the backtest.
+
         capital_used : float
             Amount of capital used in the current period.
+
         current_portfolio_weights : pd.Series
             Series containing the percentage of the portfolio invested in each asset.
             The index is the asset symbol and the values are the percentage of the
             portfolio invested in each asset.
+            - Indexed by symbol with decimal returns.
+            - Example:
+                index
+                AAPL        .75
+                GE          .25
+
     """
 
     def __init__(
         self,
         capital_base: float = 0.0,
     ) -> None:
+        """
+
+        parameters
+        ----------
+        capital_base : float
+            The starting value for the portfolio. This will be used as the starting
+            cash, current cash, and portfolio value.
+
+        """
         self.positions: pd.DataFrame = pd.DataFrame(
             columns=["amount", "cost_basis"], index=pd.MultiIndex.from_arrays([[], []])
         )
         self.starting_cash = capital_base
-        self.cash_flow = 0.0
-        self.pnl = 0.0
-        self.returns = 0.0
         self.cash = capital_base
-
-        self.positions_exposure = 0.0
         self._current_market_prices: pd.Series = pd.Series()
 
     def update(self, tx: Transaction) -> None:
@@ -68,10 +87,6 @@ class Portfolio:
         # Set the positions dataframe (indexed by (symbol, time)) to the number of shares and cost basis (i.e. original price)
         self.positions.loc[(tx.asset.symbol, tx.dt), :] = [tx.amount, tx.price]
         self.cash -= tx.amount * tx.price
-
-    @property
-    def capital_used(self) -> float:
-        return self.cash_flow
 
     @property
     def current_market_prices(self) -> pd.Series:

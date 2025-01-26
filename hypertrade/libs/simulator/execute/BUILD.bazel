@@ -37,8 +37,6 @@ py_library(
     name = "ledger",
     srcs = ["ledger.py"],
     data = [],
-    deps = [
-        "//hypertrade/libs/simulator:assets",
-    ],
+    deps = ["//hypertrade/libs/service:locator", "//hypertrade/libs/simulator:event",],
 )
 
