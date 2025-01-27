@@ -193,6 +193,9 @@ class PortfolioManager:
     def handle_price_change(self, event: Event[PriceChangeData]) -> None:
         """Handle price change events and invalidate the portfolio's cached properties."""
         if not self.portfolio.positions.empty:
+            logger.bind(simulation_time=self.event_manager.current_time).debug(
+                f"Setting new market prices on portfolio object"
+            )
             self._set_portfolio_market_price()
 
     def update_positions(self, event: Event[Transaction]) -> None:

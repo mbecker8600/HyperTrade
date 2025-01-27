@@ -5,7 +5,8 @@ from copy import deepcopy
 
 from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
 from hypertrade.libs.service.locator import ServiceLocator, register_service
-from hypertrade.libs.simulator.financials.portfolio import Portfolio
+from hypertrade.libs.simulator.financials.portfolio import Portfolio, PortfolioManager
+from hypertrade.libs.simulator.market import PriceChangeData
 
 
 class PerformanceTracker:
@@ -79,13 +80,25 @@ class PerformanceTrackingService:
         self.event_manager = ServiceLocator[EventManager]().get(
             EventManager.SERVICE_NAME
         )
+        self.portfolio_manager = ServiceLocator[PortfolioManager]().get(
+            PortfolioManager.SERVICE_NAME
+        )
         self.performance_tracker = PerformanceTracker()
 
-        self.event_manager.subscribe(EVENT_TYPE.MARKET_CLOSE, self.record_daily_metrics)
+        self.event_manager.subscribe(EVENT_TYPE.PRICE_CHANGE, self.record_daily_metrics)
 
-    def record_daily_metrics(self, event: Event[None]) -> None:
+    def record_daily_metrics(self, event: Event[PriceChangeData]) -> None:
         """Record daily metrics."""
         current_time = self.event_manager.current_time
-        logger.bind(simulation_time=current_time).debug(
-            f"Recording daily metrics at {current_time}"
-        )
+        if (
+            current_time
+            == self.event_manager._market_events.calendar.closes.loc[
+                current_time.date().strftime("%Y-%m-%d")
+            ]
+        ):
+            logger.bind(simulation_time=current_time).debug(
+                f"Recording daily metrics at {current_time}"
+            )
+            self.performance_tracker.record_daily_metrics(
+                date=current_time, portfolio=self.portfolio_manager.portfolio
+            )
