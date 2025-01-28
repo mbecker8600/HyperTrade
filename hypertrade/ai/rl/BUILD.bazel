@@ -4,7 +4,6 @@ py_library(
     name = "env",
     srcs = ["env.py"],
     data = [],
-    main = "env.py",
     deps = ["//hypertrade/libs/simulator:engine"],
 )
 
@@ -12,14 +11,13 @@ py_library(
     name = "utils",
     srcs = ["utils.py"],
     data = [],
-    main = "env.py",
-    deps = [""],
+    deps = [],
 )
 
 py_binary(
     name = "ddpg",
     srcs = ["ddpg.py"],
     data = [],
-    main = "env.py",
+    main = "ddpg.py",
     deps = [":env"],
 )
