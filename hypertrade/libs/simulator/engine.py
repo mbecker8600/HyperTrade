@@ -6,7 +6,6 @@ from hypertrade.libs.simulator.data.datasource import Dataset
 from hypertrade.libs.simulator.event import EventManager, Frequency
 from hypertrade.libs.simulator.execute.ledger import LedgerService
 from hypertrade.libs.simulator.financials.performance import (
-    PerformanceTracker,
     PerformanceTrackingService,
 )
 from hypertrade.libs.simulator.market import MarketPriceSimulator
@@ -42,3 +41,7 @@ class TradingEngine:
     def run(self) -> None:
         for event in self.event_manager:
             pass
+
+    @property
+    def current_time(self) -> pd.Timestamp:
+        return self.event_manager.current_time

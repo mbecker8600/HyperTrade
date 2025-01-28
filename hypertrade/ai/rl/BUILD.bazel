@@ -1,9 +1,25 @@
 load("@python_deps//:requirements.bzl", "requirement")
 
-py_binary(
+py_library(
     name = "env",
     srcs = ["env.py"],
     data = [],
     main = "env.py",
-    deps = [],
+    deps = ["//hypertrade/libs/simulator:engine"],
+)
+
+py_library(
+    name = "utils",
+    srcs = ["utils.py"],
+    data = [],
+    main = "env.py",
+    deps = [""],
+)
+
+py_binary(
+    name = "ddpg",
+    srcs = ["ddpg.py"],
+    data = [],
+    main = "env.py",
+    deps = [":env"],
 )

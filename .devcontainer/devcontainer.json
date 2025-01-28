@@ -41,7 +41,9 @@
         "BazelBuild.vscode-bazel",
         "rust-lang.rust-analyzer",
         "ms-python.black-formatter",
-        "ms-toolsai.datawrangler"
+        "ms-toolsai.datawrangler",
+        "ms-python.mypy-type-checker",
+        "liamrwilkins.mypy-ini-intellisense"
       ]
     }
   },
