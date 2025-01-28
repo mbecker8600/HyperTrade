@@ -1,0 +1,19 @@
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "datasource",
+    srcs = ["datasource.py"],
+    data = [],
+    deps = ["//hypertrade/libs/simulator:assets"],
+)
+
+py_binary(
+    name = "ingest",
+    srcs = ["ingest.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/simulator:assets",
+        "//hypertrade/libs/logging:py_setup",
+    ],
+)

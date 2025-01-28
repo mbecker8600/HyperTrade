@@ -1,8 +1,0 @@
-package(default_visibility = ["//visibility:public"])
-
-py_library(
-    name = "assets",
-    srcs = ["assets.py"],
-    data = [],
-    deps = [],
-)

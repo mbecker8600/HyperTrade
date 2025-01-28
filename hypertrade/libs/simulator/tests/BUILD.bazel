@@ -1,0 +1,24 @@
+py_test(
+    name = "event_tests",
+    srcs = ["event_tests.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/simulator:event",
+        "//hypertrade/libs/simulator/execute:types",
+        "//hypertrade/libs/logging:py_setup",
+        "//hypertrade/libs/service:locator",
+    ],
+)
+
+py_test(
+    name = "engine_tests",
+    srcs = ["engine_tests.py"],
+    data = ["//hypertrade/libs/simulator/data/tests:data/ohlvc/sample.csv"],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/simulator:engine",
+        "//hypertrade/libs/simulator/data:datasource",
+        "//hypertrade/libs/logging:py_setup",
+    ],
+)

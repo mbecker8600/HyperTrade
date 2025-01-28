@@ -1,9 +1,12 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-  "name": "Financial Trading",
+  "name": "HyperTrade Dev Container",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/base:jammy",
+  "build": {
+    // Path is relative to the devcontainer.json file.
+    "dockerfile": "Dockerfile"
+  },
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/devcontainers/features/go:1": {},
@@ -13,7 +16,8 @@
     },
     "ghcr.io/devcontainers-community/features/bazel:1": {},
     "ghcr.io/devcontainers/features/nvidia-cuda:1": {},
-    "ghcr.io/devcontainers/features/node:1": {}
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/rust:1": {}
   },
   "customizations": {
     "vscode": {
@@ -34,7 +38,12 @@
         "mechatroner.rainbow-csv",
         "redhat.vscode-yaml",
         "matangover.mypy",
-        "BazelBuild.vscode-bazel"
+        "BazelBuild.vscode-bazel",
+        "rust-lang.rust-analyzer",
+        "ms-python.black-formatter",
+        "ms-toolsai.datawrangler",
+        "ms-python.mypy-type-checker",
+        "liamrwilkins.mypy-ini-intellisense"
       ]
     }
   },

@@ -1,4 +1,3 @@
-
 import unittest
 
 from hypertrade.libs.logging.setup import initialize_logging

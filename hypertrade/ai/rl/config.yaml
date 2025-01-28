@@ -1,0 +1,86 @@
+# environment and task
+env:
+  name: MarketEnv
+  task: ""
+  max_episode_steps: 730
+  seed: 42
+  training_start: 2002-01-01
+  training_end: 2022-01-01
+  eval_start: 2022-01-01
+  eval_end: 2024-01-01
+  device: "cuda:0"
+  transforms:
+    reward_scaling:
+      loc: 0.0
+      scale: 1.0e+2
+    reward_clipping:
+      # min: -5.0
+      # max: 5.0
+
+  state:
+    portfolio:
+      fields: ["allocations"]
+    historical:
+      windows: [5, 30, 100, 300]
+      fields: ["price", "volume"]
+    # momentum
+
+# portfolio
+portfolio:
+  symbol_file: /workspaces/rl_trading/code/trading/symbols.csv
+
+# collector
+collector:
+  total_frames: 2_000_000
+  init_random_frames: 10_000
+  frames_per_batch: 512
+  init_env_steps: 512
+  reset_at_each_iter: False
+  device: "cuda:0"
+  env_per_collector: 5
+  n_collectors: 7
+
+# replay buffer
+replay_buffer:
+  size: 1000000
+  prb: 0 # use prioritized experience replay
+  scratch_dir: null
+
+# optimization
+optim:
+  utd_ratio: 1.0
+  value_estimator: TDLambda
+  gamma: 0.99
+  lmbda: 0.9
+  loss_function: l2
+  actor_lr: 1.0e-4
+  actor_weight_decay: 1e-4
+  critic_lr: 5.0e-3
+  critic_weight_decay: 1e-4
+  batch_size: 128
+  target_update_polyak: 0.995
+
+# network
+network:
+  hidden_sizes: [256, 256, 256, 256]
+  activation: tanh
+  device: "cuda:0"
+  noise_type: "ou" # ou or gaussian
+  annealing_num_steps: 1_500_000 # used for ou noise
+
+# logging
+logger:
+  backend: tensorboard
+  project_name: torchrl_example_ddpg
+  group_name: null
+  exp_name: ${env.name}_DDPG
+  mode: online
+  eval_iter: 50000
+
+file_logger:
+  file_name: ddpg
+
+# checkpoints
+checkpoint:
+  enabled: true
+  interval: 100000

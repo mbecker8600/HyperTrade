@@ -1,0 +1,33 @@
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "account",
+    srcs = ["account.py"],
+    data = [],
+    deps = ["//hypertrade/libs/simulator:assets"],
+)
+
+py_library(
+    name = "performance",
+    srcs = ["performance.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/service:locator",
+        "//hypertrade/libs/simulator:event",
+        ":portfolio",
+    ],
+)
+
+py_library(
+    name = "portfolio",
+    srcs = ["portfolio.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/simulator:assets",
+        "//hypertrade/libs/simulator:event",
+        "//hypertrade/libs/simulator:market",
+        "//hypertrade/libs/simulator/execute:types",
+        "//hypertrade/libs/service:locator",
+        "//hypertrade/libs/simulator/data:datasource",
+    ],
+)
