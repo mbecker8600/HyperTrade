@@ -64,7 +64,7 @@ class Source(ABC):
     def _fetch(
         self,
         timestamp: pd.Timestamp,
-        lookback: pd.Timedelta = None,
+        lookback: Optional[pd.Timedelta] = None,
     ) -> pd.DataFrame:
         """
         Internal method to fetch data based on the storage mechanism.
@@ -101,7 +101,7 @@ class CSVDataSource(Source):
     def _fetch(
         self,
         timestamp: pd.Timestamp,
-        lookback: pd.Timedelta = None,
+        lookback: Optional[pd.Timedelta] = None,
     ) -> pd.DataFrame:
         """
         Internal method to fetch data based on the storage mechanism.
