@@ -1,0 +1,15 @@
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "ohlvc",
+    srcs = ["ohlvc.py"],
+    data = [],
+    deps = ["//hypertrade/libs/tsda/core:source"],
+)
+
+py_library(
+    name = "tick",
+    srcs = ["tick.py"],
+    data = [],
+    deps = [],
+)

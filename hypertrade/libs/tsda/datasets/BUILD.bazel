@@ -1,0 +1,27 @@
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "macro",
+    srcs = ["macro.py"],
+    data = [],
+    deps = [],
+)
+
+py_library(
+    name = "news",
+    srcs = ["news"],
+    data = [],
+    deps = [],
+)
+
+py_library(
+    name = "prices",
+    srcs = ["prices.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/tsda/core:source", 
+        "//hypertrade/libs/tsda/core:dataset", 
+        "//hypertrade/libs/tsda/format:ohlvc",
+        "//hypertrade/libs/tsda/format:tick",
+    ],
+)

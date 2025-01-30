@@ -1,0 +1,22 @@
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "dataset",
+    srcs = ["dataset.py"],
+    data = [],
+    deps = [":source"],
+)
+
+py_library(
+    name = "factory",
+    srcs = ["factory.py"],
+    data = [],
+    deps = [":source"],
+)
+
+py_library(
+    name = "source",
+    srcs = ["source.py"],
+    data = [],
+    deps = [],
+)
