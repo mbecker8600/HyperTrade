@@ -1,10 +1,11 @@
-from abc import ABC, abstractmethod
 import datetime
+from abc import ABC, abstractmethod
 from functools import cached_property
-from typing import List, Any, Optional, overload
+from typing import Any, List, Optional, overload
+
+import exchange_calendars as xcals
 import pandas as pd
 import pytz
-import exchange_calendars as xcals
 
 from hypertrade.libs.simulator.assets import (
     Asset,

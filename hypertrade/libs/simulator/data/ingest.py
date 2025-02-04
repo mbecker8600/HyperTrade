@@ -1,7 +1,8 @@
 from typing import List
-from loguru import logger
+
 import nasdaqdatalink
 import pandas as pd
+from loguru import logger
 
 from hypertrade.libs.logging.setup import initialize_logging
 

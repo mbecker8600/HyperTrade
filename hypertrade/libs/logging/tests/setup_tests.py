@@ -1,7 +1,8 @@
 import unittest
 
-from hypertrade.libs.logging.setup import initialize_logging
 from loguru import logger
+
+from hypertrade.libs.logging.setup import initialize_logging
 
 
 class TestPythonLoggingSetup(unittest.TestCase):

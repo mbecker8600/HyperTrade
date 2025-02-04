@@ -1,4 +1,4 @@
-from abc import abstractmethod, ABCMeta
+from abc import ABCMeta, abstractmethod
 
 from hypertrade.libs.simulator.assets import Equity, Future
 from hypertrade.libs.simulator.execute.types import Order, Transaction

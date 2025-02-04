@@ -193,7 +193,7 @@ class PortfolioManager:
         """Handle price change events and invalidate the portfolio's cached properties."""
         if not self.portfolio.positions.empty:
             logger.bind(simulation_time=self.event_manager.current_time).debug(
-                f"Setting new market prices on portfolio object"
+                "Setting new market prices on portfolio object"
             )
             self._set_portfolio_market_price()
 

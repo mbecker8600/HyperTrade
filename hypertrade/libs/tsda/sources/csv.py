@@ -45,14 +45,21 @@ class CSVSource(DataSource):
 
     def fetch(
         self,
-        timestamp: Optional[pd.Timestamp | NaTType | slice] = None,
+        timestamp: Optional[pd.Timestamp | NaTType | slice | int] = None,
         lookback: Optional[pd.Timedelta] = None,
     ) -> pd.DataFrame | pd.Series:
 
+        # Handle error cases
         if timestamp is None and lookback is not None:
             raise ValueError("lookback cannot be used without a timestamp")
+
+        # Handle full data fetch
         if timestamp is None and lookback is None:
             return self.data
+
+        if timestamp is not None and (isinstance(timestamp, int)):
+            timestamp = self.data.index.unique().sort_values()[timestamp]
+
         if timestamp is not None:
             timestamp = cast_timestamp(timestamp)
 

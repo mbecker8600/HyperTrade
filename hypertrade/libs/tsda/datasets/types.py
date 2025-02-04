@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from typing import (
-    Iterator,
+    Any,
+    Generator,
     Optional,
     Tuple,
-    TypeVar,
 )
 
 import pandas as pd
@@ -26,19 +26,18 @@ class Dataset(ABC):
     def __len__(self) -> int: ...
 
     @abstractmethod
-    def __getitem__(self, idx: pd.Timestamp | NaTType | slice) -> pd.DataFrame: ...
+    def __getitem__(
+        self, idx: pd.Timestamp | NaTType | slice | int
+    ) -> pd.DataFrame: ...
 
     @abstractmethod
-    def _load_data(self, idx: pd.Timestamp | NaTType | slice) -> pd.DataFrame: ...
+    def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame: ...
 
     @abstractmethod
     def __repr__(self) -> str: ...
 
-    def __iter__(self) -> Dataset:
-        return self
-
     @abstractmethod
-    def __next__(self) -> pd.DataFrame: ...
+    def __iter__(self) -> Generator[pd.DataFrame, Any, None]: ...
 
 
 class TimeSeriesDataset(Dataset):
@@ -58,10 +57,10 @@ class TimeSeriesDataset(Dataset):
     def __len__(self) -> int:
         return len(self.data_source)
 
-    def __getitem__(self, idx: pd.Timestamp | NaTType | slice) -> pd.DataFrame:
+    def __getitem__(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame:
         return self._load_data(idx)
 
-    def _load_data(self, idx: pd.Timestamp | NaTType | slice) -> pd.DataFrame: ...
+    def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame: ...
 
     def __repr__(self) -> str:  # Improved representation for easier debugging
         return f"{self.__class__.__name__}(name={self.name}, shape={self.full_data.shape}, time_range={self.get_time_range()})"
@@ -70,8 +69,9 @@ class TimeSeriesDataset(Dataset):
         """Returns the start and end timestamps of the dataset."""
         return self.timestamps.min(), self.timestamps.max()
 
-    def __next__(self) -> Tuple[pd.Timestamp, pd.DataFrame]:
-        return next(self.full_data.iterrows())
+    def __iter__(self) -> Generator[pd.DataFrame, Any, None]:
+        for idx in range(len(self)):
+            yield self.__getitem__(idx)
 
 
 # class MultiDataset(Dataset):

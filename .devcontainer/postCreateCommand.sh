@@ -1,5 +1,3 @@
-#script.sh
-
 #!/bin/sh
 
 # Install third-party dependencies for Python
