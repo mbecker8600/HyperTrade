@@ -1,11 +1,10 @@
-package(default_visibility = ["//visibility:public"])
-
 py_test(
-    name = "dataloader_tests",
-    srcs = ["dataloader_tests.py"],
+    name = "dataset_tests",
+    srcs = ["dataset_tests.py"],
     data = ["//hypertrade/libs/tsda/tests:data/ohlvc/sample.csv"],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/tsda/sources:csv",
         "//hypertrade/libs/tsda/datasets:asset",
     ]
 )

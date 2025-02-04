@@ -2,16 +2,15 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from loguru import logger
-import pandera as pa
 import pandas as pd
+import pandera as pa
+from loguru import logger
 
-from hypertrade.libs.simulator.data.datasource import Dataset
-from hypertrade.libs.simulator.execute.types import Transaction
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
-from hypertrade.libs.simulator.market import PriceChangeData
 from hypertrade.libs.service.locator import ServiceLocator, register_service
-
+from hypertrade.libs.simulator.data.datasource import Dataset
+from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.execute.types import Transaction
+from hypertrade.libs.simulator.market import PriceChangeData
 
 PRICES_SCHEMA: pa.SeriesSchema = pa.SeriesSchema()
 

@@ -1,0 +1,15 @@
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "csv",
+    srcs = ["csv.py"],
+    data = [],
+    deps = [":types", "//hypertrade/libs/tsda/utils:time"],
+)
+
+py_library(
+    name = "types",
+    srcs = ["types.py"],
+    data = [],
+    deps = [],
+)

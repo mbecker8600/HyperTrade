@@ -4,12 +4,12 @@ py_library(
     name = "ohlvc",
     srcs = ["ohlvc.py"],
     data = [],
-    deps = ["//hypertrade/libs/tsda/core:source"],
+    deps = [":types"],
 )
 
 py_library(
-    name = "tick",
-    srcs = ["tick.py"],
+    name = "types",
+    srcs = ["types.py"],
     data = [],
     deps = [],
 )

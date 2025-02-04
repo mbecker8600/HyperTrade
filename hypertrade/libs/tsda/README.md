@@ -1,24 +1,24 @@
-# Time-series Dataset Abstraction (tsda)
+# Time-series Finacial Dataset (tsfd)
 
-The DAL provides unified interfaces for fetching and processing different types of data (e.g., OHLCV, tick, macro, news). It uses a “Source” (CSV, MongoDB, etc.) to retrieve raw data, then processes it into useful formats via specialized Datasets.
+The tsfd library provides unified interfaces for fetching and processing different types of data (e.g., OHLCV, tick, macro, news). It uses a “Source” (CSV, MongoDB, etc.) to retrieve raw data, then processes it into useful formats via specialized Datasets.
 
 ## Package structure
 
 dataset_access_library/
 ├── core/
-│   ├── dataset.py
-│   ├── source.py
-│   └── factory.py
+│ ├── dataset.py
+│ ├── source.py
+│ └── factory.py
 ├── mixins/
-│   ├── ohlcv.py
-│   └── tick.py
+│ ├── ohlcv.py
+│ └── tick.py
 ├── datasets/
-│   ├── ohlcv_dataset.py
-│   ├── tick_dataset.py
-│   ├── macro_dataset.py
-│   └── news_dataset.py
+│ ├── ohlcv_dataset.py
+│ ├── tick_dataset.py
+│ ├── macro_dataset.py
+│ └── news_dataset.py
 └── utils/
-    └── helpers.py  # Example utility module
+└── helpers.py # Example utility module
 
 ## Usage
 
