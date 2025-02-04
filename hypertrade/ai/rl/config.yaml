@@ -8,7 +8,7 @@ env:
   training_end: 2022-01-01
   eval_start: 2022-01-01
   eval_end: 2024-01-01
-  device: "cuda:0"
+  device: cuda:0
   transforms:
     reward_scaling:
       loc: 0.0
@@ -19,10 +19,10 @@ env:
 
   state:
     portfolio:
-      fields: ["allocations"]
+      fields: [allocations]
     historical:
       windows: [5, 30, 100, 300]
-      fields: ["price", "volume"]
+      fields: [price, volume]
     # momentum
 
 # portfolio
@@ -36,7 +36,7 @@ collector:
   frames_per_batch: 512
   init_env_steps: 512
   reset_at_each_iter: False
-  device: "cuda:0"
+  device: cuda:0
   env_per_collector: 5
   n_collectors: 7
 
@@ -64,8 +64,8 @@ optim:
 network:
   hidden_sizes: [256, 256, 256, 256]
   activation: tanh
-  device: "cuda:0"
-  noise_type: "ou" # ou or gaussian
+  device: cuda:0
+  noise_type: ou # ou or gaussian
   annealing_num_steps: 1_500_000 # used for ou noise
 
 # logging

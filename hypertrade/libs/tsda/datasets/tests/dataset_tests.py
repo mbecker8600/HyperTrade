@@ -47,17 +47,15 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
 
     def test_iterator(self) -> None:
         ohlvc_dataset = OHLVCDataset(
-            data_source=CSVSource(filepath=self.ohlvc_sample_data_path), name="ohlvc"
+            data_source=CSVSource(filepath=self.ohlvc_sample_data_path),
+            name="ohlvc",
         )
         for data in ohlvc_dataset:
             self.assertEqual(data.shape, (3, 7))
 
     # def test_slice(self) -> None:
-    #     ws = os.path.dirname(__file__)
-    #     ohlvc_sample_data_path = os.path.join(ws, "../../tests/data/ohlvc/sample.csv")
-
     #     ohlvc_dataset = OHLVCDataset(
-    #         data_source=CSVSource(filepath=ohlvc_sample_data_path), name="ohlvc"
+    #         data_source=CSVSource(filepath=self.ohlvc_sample_data_path), name="ohlvc"
     #     )
 
     #     data = ohlvc_dataset[pd.Timestamp("2018-12-03") : pd.Timestamp("2018-12-06")]

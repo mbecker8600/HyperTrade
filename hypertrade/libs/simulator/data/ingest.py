@@ -8,10 +8,12 @@ from hypertrade.libs.logging.setup import initialize_logging
 
 # import hypertrade.libs.debugging  # donotcommit
 
+DEFAULT_SYMBOLS = ["AAPL", "BA", "GE"]
+
 
 def bulk_fetch(
     table: str = "SHARADAR/SEP",
-    symbol: List[str] = ["AAPL", "BA", "GE"],
+    symbol: List[str] = DEFAULT_SYMBOLS,
     destFileRef: str = "/tmp/data/SEP_download.csv",
 ) -> None:
 

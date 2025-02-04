@@ -19,6 +19,8 @@ class OHLVCDataset(TimeSeriesDataset):
 
     def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame:
         data = self.data_source.fetch(timestamp=idx)
+        if isinstance(data, pd.Series):
+            data = data.to_frame().T
         if self.symbols is not None:
             data = data[data["ticker"].isin(self.symbols)]
         if isinstance(data, pd.Series):

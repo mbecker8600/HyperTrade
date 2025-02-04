@@ -20,7 +20,7 @@ class TestCsvDatasource(unittest.TestCase):
 
         # Note that it is 7 columns because the date is the index
         self.assertEqual(full_data.shape, (246, 7))
-        self.assertEqual(len(csv_source), 246)
+        self.assertEqual(len(csv_source), 82)
 
     def test_partial_data_load(self) -> None:
         ws = os.path.dirname(__file__)
@@ -31,7 +31,7 @@ class TestCsvDatasource(unittest.TestCase):
 
         # There are three symbols in the sample data so it should have 3 rows
         self.assertEqual(partial_data.shape, (3, 7))
-        self.assertEqual(len(csv_source), 246)
+        self.assertEqual(len(csv_source), 82)
 
     def test_partial_data_load_w_lookback(self) -> None:
         ws = os.path.dirname(__file__)
@@ -46,7 +46,7 @@ class TestCsvDatasource(unittest.TestCase):
 
         # There are three symbols in the sample data so it should have 3 rows
         self.assertEqual(partial_data.shape, (9, 7))
-        self.assertEqual(len(csv_source), 246)
+        self.assertEqual(len(csv_source), 82)
 
     def test_int_index(self) -> None:
         ws = os.path.dirname(__file__)
@@ -68,7 +68,7 @@ class TestCsvDatasource(unittest.TestCase):
                 ]
             )
         )
-        self.assertEqual(len(csv_source), 246)
+        self.assertEqual(len(csv_source), 82)
 
 
 if __name__ == "__main__":

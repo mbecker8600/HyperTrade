@@ -26,7 +26,6 @@ lint:
     - actionlint@1.7.7
     - bandit@1.8.2
     - black@25.1.0
-    - buildifier@8.0.1
     - checkov@3.2.361
     - git-diff-check
     - hadolint@2.12.1-beta

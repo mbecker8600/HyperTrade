@@ -41,7 +41,7 @@ class CSVSource(DataSource):
         return data
 
     def __len__(self) -> int:
-        return len(self.data)
+        return len(self.data.index.unique())
 
     def fetch(
         self,
