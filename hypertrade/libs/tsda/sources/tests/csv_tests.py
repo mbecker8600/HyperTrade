@@ -10,11 +10,15 @@ from hypertrade.libs.tsda.sources.csv import CSVSource
 
 class TestCsvDatasource(unittest.TestCase):
 
-    def test_full_data_load(self) -> None:
+    def setUp(self) -> None:
         ws = os.path.dirname(__file__)
-        ohlvc_sample_data_path = os.path.join(ws, "../../tests/data/ohlvc/sample.csv")
+        self.ohlvc_sample_data_path = os.path.join(
+            ws, "../../tests/data/ohlvc/sample.csv"
+        )
 
-        csv_source = CSVSource(filepath=ohlvc_sample_data_path)
+    def test_full_data_load(self) -> None:
+
+        csv_source = CSVSource(filepath=self.ohlvc_sample_data_path)
 
         full_data = csv_source.fetch()
 
@@ -23,36 +27,17 @@ class TestCsvDatasource(unittest.TestCase):
         self.assertEqual(len(csv_source), 82)
 
     def test_partial_data_load(self) -> None:
-        ws = os.path.dirname(__file__)
-        ohlvc_sample_data_path = os.path.join(ws, "../../tests/data/ohlvc/sample.csv")
 
-        csv_source = CSVSource(filepath=ohlvc_sample_data_path)
+        csv_source = CSVSource(filepath=self.ohlvc_sample_data_path)
         partial_data = csv_source.fetch(timestamp=pd.Timestamp("2018-12-03"))
 
         # There are three symbols in the sample data so it should have 3 rows
         self.assertEqual(partial_data.shape, (3, 7))
         self.assertEqual(len(csv_source), 82)
 
-    def test_partial_data_load_w_lookback(self) -> None:
-        ws = os.path.dirname(__file__)
-        ohlvc_sample_data_path = os.path.join(ws, "../../tests/data/ohlvc/sample.csv")
-
-        csv_source = CSVSource(filepath=ohlvc_sample_data_path)
-
-        partial_data = csv_source.fetch(
-            timestamp=pd.Timestamp("2018-12-03"),
-            lookback=pd.Timedelta(days=3),
-        )
-
-        # There are three symbols in the sample data so it should have 3 rows
-        self.assertEqual(partial_data.shape, (9, 7))
-        self.assertEqual(len(csv_source), 82)
-
     def test_int_index(self) -> None:
-        ws = os.path.dirname(__file__)
-        ohlvc_sample_data_path = os.path.join(ws, "../../tests/data/ohlvc/sample.csv")
 
-        csv_source = CSVSource(filepath=ohlvc_sample_data_path)
+        csv_source = CSVSource(filepath=self.ohlvc_sample_data_path)
 
         partial_data = csv_source.fetch(
             timestamp=1,
@@ -69,6 +54,18 @@ class TestCsvDatasource(unittest.TestCase):
             )
         )
         self.assertEqual(len(csv_source), 82)
+
+    def test_slice(self) -> None:
+        csv_source = CSVSource(
+            filepath=self.ohlvc_sample_data_path, index_col=["date", "ticker"]
+        )
+
+        data = csv_source.fetch(
+            timestamp=slice(pd.Timestamp("2018-12-03"), pd.Timestamp("2018-12-06"))
+        )
+
+        self.assertEqual(data.shape, (9, 6))
+        pass
 
 
 if __name__ == "__main__":

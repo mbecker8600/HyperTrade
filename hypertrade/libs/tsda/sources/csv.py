@@ -1,9 +1,10 @@
 from functools import cached_property
-from typing import Any, List, Optional
+from typing import Any, List, Optional, cast
 
 import exchange_calendars as xcals
 import pandas as pd
 import pytz
+from pandas import IndexSlice
 from pandas._libs.tslibs.nattype import NaTType
 
 from hypertrade.libs.tsda.sources.types import DataSource
@@ -46,30 +47,25 @@ class CSVSource(DataSource):
     def fetch(
         self,
         timestamp: Optional[pd.Timestamp | NaTType | slice | int] = None,
-        lookback: Optional[pd.Timedelta] = None,
     ) -> pd.DataFrame | pd.Series:
 
-        # Handle error cases
-        if timestamp is None and lookback is not None:
-            raise ValueError("lookback cannot be used without a timestamp")
-
         # Handle full data fetch
-        if timestamp is None and lookback is None:
+        if timestamp is None:
             return self.data
 
-        if timestamp is not None and (isinstance(timestamp, int)):
-            timestamp = self.data.index.unique().sort_values()[timestamp]
+        if isinstance(timestamp, slice):
+            self.data.sort_index(
+                level=["date", "ticker"], ascending=[1, 0], inplace=True
+            )
+            return self.data.loc[IndexSlice[timestamp, :], :]
 
-        if timestamp is not None:
+        # Handle integer index by converting to timestamp
+        if isinstance(timestamp, int):
+            index = self.data.index.unique().sort_values()
+            timestamp = cast(pd.Timestamp, index[timestamp])
+
+        if isinstance(timestamp, pd.Timestamp) or isinstance(timestamp, NaTType):
             timestamp = cast_timestamp(timestamp)
-
-        # Handle lookback data
-        # TODO: Come back to this and make it more explicit about the lookback since this
-        # wont work for tick data.
-        if timestamp is not None and lookback is not None:
-            return self.data.loc[
-                self._calendar.sessions_window(timestamp, -lookback.days)
-            ]
 
         # Return data at timestamp
         return self.data.loc[timestamp]

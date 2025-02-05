@@ -11,6 +11,7 @@ from hypertrade.libs.simulator.execute.commission import CommissionModel, NoComm
 from hypertrade.libs.simulator.execute.types import Order, Transaction
 
 BROKER_SERVICE_NAME = "broker_service"
+DEFAULT_EXECUTION_DELAY = pd.Timedelta(milliseconds=3)
 
 
 @register_service(BROKER_SERVICE_NAME)
@@ -21,7 +22,7 @@ class BrokerService:
     def __init__(
         self,
         dataset: Dataset,
-        execution_delay: pd.Timedelta = pd.Timedelta(milliseconds=3),
+        execution_delay: pd.Timedelta = DEFAULT_EXECUTION_DELAY,
         commission_model: Type[CommissionModel] = NoCommission,
     ) -> None:
         self.event_manager: EventManager = ServiceLocator[EventManager]().get(

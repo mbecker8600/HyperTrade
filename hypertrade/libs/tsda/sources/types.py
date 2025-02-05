@@ -10,7 +10,6 @@ class DataSource(ABC):
     def fetch(
         self,
         timestamp: Optional[pd.Timestamp | NaTType | slice | int] = None,
-        lookback: Optional[pd.Timedelta] = None,
     ) -> pd.DataFrame | pd.Series: ...
 
     @abstractmethod
