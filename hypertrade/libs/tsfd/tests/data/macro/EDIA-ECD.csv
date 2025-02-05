@@ -1,0 +1,106 @@
+series_id,country_code,indicator_code,identifier,description,units,frequency,date,value
+3964,CN,45,3964.Lab.11.45.6.A,Population & Labour,PPP $,A,2021-12-01,38653.67
+3964,CN,45,3964.Lab.11.45.6.A,Population & Labour,PPP $,A,2020-12-01,36600.37
+3964,CN,45,3964.Lab.11.45.6.A,Population & Labour,PPP $,A,2019-12-01,35101.96
+3956,US,45,3956.Lab.11.45.6.A,Population & Labour,PPP $,A,2021-12-01,150362.06
+3956,US,45,3956.Lab.11.45.6.A,Population & Labour,PPP $,A,2020-12-01,146386.07
+3956,US,45,3956.Lab.11.45.6.A,Population & Labour,PPP $,A,2019-12-01,141563.99
+3952,CA,45,3952.Lab.11.45.6.A,Population & Labour,PPP $,A,2021-12-01,110028.75
+3952,CA,45,3952.Lab.11.45.6.A,Population & Labour,PPP $,A,2020-12-01,109497.99
+3952,CA,45,3952.Lab.11.45.6.A,Population & Labour,PPP $,A,2019-12-01,108925.6
+3950,AU,45,3950.Lab.11.45.6.A,Population & Labour,PPP $,A,2021-12-01,112467.1
+3950,AU,45,3950.Lab.11.45.6.A,Population & Labour,PPP $,A,2020-12-01,113476.69
+3950,AU,45,3950.Lab.11.45.6.A,Population & Labour,PPP $,A,2019-12-01,112002.74
+1015,CN,1,1015.NA.1.1.50.Q,National Accounts,100 millions,Q,2021-12-01,332826.7
+1015,CN,1,1015.NA.1.1.50.Q,National Accounts,100 millions,Q,2020-12-01,301836.2
+1015,CN,1,1015.NA.1.1.50.Q,National Accounts,100 millions,Q,2019-12-01,282201.4
+1009,US,40,1009.Lab.13.40.4.Q,Population & Labour,"thousand, persons",Q,2021-12-01,332802.0
+1009,US,40,1009.Lab.13.40.4.Q,Population & Labour,"thousand, persons",Q,2020-12-01,332060.0
+1009,US,40,1009.Lab.13.40.4.Q,Population & Labour,"thousand, persons",Q,2019-12-01,331208.0
+999,US,1,999.NA.1.1.68.Q,National Accounts,billions US$,Q,2021-12-01,24777.0
+999,US,1,999.NA.1.1.68.Q,National Accounts,billions US$,Q,2020-12-01,22068.8
+999,US,1,999.NA.1.1.68.Q,National Accounts,billions US$,Q,2019-12-01,21933.2
+947,CA,40,947.Lab.13.40.63.Q,Population & Labour,Persons,Q,2021-12-01,38446871.0
+947,CA,40,947.Lab.13.40.63.Q,Population & Labour,Persons,Q,2020-12-01,38027406.0
+947,CA,40,947.Lab.13.40.63.Q,Population & Labour,Persons,Q,2019-12-01,37828162.0
+937,CA,1,937.NA.1.1.63.Q,National Accounts,millions US$,Q,2021-12-01,677285.0
+937,CA,1,937.NA.1.1.63.Q,National Accounts,millions US$,Q,2020-12-01,595916.0
+937,CA,1,937.NA.1.1.63.Q,National Accounts,millions US$,Q,2019-12-01,600183.0
+908,AU,40,908.Lab.13.40.7.Q,Population & Labour,Persons,Q,2021-12-01,25771357.0
+908,AU,40,908.Lab.13.40.7.Q,Population & Labour,Persons,Q,2020-12-01,25630698.0
+908,AU,40,908.Lab.13.40.7.Q,Population & Labour,Persons,Q,2019-12-01,25520468.0
+895,AU,1,895.NA.1.1.4.Q,National Accounts,millions US$,Q,2021-12-01,1672763.6
+895,AU,1,895.NA.1.1.4.Q,National Accounts,millions US$,Q,2020-12-01,1440205.2
+895,AU,1,895.NA.1.1.4.Q,National Accounts,millions US$,Q,2019-12-01,1392000.3
+534,CN,42,534.Lab.11.42.6.A,Population & Labour,US$,A,2021-12-01,6792.88
+534,CN,42,534.Lab.11.42.6.A,Population & Labour,US$,A,2020-12-01,6394.44
+534,CN,42,534.Lab.11.42.6.A,Population & Labour,US$,A,2019-12-01,5803.64
+532,CN,45,532.Lab.11.45.6.A,Population & Labour,PPP $,A,2021-12-01,33481.5
+532,CN,45,532.Lab.11.45.6.A,Population & Labour,PPP $,A,2020-12-01,31696.94
+532,CN,45,532.Lab.11.45.6.A,Population & Labour,PPP $,A,2019-12-01,30397.03
+520,CN,40,520.Lab.13.40.72.A,Population & Labour,"million, persons",A,2021-12-01,1412.6
+520,CN,40,520.Lab.13.40.72.A,Population & Labour,"million, persons",A,2020-12-01,1412.1
+520,CN,40,520.Lab.13.40.72.A,Population & Labour,"million, persons",A,2019-12-01,1410.1
+519,CN,48,519.NA.3.48.6.A,National Accounts,Int $,A,2021-12-01,20260.0
+519,CN,48,519.NA.3.48.6.A,National Accounts,Int $,A,2020-12-01,17750.0
+519,CN,48,519.NA.3.48.6.A,National Accounts,Int $,A,2019-12-01,17210.0
+518,CN,47,518.NA.3.47.6.A,National Accounts,US$,A,2021-12-01,11950.0
+518,CN,47,518.NA.3.47.6.A,National Accounts,US$,A,2020-12-01,10520.0
+518,CN,47,518.NA.3.47.6.A,National Accounts,US$,A,2019-12-01,10310.0
+503,CN,1,503.NA.1.1.72.A,National Accounts,billions US$,A,2021-12-01,17759.31
+503,CN,1,503.NA.1.1.72.A,National Accounts,billions US$,A,2020-12-01,14862.56
+503,CN,1,503.NA.1.1.72.A,National Accounts,billions US$,A,2019-12-01,14340.6
+500,US,42,500.Lab.11.42.6.A,Population & Labour,US$,A,2021-12-01,69964.71
+500,US,42,500.Lab.11.42.6.A,Population & Labour,US$,A,2020-12-01,85423.53
+500,US,42,500.Lab.11.42.6.A,Population & Labour,US$,A,2019-12-01,74545.15
+498,US,45,498.Lab.11.45.6.A,Population & Labour,PPP $,A,2021-12-01,134323.95
+498,US,45,498.Lab.11.45.6.A,Population & Labour,PPP $,A,2020-12-01,130941.64
+498,US,45,498.Lab.11.45.6.A,Population & Labour,PPP $,A,2019-12-01,127424.55
+486,US,40,486.Lab.13.40.72.A,Population & Labour,"million, persons",A,2021-12-01,332.33
+486,US,40,486.Lab.13.40.72.A,Population & Labour,"million, persons",A,2020-12-01,331.27
+486,US,40,486.Lab.13.40.72.A,Population & Labour,"million, persons",A,2019-12-01,328.55
+485,US,48,485.NA.3.48.6.A,National Accounts,Int $,A,2021-12-01,71770.0
+485,US,48,485.NA.3.48.6.A,National Accounts,Int $,A,2020-12-01,64720.0
+485,US,48,485.NA.3.48.6.A,National Accounts,Int $,A,2019-12-01,66290.0
+484,US,47,484.NA.3.47.6.A,National Accounts,US$,A,2021-12-01,71500.0
+484,US,47,484.NA.3.47.6.A,National Accounts,US$,A,2020-12-01,64620.0
+484,US,47,484.NA.3.47.6.A,National Accounts,US$,A,2019-12-01,66220.0
+467,US,1,467.NA.1.1.68.A,National Accounts,billions US$,A,2021-12-01,23594.0
+467,US,1,467.NA.1.1.68.A,National Accounts,billions US$,A,2020-12-01,21323.0
+467,US,1,467.NA.1.1.68.A,National Accounts,billions US$,A,2019-12-01,21521.4
+356,CA,42,356.Lab.11.42.6.A,Population & Labour,US$,A,2021-12-01,111605.01
+356,CA,42,356.Lab.11.42.6.A,Population & Labour,US$,A,2020-12-01,110075.87
+356,CA,42,356.Lab.11.42.6.A,Population & Labour,US$,A,2019-12-01,106779.12
+354,CA,45,354.Lab.11.45.6.A,Population & Labour,PPP $,A,2021-12-01,95371.3
+354,CA,45,354.Lab.11.45.6.A,Population & Labour,PPP $,A,2020-12-01,94933.66
+354,CA,45,354.Lab.11.45.6.A,Population & Labour,PPP $,A,2019-12-01,94437.14
+342,CA,40,342.Lab.13.40.72.A,Population & Labour,"million, persons",A,2021-12-01,38.22
+342,CA,40,342.Lab.13.40.72.A,Population & Labour,"million, persons",A,2020-12-01,38.0
+342,CA,40,342.Lab.13.40.72.A,Population & Labour,"million, persons",A,2019-12-01,37.56
+341,CA,48,341.NA.3.48.6.A,National Accounts,Int $,A,2021-12-01,55300.0
+341,CA,48,341.NA.3.48.6.A,National Accounts,Int $,A,2020-12-01,48240.0
+341,CA,48,341.NA.3.48.6.A,National Accounts,Int $,A,2019-12-01,49900.0
+340,CA,47,340.NA.3.47.6.A,National Accounts,US$,A,2021-12-01,48780.0
+340,CA,47,340.NA.3.47.6.A,National Accounts,US$,A,2020-12-01,43900.0
+340,CA,47,340.NA.3.47.6.A,National Accounts,US$,A,2019-12-01,46580.0
+323,CA,1,323.NA.1.1.72.A,National Accounts,billions US$,A,2021-12-01,2007.47
+323,CA,1,323.NA.1.1.72.A,National Accounts,billions US$,A,2020-12-01,1655.69
+323,CA,1,323.NA.1.1.72.A,National Accounts,billions US$,A,2019-12-01,1743.73
+286,AU,42,286.Lab.11.42.6.A,Population & Labour,US$,A,2021-12-01,95655.83
+286,AU,42,286.Lab.11.42.6.A,Population & Labour,US$,A,2020-12-01,72981.59
+286,AU,42,286.Lab.11.42.6.A,Population & Labour,US$,A,2019-12-01,86014.82
+284,AU,45,284.Lab.11.45.6.A,Population & Labour,PPP $,A,2021-12-01,97275.46
+284,AU,45,284.Lab.11.45.6.A,Population & Labour,PPP $,A,2020-12-01,98186.65
+284,AU,45,284.Lab.11.45.6.A,Population & Labour,PPP $,A,2019-12-01,97162.54
+272,AU,40,272.Lab.13.40.72.A,Population & Labour,"million, persons",A,2021-12-01,25.77
+272,AU,40,272.Lab.13.40.72.A,Population & Labour,"million, persons",A,2020-12-01,25.63
+272,AU,40,272.Lab.13.40.72.A,Population & Labour,"million, persons",A,2019-12-01,25.52
+271,AU,48,271.NA.3.48.6.A,National Accounts,Int $,A,2021-12-01,56680.0
+271,AU,48,271.NA.3.48.6.A,National Accounts,Int $,A,2020-12-01,52760.0
+271,AU,48,271.NA.3.48.6.A,National Accounts,Int $,A,2019-12-01,50900.0
+270,AU,47,270.NA.3.47.6.A,National Accounts,US$,A,2021-12-01,57180.0
+270,AU,47,270.NA.3.47.6.A,National Accounts,US$,A,2020-12-01,53630.0
+270,AU,47,270.NA.3.47.6.A,National Accounts,US$,A,2019-12-01,54890.0
+253,AU,1,253.NA.1.1.72.A,National Accounts,billions US$,A,2021-12-01,1657.8
+253,AU,1,253.NA.1.1.72.A,National Accounts,billions US$,A,2020-12-01,1364.9
+253,AU,1,253.NA.1.1.72.A,National Accounts,billions US$,A,2019-12-01,1388.2

@@ -1,18 +1,17 @@
+import unittest
 from collections import Counter
 from dataclasses import dataclass
-from typing import Generic, TypeVar
-import unittest
 from datetime import timedelta
+from typing import Generic, TypeVar
 from unittest.mock import patch
-from loguru import logger
-import pytz
 
 import pandas as pd
+import pytz
+from loguru import logger
 
-from hypertrade.libs.simulator.event import EVENT_TYPE, EventManager, Event
-from hypertrade.libs.service.locator import ServiceLocator
 from hypertrade.libs.logging.setup import initialize_logging
-
+from hypertrade.libs.service.locator import ServiceLocator
+from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
 
 # import hypertrade.libs.debugging  # donotcommit
 
@@ -105,7 +104,7 @@ class TestEventManager(unittest.TestCase):
             self.assertEquals(event_counter[EVENT_TYPE.MARKET_CLOSE], 6)
 
     def test_simulation_with_scheduled_events(self) -> None:
-        "Test scheduled events are properly published"
+        """Test scheduled events are properly published"""
         nytz = pytz.timezone("America/New_York")
         start_time = pd.Timestamp("2020-01-02", tz=nytz)
         end_time = pd.Timestamp("2020-01-03", tz=nytz)
@@ -145,7 +144,7 @@ class TestEventManager(unittest.TestCase):
             mock.assert_called_once()
 
     def test_simulation_with_chained_events(self) -> None:
-        "Test scheduled events are properly published"
+        """Test scheduled events are properly published"""
         nytz = pytz.timezone("America/New_York")
         start_time = pd.Timestamp("2020-01-02", tz=nytz)
         end_time = pd.Timestamp("2020-01-03", tz=nytz)
@@ -199,7 +198,7 @@ class TestEventManager(unittest.TestCase):
             mock_order_handler.assert_called_once()
 
     def test_simulation_with_unordered_publishing(self) -> None:
-        "Test scheduled events with longer delay are not scheduled before shorter delay"
+        """Test scheduled events with longer delay are not scheduled before shorter delay"""
         nytz = pytz.timezone("America/New_York")
         start_time = pd.Timestamp("2020-01-02", tz=nytz)
         end_time = pd.Timestamp("2020-01-03", tz=nytz)
@@ -273,7 +272,7 @@ class TestEventManager(unittest.TestCase):
             mock_portfolio_handler.assert_called_once()
 
     def test_simulation_bad_subscriber_fn(self) -> None:
-        "Test failure occurs when someone subscribes a function to a publish event with mismatching data object"
+        """Test failure occurs when someone subscribes a function to a publish event with mismatching data object"""
         nytz = pytz.timezone("America/New_York")
         start_time = pd.Timestamp("2020-01-02", tz=nytz)
         end_time = pd.Timestamp("2020-01-03", tz=nytz)
@@ -285,7 +284,7 @@ class TestEventManager(unittest.TestCase):
             MockOrderHandler,
             "handle_event",
             wraps=order_handler.handle_event,
-        ) as mock_order_handler:
+        ):
             # the OrderHandler.handle_event expects an OrderPlacedData object to be passed, but
             # the EVENT_TYPE.MARKET_OPEN doesn't pass any data
             event_manager.subscribe(EVENT_TYPE.MARKET_OPEN, order_handler.handle_event)

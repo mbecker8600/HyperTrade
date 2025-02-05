@@ -1,16 +1,15 @@
-from loguru import logger
 import pandas as pd
 
 from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.data.datasource import Dataset
 from hypertrade.libs.simulator.event import EventManager, Frequency
+from hypertrade.libs.simulator.execute.broker import BrokerService
 from hypertrade.libs.simulator.execute.ledger import LedgerService
 from hypertrade.libs.simulator.financials.performance import (
     PerformanceTrackingService,
 )
-from hypertrade.libs.simulator.market import MarketPriceSimulator
-from hypertrade.libs.simulator.execute.broker import BrokerService
 from hypertrade.libs.simulator.financials.portfolio import PortfolioManager
+from hypertrade.libs.simulator.market import MarketPriceSimulator
 from hypertrade.libs.simulator.strategy import StrategyBuilder, StrategyFunction
 
 
@@ -39,7 +38,7 @@ class TradingEngine:
         )
 
     def run(self) -> None:
-        for event in self.event_manager:
+        for _event in self.event_manager:
             pass
 
     @property

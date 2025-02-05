@@ -2,16 +2,15 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from loguru import logger
-import pandera as pa
 import pandas as pd
+import pandera as pa
+from loguru import logger
 
-from hypertrade.libs.simulator.data.datasource import Dataset
-from hypertrade.libs.simulator.execute.types import Transaction
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
-from hypertrade.libs.simulator.market import PriceChangeData
 from hypertrade.libs.service.locator import ServiceLocator, register_service
-
+from hypertrade.libs.simulator.data.datasource import Dataset
+from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.execute.types import Transaction
+from hypertrade.libs.simulator.market import PriceChangeData
 
 PRICES_SCHEMA: pa.SeriesSchema = pa.SeriesSchema()
 
@@ -194,7 +193,7 @@ class PortfolioManager:
         """Handle price change events and invalidate the portfolio's cached properties."""
         if not self.portfolio.positions.empty:
             logger.bind(simulation_time=self.event_manager.current_time).debug(
-                f"Setting new market prices on portfolio object"
+                "Setting new market prices on portfolio object"
             )
             self._set_portfolio_market_price()
 

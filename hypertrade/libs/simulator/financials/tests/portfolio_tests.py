@@ -1,18 +1,16 @@
-from calendar import c
 import os
 import unittest
 
-import pytz
 import pandas as pd
+import pytz
 from loguru import logger
 
+from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.data.datasource import CSVDataSource, OHLCVDataset
 from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
 from hypertrade.libs.simulator.execute.types import Transaction
 from hypertrade.libs.simulator.financials.portfolio import Portfolio, PortfolioManager
-
-from hypertrade.libs.logging.setup import initialize_logging
 
 # import hypertrade.libs.debugging  # donotcommit
 

@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from typing import List
 
-from loguru import logger
 import pandas as pd
+from loguru import logger
+
+from hypertrade.libs.service.locator import ServiceLocator, register_service
 from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
-from hypertrade.libs.service.locator import ServiceLocator, register_service
 
 
 @dataclass

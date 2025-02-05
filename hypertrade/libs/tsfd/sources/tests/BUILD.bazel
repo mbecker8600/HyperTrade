@@ -1,0 +1,9 @@
+py_test(
+    name = "csv_tests",
+    srcs = ["csv_tests.py"],
+    data = ["//hypertrade/libs/tsfd/tests:data/ohlvc/sample.csv"],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/tsfd/sources:csv",
+    ]
+)

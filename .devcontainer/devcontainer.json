@@ -43,7 +43,9 @@
         "ms-python.black-formatter",
         "ms-toolsai.datawrangler",
         "ms-python.mypy-type-checker",
-        "liamrwilkins.mypy-ini-intellisense"
+        "liamrwilkins.mypy-ini-intellisense",
+        "mashin.mypyright",
+        "trunk.io"
       ]
     }
   },

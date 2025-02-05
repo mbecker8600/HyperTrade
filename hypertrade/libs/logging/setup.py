@@ -5,8 +5,9 @@ It should be called at the beginning of the project to setup the logger within t
 
 """
 
-from loguru import logger
 import sys
+
+from loguru import logger
 
 SIMULATION_TIME_KEY: str = "simulation_time"
 

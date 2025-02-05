@@ -1,24 +1,22 @@
 import os
-from typing import Optional
 import unittest
 from unittest.mock import patch
 
 import pandas as pd
-from loguru import logger
 import pytz
+from loguru import logger
 
-
+from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.data.datasource import CSVDataSource, OHLCVDataset
 from hypertrade.libs.simulator.engine import TradingEngine
 from hypertrade.libs.simulator.event import EVENT_TYPE
 from hypertrade.libs.simulator.strategy import (
     DATA_TYPE,
-    StrategyData,
     StrategyBuilder,
     StrategyContext,
+    StrategyData,
 )
-from hypertrade.libs.logging.setup import initialize_logging
 
 # import hypertrade.libs.debugging  # donotcommit
 
@@ -76,7 +74,7 @@ class TestTradingEngine(unittest.TestCase):
         with patch(
             "__main__.buy_hold_strategy",
             wraps=buy_hold_strategy,
-        ) as patched_buy_hold_strategy:
+        ):
             engine = TradingEngine(
                 start_time=start_time,
                 end_time=end_time,

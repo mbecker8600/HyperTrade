@@ -1,0 +1,15 @@
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "ohlvc",
+    srcs = ["ohlvc.py"],
+    data = [],
+    deps = [":types"],
+)
+
+py_library(
+    name = "types",
+    srcs = ["types.py"],
+    data = [],
+    deps = [],
+)

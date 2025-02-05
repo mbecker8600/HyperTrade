@@ -1,6 +1,6 @@
 import enum
-from typing import Optional
 import uuid
+from typing import Optional
 
 import pandas as pd
 
