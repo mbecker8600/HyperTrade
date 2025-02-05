@@ -11,7 +11,7 @@ from typing import (
 import pandas as pd
 from pandas._libs.tslibs.nattype import NaTType
 
-from hypertrade.libs.tsda.sources.types import DataSource
+from hypertrade.libs.tsfd.sources.types import DataSource
 
 
 class Dataset(ABC):

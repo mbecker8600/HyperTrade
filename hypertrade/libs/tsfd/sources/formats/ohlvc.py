@@ -1,6 +1,6 @@
 import pandas as pd
 
-from hypertrade.libs.tsda.sources.formats.types import DataSourceFormatter
+from hypertrade.libs.tsfd.sources.formats.types import DataSourceFormatter
 
 
 class OHLVCConverter(DataSourceFormatter):

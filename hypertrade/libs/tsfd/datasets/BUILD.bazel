@@ -5,7 +5,7 @@ py_library(
     srcs = ["types.py"],
     data = [],
     deps = [
-        "//hypertrade/libs/tsda/sources:types",
+        "//hypertrade/libs/tsfd/sources:types",
     ],
 )
 

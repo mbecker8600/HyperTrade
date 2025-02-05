@@ -3,8 +3,8 @@ from typing import List, Optional
 import pandas as pd
 from pandas._libs.tslibs.nattype import NaTType
 
-from hypertrade.libs.tsda.datasets.types import TimeSeriesDataset
-from hypertrade.libs.tsda.sources.types import DataSource
+from hypertrade.libs.tsfd.datasets.types import TimeSeriesDataset
+from hypertrade.libs.tsfd.sources.types import DataSource
 
 
 class OHLVCDataset(TimeSeriesDataset):

@@ -4,8 +4,8 @@ import unittest
 import pandas as pd
 
 # import hypertrade.libs.debugging  # donotcommit
-from hypertrade.libs.tsda.datasets.asset import OHLVCDataset
-from hypertrade.libs.tsda.sources.csv import CSVSource
+from hypertrade.libs.tsfd.datasets.asset import OHLVCDataset
+from hypertrade.libs.tsfd.sources.csv import CSVSource
 
 
 class TestOHLVCCsvDataSet(unittest.TestCase):

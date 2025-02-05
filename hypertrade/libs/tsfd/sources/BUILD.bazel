@@ -4,7 +4,7 @@ py_library(
     name = "csv",
     srcs = ["csv.py"],
     data = [],
-    deps = [":types", "//hypertrade/libs/tsda/utils:time"],
+    deps = [":types", "//hypertrade/libs/tsfd/utils:time"],
 )
 
 py_library(

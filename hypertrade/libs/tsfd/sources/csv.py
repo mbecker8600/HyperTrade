@@ -7,8 +7,8 @@ import pytz
 from pandas import IndexSlice
 from pandas._libs.tslibs.nattype import NaTType
 
-from hypertrade.libs.tsda.sources.types import DataSource
-from hypertrade.libs.tsda.utils.time import cast_timestamp
+from hypertrade.libs.tsfd.sources.types import DataSource
+from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 DEFAULT_INDEX_COL = ["date"]
 

@@ -1,4 +1,4 @@
-package(default_visibility = ["//hypertrade/libs/tsda:__subpackages__"])
+package(default_visibility = ["//hypertrade/libs/tsfd:__subpackages__"])
 
 py_library(
     name = "time",

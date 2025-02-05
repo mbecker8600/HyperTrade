@@ -3,7 +3,7 @@ import unittest
 
 import pandas as pd
 
-from hypertrade.libs.tsda.sources.csv import CSVSource
+from hypertrade.libs.tsfd.sources.csv import CSVSource
 
 # import hypertrade.libs.debugging  # donotcommit
 
