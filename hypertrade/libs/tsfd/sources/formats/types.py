@@ -1,8 +1,9 @@
-from abc import ABC, abstractmethod
+from abc import ABC
+from typing import ClassVar
 
-import pandas as pd
+import pandera as pa
 
 
-class DataSourceFormatter(ABC):
-    @abstractmethod
-    def format(self, df: pd.DataFrame) -> pd.DataFrame: ...
+class DataSourceFormat(ABC):
+
+    schema: ClassVar[pa.DataFrameSchema]

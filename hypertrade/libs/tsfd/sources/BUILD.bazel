@@ -11,5 +11,5 @@ py_library(
     name = "types",
     srcs = ["types.py"],
     data = [],
-    deps = [],
+    deps = ["//hypertrade/libs/tsfd/sources/formats:types"],
 )

@@ -1,9 +1,15 @@
 py_test(
     name = "csv_tests",
     srcs = ["csv_tests.py"],
-    data = ["//hypertrade/libs/tsfd/tests:data/ohlvc/sample.csv"],
+    data = [
+        "//hypertrade/libs/tsfd/tests:data/news/headline_sample.csv", 
+        "//hypertrade/libs/tsfd/tests:data/ohlvc/sample.csv", 
+        "//hypertrade/libs/tsfd/tests:data/ohlvc/bad_schema.csv"
+    ],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
         "//hypertrade/libs/tsfd/sources:csv",
+        "//hypertrade/libs/tsfd/sources/formats:ohlvc",
+        "//hypertrade/libs/tsfd/sources/formats:news",
     ]
 )

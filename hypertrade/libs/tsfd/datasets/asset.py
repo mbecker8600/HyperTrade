@@ -1,10 +1,16 @@
-from typing import List, Optional
+from typing import List, Optional, Protocol
 
 import pandas as pd
 from pandas._libs.tslibs.nattype import NaTType
 
 from hypertrade.libs.tsfd.datasets.types import TimeSeriesDataset
 from hypertrade.libs.tsfd.sources.types import DataSource
+
+
+class SupportsOHLVCDataset(Protocol):
+
+    @classmethod
+    def ohlvc_adapter(cls, df: pd.DataFrame) -> pd.DataFrame: ...
 
 
 class OHLVCDataset(TimeSeriesDataset):

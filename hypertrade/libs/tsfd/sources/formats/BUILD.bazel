@@ -4,6 +4,20 @@ py_library(
     name = "ohlvc",
     srcs = ["ohlvc.py"],
     data = [],
+    deps = [":types", "//hypertrade/libs/tsfd/datasets:asset"],
+)
+
+py_library(
+    name = "macro",
+    srcs = ["macro.py"],
+    data = [],
+    deps = [":types"],
+)
+
+py_library(
+    name = "news",
+    srcs = ["news.py"],
+    data = [],
     deps = [":types"],
 )
 
