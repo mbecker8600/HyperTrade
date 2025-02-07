@@ -6,6 +6,7 @@ import pandas as pd
 # import hypertrade.libs.debugging  # donotcommit
 from hypertrade.libs.tsfd.datasets.asset import OHLVCDataset
 from hypertrade.libs.tsfd.sources.csv import CSVSource
+from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCFormat
 
 
 class TestOHLVCCsvDataSet(unittest.TestCase):
@@ -19,39 +20,54 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
     def test_single_index(self) -> None:
 
         ohlvc_dataset = OHLVCDataset(
-            data_source=CSVSource(filepath=self.ohlvc_sample_data_path), name="ohlvc"
+            data_source=CSVSource(
+                filepath=self.ohlvc_sample_data_path, format=OHLVCFormat
+            ),
+            name="ohlvc",
         )
 
         data = ohlvc_dataset[pd.Timestamp("2018-12-03")]
-        self.assertEqual(data.shape, (3, 7))
+        self.assertEqual(data.shape, (3, 6))
         self.assertTrue(
-            all([ts == pd.Timestamp("2018-12-03") for ts in data.index.to_list()])
+            all(
+                [
+                    ts == pd.Timestamp("2018-12-03")
+                    for ts in data.index.get_level_values(0).to_list()
+                ]
+            )
         )
-        self.assertEqual(
-            data[data["ticker"] == "GE"].at[pd.Timestamp("2018-12-03"), "open"], 35.42
-        )
+        self.assertEqual(data.loc[pd.IndexSlice[:, ["GE"]], :]["open"].values[0], 35.42)
 
     def test_filtering(self) -> None:
 
         ohlvc_dataset = OHLVCDataset(
-            data_source=CSVSource(filepath=self.ohlvc_sample_data_path),
+            data_source=CSVSource(
+                filepath=self.ohlvc_sample_data_path, format=OHLVCFormat
+            ),
             name="ohlvc",
             symbols=["GE", "BA"],
         )
 
         data = ohlvc_dataset[pd.Timestamp("2018-12-03")]
-        self.assertEqual(data.shape, (2, 7))
+        self.assertEqual(data.shape, (2, 6))
         self.assertTrue(
-            all([ts == pd.Timestamp("2018-12-03") for ts in data.index.to_list()])
+            all(
+                [
+                    ts == pd.Timestamp("2018-12-03")
+                    for ts in data.index.get_level_values(0).to_list()
+                ]
+            )
         )
 
     def test_iterator(self) -> None:
         ohlvc_dataset = OHLVCDataset(
-            data_source=CSVSource(filepath=self.ohlvc_sample_data_path),
+            data_source=CSVSource(
+                filepath=self.ohlvc_sample_data_path, format=OHLVCFormat
+            ),
             name="ohlvc",
         )
         for data in ohlvc_dataset:
-            self.assertEqual(data.shape, (3, 7))
+            self.assertEqual(data.shape, (3, 6))
 
     # def test_slice(self) -> None:
     #     ohlvc_dataset = OHLVCDataset(

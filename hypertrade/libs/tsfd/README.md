@@ -8,6 +8,7 @@ The tsfd library provides unified interfaces for fetching and processing differe
 - **Modular Design**: Easily switch between different data sources (e.g., CSV files, databases) and dataset types (e.g., OHLCV, tick).
 - **Data Processing**: Transform raw data into readily usable formats for analysis and modeling.
 - **Extensible**: Add new data sources and datasets as needed.
+- **Pythonic Implementation:** Seamless integration with popular Python libraries like Pandas, NumPy, and PyTorch.
 
 ## Installation
 

@@ -1,0 +1,22 @@
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "ohlvc",
+    srcs = ["ohlvc.py"],
+    data = [],
+    deps = [],
+)
+
+py_library(
+    name = "news",
+    srcs = ["news.py"],
+    data = [],
+    deps = [],
+)
+
+py_library(
+    name = "macro",
+    srcs = ["macro.py"],
+    data = [],
+    deps = [],
+)

@@ -6,5 +6,6 @@ py_test(
         "//hypertrade/libs/debugging:python_debugger",
         "//hypertrade/libs/tsfd/sources:csv",
         "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/sources/formats:ohlvc",
     ]
 )

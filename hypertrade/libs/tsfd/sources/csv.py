@@ -3,10 +3,9 @@ from typing import Any, List, Optional, Protocol, Type, cast
 
 import exchange_calendars as xcals
 import pandas as pd
+import pandera as pa
 import pytz
 from pandas._libs.tslibs.nattype import NaTType
-import pandera as pa
-
 
 from hypertrade.libs.tsfd.sources.formats.types import DataSourceFormat
 from hypertrade.libs.tsfd.sources.types import DataSource
@@ -35,6 +34,7 @@ class SingleIndexStrategy(IndexStrategy):
         data = df.loc[timestamp]
         if isinstance(data, pd.Series):
             data = data.to_frame().T
+            data.index.name = "date"
         return data
 
     def loc_slice(self, df: pd.DataFrame, timestamp: slice) -> pd.DataFrame:
@@ -119,14 +119,16 @@ class CSVSource(DataSource):
     def fetch(
         self,
         timestamp: Optional[pd.Timestamp | NaTType | slice | int] = None,
-    ) -> pd.DataFrame | pd.Series:
+    ) -> pd.DataFrame:
 
         # Handle full data fetch
         if timestamp is None:
             return self.data
 
         if isinstance(timestamp, slice):
-            return self._index_strategy.loc_slice(self.data, timestamp)
+            data = self._index_strategy.loc_slice(self.data, timestamp)
+            self.format.schema.validate(data)
+            return data
 
         # Handle integer index by converting to timestamp
         if isinstance(timestamp, int):
@@ -138,4 +140,6 @@ class CSVSource(DataSource):
             timestamp = cast_timestamp(timestamp)
 
         # Return data at timestamp
-        return self._index_strategy.loc(self.data, timestamp)
+        data = self._index_strategy.loc(self.data, timestamp)
+        self.format.schema.validate(data)
+        return data
