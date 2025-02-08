@@ -32,20 +32,33 @@ Open VSCode to the cloned directory and be sure to open in Container. This proje
 
 ## Using the monorepo
 
+### Linting
+
+This project uses trunk for linting and formatting. It should already be installed via the dev container extensions and DOCKER file.
+
+To run manually, use the following commands:
+
+```bash
+trunk fmt
+trunk check
+```
+
+It will also run it automatically when creating a pull request via [Github Actions](.github/workflows/pr-ci.yml).
+
 ### Running all tests
 
 ```bash
 bazelisk test ...
 ```
 
-### Adding a new package (Python)
+### Supported Languages
 
-To add a new package to the monorepo, you can run the following command from the root of the monorepo:
+Language specific documenation can be in the table below
 
-```bash
-pip install <package-name>
-pip freeze > third-party/requirements.txt
-```
+| Language | Documentation                               |
+| -------- | ------------------------------------------- |
+| Python   | [docs > python.md](docs/language/python.md) |
+| Rust     | [docs > rust.md](docs/language/rust.md)     |
 
 ## Contributing
 

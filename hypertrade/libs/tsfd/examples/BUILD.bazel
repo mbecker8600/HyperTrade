@@ -1,0 +1,6 @@
+py_binary(
+    name = "server",
+    srcs = ["//python:notebook.py"],
+    main = "notebook.py",
+    deps = ["//hypertrade/libs/tsfd:all"],
+)

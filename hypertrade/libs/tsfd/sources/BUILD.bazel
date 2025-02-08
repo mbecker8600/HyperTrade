@@ -1,6 +1,16 @@
 package(default_visibility = ["//visibility:public"])
 
 py_library(
+    name = "all",
+    srcs = [],
+    data = [],
+    deps = [
+        ":csv",
+        ":types",
+    ],
+)
+
+py_library(
     name = "csv",
     srcs = ["csv.py"],
     data = [],

@@ -1,6 +1,18 @@
 package(default_visibility = ["//visibility:public"])
 
 py_library(
+    name = "all",
+    srcs = [],
+    data = [],
+    deps = [
+        ":ohlvc",
+        ":news",
+        ":macro",
+        ":types",
+    ],
+)
+
+py_library(
     name = "ohlvc",
     srcs = ["ohlvc.py"],
     data = [],

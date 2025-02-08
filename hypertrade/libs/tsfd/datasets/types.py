@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import (
     Any,
     Generator,
@@ -10,11 +10,13 @@ from typing import (
 
 import pandas as pd
 from pandas._libs.tslibs.nattype import NaTType
+from torch.utils.data import IterableDataset
 
 from hypertrade.libs.tsfd.sources.types import DataSource
 
 
-class Dataset(ABC):
+# trunk-ignore(mypy/misc)
+class TsfdDataset(IterableDataset):
     """
     Abstract base class for all datasets. A dataset is a collection of data that can be
     fetched at a specific point in time. It adheres to a protocol compatible with
@@ -40,7 +42,7 @@ class Dataset(ABC):
     def __iter__(self) -> Generator[pd.DataFrame, Any, None]: ...
 
 
-class TimeSeriesDataset(Dataset):
+class TimeSeriesDataset(TsfdDataset):
     """
     Abstract base class for all datasets. A dataset is a collection of data that can be
     fetched at a specific point in time. It adheres to a protocol compatible with

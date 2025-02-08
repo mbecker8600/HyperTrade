@@ -1,6 +1,5 @@
-import pandera as pa
 import pandas as pd
-
+import pandera as pa
 
 headline_schema = pa.DataFrameSchema(
     {

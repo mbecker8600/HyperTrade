@@ -14,6 +14,7 @@ DEFAULT_SYMBOLS = ["AAPL", "BA", "GE"]
 def bulk_fetch(
     table: str = "SHARADAR/SEP",
     symbol: List[str] = DEFAULT_SYMBOLS,
+    # trunk-ignore(bandit/B108)
     destFileRef: str = "/tmp/data/SEP_download.csv",
 ) -> None:
 

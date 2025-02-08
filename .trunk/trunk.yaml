@@ -23,6 +23,7 @@ lint:
   disabled:
     - pyright
   enabled:
+    - markdownlint
     - actionlint@1.7.7
     - bandit@1.8.2
     - black@25.1.0
@@ -30,7 +31,6 @@ lint:
     - git-diff-check
     - hadolint@2.12.1-beta
     - isort@6.0.0
-    - markdownlint@0.44.0
     - mypy@1.14.1
     - osv-scanner@1.9.2
     - oxipng@9.1.3

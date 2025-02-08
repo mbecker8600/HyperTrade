@@ -1,5 +1,5 @@
-import pandera as pa
 import pandas as pd
+import pandera as pa
 
 ohlvc_schema = pa.DataFrameSchema(
     {
