@@ -1,3 +1,5 @@
+load("@rules_python//python:defs.bzl", "py_library")
+
 package(default_visibility = ["//visibility:public"])
 
 py_library(
@@ -12,9 +14,9 @@ py_library(
     srcs = ["performance.py"],
     data = [],
     deps = [
+        ":portfolio",
         "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator:event",
-        ":portfolio",
     ],
 )
 
@@ -23,11 +25,11 @@ py_library(
     srcs = ["portfolio.py"],
     data = [],
     deps = [
+        "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator:assets",
         "//hypertrade/libs/simulator:event",
         "//hypertrade/libs/simulator:market",
-        "//hypertrade/libs/simulator/execute:types",
-        "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator/data:datasource",
+        "//hypertrade/libs/simulator/execute:types",
     ],
 )

@@ -4,8 +4,14 @@
   "files.autoSave": "onFocusChange",
   "bazel.buildifierFixOnFormat": true,
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.defaultFormatter": "trunk.io",
     "editor.formatOnSave": true
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "trunk.io"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "trunk.io"
   },
   "python.defaultInterpreterPath": "/usr/bin/python3",
   "mypy-type-checker.reportingScope": "workspace",

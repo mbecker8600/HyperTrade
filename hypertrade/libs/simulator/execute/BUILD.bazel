@@ -1,3 +1,5 @@
+load("@rules_python//python:defs.bzl", "py_library")
+
 package(default_visibility = ["//visibility:public"])
 
 py_library(
@@ -7,10 +9,10 @@ py_library(
     deps = [
         ":commission",
         ":types",
+        "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator:assets",
         "//hypertrade/libs/simulator:event",
         "//hypertrade/libs/simulator/data:datasource",
-        "//hypertrade/libs/service:locator",
     ],
 )
 
@@ -37,6 +39,8 @@ py_library(
     name = "ledger",
     srcs = ["ledger.py"],
     data = [],
-    deps = ["//hypertrade/libs/service:locator", "//hypertrade/libs/simulator:event",],
+    deps = [
+        "//hypertrade/libs/service:locator",
+        "//hypertrade/libs/simulator:event",
+    ],
 )
-

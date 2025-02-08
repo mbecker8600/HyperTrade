@@ -1,3 +1,5 @@
+load("@rules_python//python:defs.bzl", "py_library")
+
 package(default_visibility = ["//visibility:public"])
 
 py_library(
@@ -5,9 +7,9 @@ py_library(
     srcs = [],
     data = [],
     deps = [
-        ":ohlvc",
-        ":news",
         ":macro",
+        ":news",
+        ":ohlvc",
         ":types",
     ],
 )
@@ -17,9 +19,9 @@ py_library(
     srcs = ["ohlvc.py"],
     data = [],
     deps = [
-        ":types", 
-        "//hypertrade/libs/tsfd/datasets:asset", 
-        "//hypertrade/libs/tsfd/schemas:ohlvc"
+        ":types",
+        "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/schemas:ohlvc",
     ],
 )
 
@@ -29,7 +31,7 @@ py_library(
     data = [],
     deps = [
         ":types",
-        "//hypertrade/libs/tsfd/schemas:macro"
+        "//hypertrade/libs/tsfd/schemas:macro",
     ],
 )
 
@@ -38,8 +40,8 @@ py_library(
     srcs = ["news.py"],
     data = [],
     deps = [
-        ":types", 
-        "//hypertrade/libs/tsfd/schemas:news"
+        ":types",
+        "//hypertrade/libs/tsfd/schemas:news",
     ],
 )
 

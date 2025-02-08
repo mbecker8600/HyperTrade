@@ -1,3 +1,5 @@
+load("@rules_python//python:defs.bzl", "py_library")
+
 package(default_visibility = ["//visibility:public"])
 
 py_library(
@@ -14,7 +16,10 @@ py_library(
     name = "csv",
     srcs = ["csv.py"],
     data = [],
-    deps = [":types", "//hypertrade/libs/tsfd/utils:time"],
+    deps = [
+        ":types",
+        "//hypertrade/libs/tsfd/utils:time",
+    ],
 )
 
 py_library(

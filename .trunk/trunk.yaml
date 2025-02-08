@@ -23,7 +23,8 @@ lint:
   disabled:
     - pyright
   enabled:
-    - markdownlint
+    - buildifier@8.0.3
+    - markdownlint@0.29.0
     - actionlint@1.7.7
     - bandit@1.8.2
     - black@25.1.0
