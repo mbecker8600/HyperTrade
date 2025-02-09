@@ -51,7 +51,8 @@ class LedgerService:
             f"Recording transaction in ledger : {event}"
         )
         transaction = event.data
-        assert transaction is not None, "Transaction data is None"
+        if transaction is None:
+            raise ValueError("Transaction data is None")
         self.ledger.transactions.loc[transaction.dt] = [
             transaction.amount,
             transaction.price,

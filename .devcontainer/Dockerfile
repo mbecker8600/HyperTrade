@@ -1,3 +1,4 @@
+# trunk-ignore-all(hadolint,checkov,git-diff-check)
 FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
 # Create a user for the container

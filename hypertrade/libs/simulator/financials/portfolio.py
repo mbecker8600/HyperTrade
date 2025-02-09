@@ -201,7 +201,8 @@ class PortfolioManager:
         logger.bind(simulation_time=self.event_manager.current_time).debug(
             f"Updating portfolio positions: {event}"
         )
-        assert event.data is not None, "Empty transaction passed to update positions"
+        if event.data is None:
+            raise ValueError("Empty transaction passed to update positions")
         transaction: Transaction = event.data
         self.portfolio.update(transaction)
         self._set_portfolio_market_price()

@@ -99,7 +99,8 @@ class TradingStrategy:
 
     def __init__(self, builder: StrategyBuilder) -> None:
         self._data_sources = builder._data_sources
-        assert builder._strategy_function, "Strategy function is None"
+        if builder._strategy_function is None:
+            raise ValueError("Strategy function is None")
         self._strategy_function: StrategyFunction = builder._strategy_function
 
         self.event_manager = ServiceLocator[EventManager]().get(

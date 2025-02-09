@@ -35,3 +35,24 @@ class OHLVCDataset(TimeSeriesDataset):
             data = data.to_frame().T
         self._schema.validate(data)
         return data
+
+
+class PricesDataset(TimeSeriesDataset):
+
+    def __init__(
+        self,
+        data_source: DataSource,
+        name: Optional[str] = None,
+        symbols: Optional[List[str]] = None,
+    ):
+        self.symbols = symbols
+        super().__init__(data_source, name)
+
+    def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame:
+        data = self.data_source.fetch(timestamp=idx)
+        if self.symbols is not None:
+            data = data.loc[pd.IndexSlice[:, self.symbols], :]
+        if isinstance(data, pd.Series):
+            data = data.to_frame().T
+        self._schema.validate(data)
+        return data

@@ -58,7 +58,8 @@ class BrokerService:
         logger.bind(simulation_time=current_time).debug(
             f"Executing trade order for order: {event.data}"
         )
-        assert event.data is not None, "Order data is None"
+        if event.data is None:
+            raise ValueError("Order data is None")
         order: Order = event.data
         current_price = float(
             self.dataset.fetch_current_price(current_time, [order.asset]).loc[
