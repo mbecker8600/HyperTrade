@@ -1,6 +1,7 @@
 # OHLVC Sample Data
 
-Pulled from the NASDAQ Database [Sharadar Equity Prices](https://data.nasdaq.com/databases/SEP)
+Pulled from the NASDAQ Database
+[Sharadar Equity Prices](https://data.nasdaq.com/databases/SEP)
 
 ## Notes
 

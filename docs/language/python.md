@@ -2,7 +2,8 @@
 
 ## Adding a new package (Python)
 
-To add a new package to the monorepo, you can run the following command from the root of the monorepo:
+To add a new package to the monorepo, you can run the following command from the
+root of the monorepo:
 
 ```bash
 pip install <package-name>
@@ -27,8 +28,8 @@ py_binary(
 )
 ```
 
-- Run the following command to start the Jupyter Notebook server:
-  bazel run //path/to/target:server
+- Run the following command to start the Jupyter Notebook server: bazel run
+  //path/to/target:server
 
-- Open notebook with kernel set to running server.
-  Note, you need the token from the console output to login.
+- Open notebook with kernel set to running server. Note, you need the token from
+  the console output to login.

@@ -4,7 +4,8 @@
     "docs/github-pages/*"
   ],
   "devDependencies": {
-    "@trunkio/launcher": "^1.3.4"
+    "@trunkio/launcher": "^1.3.4",
+    "prettier": "3.4.2"
   },
   "scripts": {
     "trunk": "trunk",

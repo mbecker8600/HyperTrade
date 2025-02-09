@@ -2,7 +2,9 @@
 
 ## Python
 
-The only way I've been able to figure out how to get good integration with VSCode is to import the `debugpy` module on the file you want to debug and then attach a debugger to it (i.e. in the launch.json).
+The only way I've been able to figure out how to get good integration with
+VSCode is to import the `debugpy` module on the file you want to debug and then
+attach a debugger to it (i.e. in the launch.json).
 
 ### Steps to debug
 
