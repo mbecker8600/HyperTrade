@@ -4,8 +4,8 @@ import unittest
 import pandas as pd
 
 from hypertrade.libs.tsfd.sources.csv import CSVSource
-from hypertrade.libs.tsfd.sources.formats.news import HeadlineFormat
-from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCFormat
+from hypertrade.libs.tsfd.sources.formats.news import HeadlineDataSourceFormat
+from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
 
 # import hypertrade.libs.debugging  # donotcommit
 
@@ -24,14 +24,16 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
 
     def test_bad_schema(self) -> None:
         with self.assertRaises(ValueError):
-            source = CSVSource(
-                filepath=self.bad_schema_ohlvc_sample_data_path, format=OHLVCFormat
+            source = OHLVCDataSourceFormat(
+                CSVSource(filepath=self.bad_schema_ohlvc_sample_data_path)
             )
             source.fetch()
 
     def test_full_data_load(self) -> None:
 
-        csv_source = CSVSource(filepath=self.ohlvc_sample_data_path, format=OHLVCFormat)
+        csv_source = OHLVCDataSourceFormat(
+            CSVSource(filepath=self.ohlvc_sample_data_path)
+        )
 
         full_data = csv_source.fetch()
 
@@ -41,7 +43,9 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
 
     def test_partial_data_load(self) -> None:
 
-        csv_source = CSVSource(filepath=self.ohlvc_sample_data_path, format=OHLVCFormat)
+        csv_source = OHLVCDataSourceFormat(
+            CSVSource(filepath=self.ohlvc_sample_data_path)
+        )
         partial_data = csv_source.fetch(timestamp=pd.Timestamp("2018-12-03"))
 
         # There are three symbols in the sample data so it should have 3 rows
@@ -50,7 +54,9 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
 
     def test_int_index(self) -> None:
 
-        csv_source = CSVSource(filepath=self.ohlvc_sample_data_path, format=OHLVCFormat)
+        csv_source = OHLVCDataSourceFormat(
+            CSVSource(filepath=self.ohlvc_sample_data_path)
+        )
 
         partial_data = csv_source.fetch(
             timestamp=1,
@@ -69,9 +75,8 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
         self.assertEqual(len(csv_source), 82)
 
     def test_slice(self) -> None:
-        csv_source = CSVSource(
-            filepath=self.ohlvc_sample_data_path,
-            format=OHLVCFormat,
+        csv_source = OHLVCDataSourceFormat(
+            CSVSource(filepath=self.ohlvc_sample_data_path)
         )
 
         data = csv_source.fetch(
@@ -91,8 +96,8 @@ class TestHeadlineCsvDatasource(unittest.TestCase):
         ohlvc_sample_data_path = os.path.join(
             ws, "../../tests/data/news/headline_sample.csv"
         )
-        self.csv_source = CSVSource(
-            filepath=ohlvc_sample_data_path, format=HeadlineFormat
+        self.csv_source = HeadlineDataSourceFormat(
+            CSVSource(filepath=ohlvc_sample_data_path)
         )
 
     def test_full_data_load(self) -> None:

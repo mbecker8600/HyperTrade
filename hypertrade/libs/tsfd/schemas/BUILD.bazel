@@ -10,6 +10,7 @@ py_library(
         ":macro",
         ":news",
         ":ohlvc",
+        ":prices",
     ],
 )
 
@@ -28,8 +29,22 @@ py_library(
 )
 
 py_library(
+    name = "default",
+    srcs = ["default.py"],
+    data = [],
+    deps = [],
+)
+
+py_library(
     name = "macro",
     srcs = ["macro.py"],
+    data = [],
+    deps = [],
+)
+
+py_library(
+    name = "prices",
+    srcs = ["prices.py"],
     data = [],
     deps = [],
 )

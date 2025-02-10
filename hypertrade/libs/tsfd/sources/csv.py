@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, List, Optional, Protocol, Type, cast
+from typing import Any, List, Optional, Protocol, cast
 
 import exchange_calendars as xcals
 import pandas as pd
@@ -7,11 +7,9 @@ import pandera as pa
 import pytz
 from pandas._libs.tslibs.nattype import NaTType
 
-from hypertrade.libs.tsfd.sources.formats.types import DataSourceFormat
-from hypertrade.libs.tsfd.sources.types import DataSource
+from hypertrade.libs.tsfd.sources.formats.default import DefaultDataSourceFormat
+from hypertrade.libs.tsfd.sources.types import DataSource, DataSourceFormat
 from hypertrade.libs.tsfd.utils.time import cast_timestamp
-
-DEFAULT_INDEX_COL = ["date"]
 
 
 class IndexStrategy(Protocol):
@@ -84,7 +82,6 @@ class CSVSource(DataSource):
     def __init__(
         self,
         filepath: str,
-        format: Type[DataSourceFormat],
         tz: str = "America/New_York",
         exchange: str = "XNYS",
         **kwargs: Any
@@ -93,15 +90,22 @@ class CSVSource(DataSource):
         self._kwargs = kwargs
         self._tz = pytz.timezone(tz)
         self._calendar: xcals.ExchangeCalendar = xcals.get_calendar(exchange)
-        self._format = format
+
+        self._format: DataSourceFormat = DefaultDataSourceFormat(self)
         self._index: pa.Index | pa.MultiIndex = cast(
-            pa.Index | pa.MultiIndex, self.format.schema.index
+            pa.Index | pa.MultiIndex, self._format.schema.index
         )
         self._index_strategy = _get_index_strategy(self._index)
 
     @property
-    def format(self) -> Type[DataSourceFormat]:
+    def format(self) -> DataSourceFormat:
         return self._format
+
+    @format.setter
+    def format(self, value: DataSourceFormat) -> None:
+        self._format = value
+        self._index = cast(pa.Index | pa.MultiIndex, self.format.schema.index)
+        self._index_strategy = _get_index_strategy(self._index)
 
     @cached_property
     def data(self) -> pd.DataFrame:
@@ -127,7 +131,6 @@ class CSVSource(DataSource):
 
         if isinstance(timestamp, slice):
             data = self._index_strategy.loc_slice(self.data, timestamp)
-            self.format.schema.validate(data)
             return data
 
         # Handle integer index by converting to timestamp
@@ -141,5 +144,4 @@ class CSVSource(DataSource):
 
         # Return data at timestamp
         data = self._index_strategy.loc(self.data, timestamp)
-        self.format.schema.validate(data)
         return data

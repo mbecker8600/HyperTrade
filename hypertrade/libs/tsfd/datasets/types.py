@@ -53,7 +53,7 @@ class TimeSeriesDataset(TsfdDataset):
     def __init__(self, data_source: DataSource, name: Optional[str] = None):
         self.data_source = data_source
         self.name = name
-        self.full_data: pd.DataFrame | pd.Series = self.data_source.fetch()
+        self.full_data: pd.DataFrame = self.data_source.fetch()
         self.timestamps: pd.Index = self.full_data.index
 
     def __len__(self) -> int:
@@ -65,7 +65,7 @@ class TimeSeriesDataset(TsfdDataset):
     def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame: ...
 
     def __repr__(self) -> str:  # Improved representation for easier debugging
-        return f"{self.__class__.__name__}(name={self.name}, shape={self.full_data.shape}, time_range={self.get_time_range()})"
+        return f"{self.__class__.__name__}(name={self.name}, shape={len(self)}, time_range={self.get_time_range()})"
 
     def get_time_range(self) -> Tuple[pd.Timestamp, pd.Timestamp]:
         """Returns the start and end timestamps of the dataset."""

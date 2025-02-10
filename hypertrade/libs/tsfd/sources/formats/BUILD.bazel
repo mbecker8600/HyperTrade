@@ -19,9 +19,9 @@ py_library(
     srcs = ["ohlvc.py"],
     data = [],
     deps = [
-        ":types",
         "//hypertrade/libs/tsfd/datasets:asset",
         "//hypertrade/libs/tsfd/schemas:ohlvc",
+        "//hypertrade/libs/tsfd/sources:types",
     ],
 )
 
@@ -30,8 +30,8 @@ py_library(
     srcs = ["macro.py"],
     data = [],
     deps = [
-        ":types",
         "//hypertrade/libs/tsfd/schemas:macro",
+        "//hypertrade/libs/tsfd/sources:types",
     ],
 )
 
@@ -40,14 +40,17 @@ py_library(
     srcs = ["news.py"],
     data = [],
     deps = [
-        ":types",
         "//hypertrade/libs/tsfd/schemas:news",
+        "//hypertrade/libs/tsfd/sources:types",
     ],
 )
 
 py_library(
-    name = "types",
-    srcs = ["types.py"],
+    name = "default",
+    srcs = ["default.py"],
     data = [],
-    deps = [],
+    deps = [
+        "//hypertrade/libs/tsfd/schemas:default",
+        "//hypertrade/libs/tsfd/sources:types",
+    ],
 )

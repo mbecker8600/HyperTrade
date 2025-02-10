@@ -6,7 +6,7 @@ import pandas as pd
 # import hypertrade.libs.debugging  # donotcommit
 from hypertrade.libs.tsfd.datasets.asset import OHLVCDataset
 from hypertrade.libs.tsfd.sources.csv import CSVSource
-from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCFormat
+from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
 
 
 class TestOHLVCCsvDataSet(unittest.TestCase):
@@ -20,8 +20,8 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
     def test_single_index(self) -> None:
 
         ohlvc_dataset = OHLVCDataset(
-            data_source=CSVSource(
-                filepath=self.ohlvc_sample_data_path, format=OHLVCFormat
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath=self.ohlvc_sample_data_path),
             ),
             name="ohlvc",
         )
@@ -41,8 +41,8 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
     def test_filtering(self) -> None:
 
         ohlvc_dataset = OHLVCDataset(
-            data_source=CSVSource(
-                filepath=self.ohlvc_sample_data_path, format=OHLVCFormat
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath=self.ohlvc_sample_data_path)
             ),
             name="ohlvc",
             symbols=["GE", "BA"],
@@ -61,8 +61,8 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
 
     def test_iterator(self) -> None:
         ohlvc_dataset = OHLVCDataset(
-            data_source=CSVSource(
-                filepath=self.ohlvc_sample_data_path, format=OHLVCFormat
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath=self.ohlvc_sample_data_path)
             ),
             name="ohlvc",
         )

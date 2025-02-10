@@ -18,6 +18,7 @@ py_library(
     data = [],
     deps = [
         ":types",
+        "//hypertrade/libs/tsfd/sources/formats:default",
         "//hypertrade/libs/tsfd/utils:time",
     ],
 )
@@ -26,5 +27,5 @@ py_library(
     name = "types",
     srcs = ["types.py"],
     data = [],
-    deps = ["//hypertrade/libs/tsfd/sources/formats:types"],
+    deps = [],
 )

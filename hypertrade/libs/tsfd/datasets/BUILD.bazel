@@ -28,5 +28,7 @@ py_library(
     deps = [
         ":types",
         "//hypertrade/libs/tsfd/schemas:ohlvc",
+        "//hypertrade/libs/tsfd/schemas:prices",
+        "//hypertrade/libs/tsfd/sources:types",
     ],
 )
