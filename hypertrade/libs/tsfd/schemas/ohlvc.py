@@ -25,6 +25,12 @@ ohlvc_schema = pa.DataFrameSchema(
         ),
     },
     index=pa.MultiIndex(
-        [pa.Index(pd.Timestamp, name="date"), pa.Index(str, name="ticker")]
+        [
+            pa.Index(
+                pd.DatetimeTZDtype(tz="UTC"),
+                name="date",
+            ),
+            pa.Index(str, name="ticker"),
+        ]
     ),
 )

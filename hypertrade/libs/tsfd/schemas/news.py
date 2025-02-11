@@ -10,5 +10,5 @@ headline_schema = pa.DataFrameSchema(
             str,
         ),
     },
-    index=pa.Index(pd.Timestamp, name="date"),
+    index=pa.Index(pd.DatetimeTZDtype(tz="UTC"), name="date"),
 )

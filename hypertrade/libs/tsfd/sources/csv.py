@@ -1,14 +1,12 @@
 from functools import cached_property
 from typing import Any, List, Optional, Protocol, cast
 
-import exchange_calendars as xcals
 import pandas as pd
 import pandera as pa
-import pytz
 from pandas._libs.tslibs.nattype import NaTType
 
 from hypertrade.libs.tsfd.sources.formats.default import DefaultDataSourceFormat
-from hypertrade.libs.tsfd.sources.types import DataSource, DataSourceFormat
+from hypertrade.libs.tsfd.sources.types import DataSource, DataSourceFormat, Granularity
 from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 
@@ -80,16 +78,11 @@ class CSVSource(DataSource):
     """
 
     def __init__(
-        self,
-        filepath: str,
-        tz: str = "America/New_York",
-        exchange: str = "XNYS",
-        **kwargs: Any
+        self, filepath: str, granularity: Granularity = Granularity.DAILY, **kwargs: Any
     ) -> None:
+        super().__init__(granularity)
         self._filepath = filepath
         self._kwargs = kwargs
-        self._tz = pytz.timezone(tz)
-        self._calendar: xcals.ExchangeCalendar = xcals.get_calendar(exchange)
 
         self._format: DataSourceFormat = DefaultDataSourceFormat(self)
         self._index: pa.Index | pa.MultiIndex = cast(
@@ -120,7 +113,7 @@ class CSVSource(DataSource):
     def __len__(self) -> int:
         return self._index_strategy.size(self.data)
 
-    def fetch(
+    def _fetch(
         self,
         timestamp: Optional[pd.Timestamp | NaTType | slice | int] = None,
     ) -> pd.DataFrame:
@@ -141,6 +134,8 @@ class CSVSource(DataSource):
 
         if isinstance(timestamp, pd.Timestamp) or isinstance(timestamp, NaTType):
             timestamp = cast_timestamp(timestamp)
+            # if self.granularity == Granularity.DAILY:
+            #     timestamp = timestamp.normalize()
 
         # Return data at timestamp
         data = self._index_strategy.loc(self.data, timestamp)

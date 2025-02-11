@@ -2,12 +2,12 @@ import os
 import unittest
 
 import pandas as pd
+import pytz
 
+# import hypertrade.libs.debugging  # donotcommit
 from hypertrade.libs.tsfd.sources.csv import CSVSource
 from hypertrade.libs.tsfd.sources.formats.news import HeadlineDataSourceFormat
 from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
-
-# import hypertrade.libs.debugging  # donotcommit
 
 
 class TestOHLVCCsvDatasource(unittest.TestCase):
@@ -21,6 +21,7 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
         self.bad_schema_ohlvc_sample_data_path = os.path.join(
             ws, "../../tests/data/ohlvc/bad_schema.csv"
         )
+        self.tz = pytz.timezone("America/New_York")
 
     def test_bad_schema(self) -> None:
         with self.assertRaises(ValueError):
@@ -46,7 +47,9 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
         csv_source = OHLVCDataSourceFormat(
             CSVSource(filepath=self.ohlvc_sample_data_path)
         )
-        partial_data = csv_source.fetch(timestamp=pd.Timestamp("2018-12-03"))
+        partial_data = csv_source.fetch(
+            timestamp=pd.Timestamp("2018-12-03", tz=self.tz)
+        )
 
         # There are three symbols in the sample data so it should have 3 rows
         self.assertEqual(partial_data.shape, (3, 6))
@@ -67,7 +70,7 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
         self.assertTrue(
             all(
                 [
-                    ts == pd.Timestamp("2018-09-05")
+                    ts == pd.Timestamp("2018-09-05", tz=self.tz)
                     for ts in partial_data.index.get_level_values(0).to_list()
                 ]
             )
@@ -80,7 +83,10 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
         )
 
         data = csv_source.fetch(
-            timestamp=slice(pd.Timestamp("2018-12-03"), pd.Timestamp("2018-12-06"))
+            timestamp=slice(
+                pd.Timestamp("2018-12-03", tz=self.tz),
+                pd.Timestamp("2018-12-06", tz=self.tz),
+            )
         )
 
         # Start index: The slice includes the element at the start index.
@@ -99,6 +105,7 @@ class TestHeadlineCsvDatasource(unittest.TestCase):
         self.csv_source = HeadlineDataSourceFormat(
             CSVSource(filepath=ohlvc_sample_data_path)
         )
+        self.tz = pytz.timezone("America/New_York")
 
     def test_full_data_load(self) -> None:
 
@@ -111,7 +118,7 @@ class TestHeadlineCsvDatasource(unittest.TestCase):
     def test_partial_data_load(self) -> None:
 
         partial_data = self.csv_source.fetch(
-            timestamp=pd.Timestamp("2020-07-17 19:51:00")
+            timestamp=pd.Timestamp("2020-07-17 19:51:00", tz=self.tz)
         )
         self.assertEqual(partial_data.shape, (1, 2))
 
@@ -126,7 +133,7 @@ class TestHeadlineCsvDatasource(unittest.TestCase):
         self.assertTrue(
             all(
                 [
-                    ts == pd.Timestamp("2017-12-22 19:07:00")
+                    ts == pd.Timestamp("2017-12-22 19:07:00", tz=self.tz)
                     for ts in partial_data.index.to_list()
                 ]
             )
@@ -134,7 +141,10 @@ class TestHeadlineCsvDatasource(unittest.TestCase):
 
     def test_slice(self) -> None:
         data = self.csv_source.fetch(
-            timestamp=slice(pd.Timestamp("2020-07-15"), pd.Timestamp("2020-07-17"))
+            timestamp=slice(
+                pd.Timestamp("2020-07-15", tz=self.tz),
+                pd.Timestamp("2020-07-17", tz=self.tz),
+            )
         )
 
         self.assertEqual(data.shape, (8, 2))

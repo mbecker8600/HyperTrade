@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from enum import Enum
 from typing import ClassVar, Optional
 
 import pandas as pd
@@ -8,10 +9,51 @@ import pandera as pa
 from pandas._libs.tslibs.nattype import NaTType
 
 
+class Granularity(Enum):
+    DAILY = "D"
+    HOURLY = "H"
+    MINUTE = "T"
+
+
 class DataSource(ABC):
+    def __init__(self, granularity: Granularity = Granularity.DAILY):
+        self.granularity = granularity
+
+    def fetch(
+        self,
+        timestamp: Optional[pd.Timestamp | NaTType | slice | int] = None,
+    ) -> pd.DataFrame:
+        """Fetch data at a specific point in time. If timestamp is None, fetch all data.
+
+        Arguments:
+            timestamp: Timestamp at which to fetch data. If None, fetch all data.
+                Note, if timestamp is not timezone aware, it will be localized to UTC.
+
+        Returns:
+            pd.DataFrame: Data at the specified timestamp
+        """
+        if isinstance(timestamp, pd.Timestamp):
+            timestamp = self._maybe_tz_localize(timestamp)
+        if (
+            isinstance(timestamp, slice)
+            and isinstance(timestamp.start, pd.Timestamp)
+            and isinstance(timestamp.stop, pd.Timestamp)
+        ):
+            timestamp = slice(
+                self._maybe_tz_localize(timestamp.start),
+                self._maybe_tz_localize(timestamp.stop),
+                timestamp.step,
+            )
+
+        return self._fetch(timestamp)
+
+    def _maybe_tz_localize(self, timestamp: pd.Timestamp) -> pd.Timestamp:
+        if timestamp.tzinfo is None:
+            return timestamp.tz_localize("UTC")
+        return timestamp
 
     @abstractmethod
-    def fetch(
+    def _fetch(
         self,
         timestamp: Optional[pd.Timestamp | NaTType | slice | int] = None,
     ) -> pd.DataFrame: ...
@@ -37,7 +79,7 @@ class DataSourceFormat(DataSource):
         self._datasource = datasource
         self._datasource.format = self
 
-    def fetch(
+    def _fetch(
         self,
         timestamp: Optional[pd.Timestamp | NaTType | slice | int] = None,
     ) -> pd.DataFrame:

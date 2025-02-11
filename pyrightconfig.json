@@ -5,6 +5,7 @@
     "**/bazel-bin",
     "**/bazel-HyperTrade",
     "**/bazel-testlogs",
+    "**/.local",
     "**/__pycache__"
   ],
   "ignore": [
@@ -13,7 +14,8 @@
     "**/bazel-bin",
     "**/bazel-HyperTrade",
     "**/bazel-testlogs",
-    "**/__pycache__"
+    "**/__pycache__",
+    "**/.local"
   ]
   // "extraPaths": ["bazel-bin", "./bazel-ubuntu"],
 }

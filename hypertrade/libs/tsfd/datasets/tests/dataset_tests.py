@@ -2,9 +2,10 @@ import os
 import unittest
 
 import pandas as pd
+import pytz
 
 # import hypertrade.libs.debugging  # donotcommit
-from hypertrade.libs.tsfd.datasets.asset import OHLVCDataset
+from hypertrade.libs.tsfd.datasets.asset import OHLVCDataset, PricesDataset
 from hypertrade.libs.tsfd.sources.csv import CSVSource
 from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
 
@@ -75,6 +76,50 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
     #     )
 
     #     data = ohlvc_dataset[pd.Timestamp("2018-12-03") : pd.Timestamp("2018-12-06")]
+
+
+class TestPricesCsvDataSet(unittest.TestCase):
+    def setUp(self) -> None:
+        ws = os.path.dirname(__file__)
+        ohlvc_sample_data_path = os.path.join(ws, "../../tests/data/ohlvc/sample.csv")
+        self.prices_dataset = PricesDataset(
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath=ohlvc_sample_data_path),
+            ),
+            symbols=["GE", "BA"],
+            name="prices",
+        )
+        self.nytz = pytz.timezone("America/New_York")
+
+    def test_current_price_market_open(self) -> None:
+
+        # Fetch OCHLV data
+        # TODO: Add timezone awareness, tz=self.nytz
+        data = self.prices_dataset[pd.Timestamp("2018-12-31 09:30:00")]
+        self.assertEquals(len(data), 2)
+        self.assertEquals(data.index.to_list(), ["GE", "BA"])
+        self.assertAlmostEquals(data.loc["GE"], 35.37, places=2)
+        self.assertAlmostEquals(data.loc["BA"], 311.45, places=2)
+
+    def test_current_price_market_close(self) -> None:
+
+        # Fetch OCHLV data
+        # TODO: Add timezone awareness, tz=self.nytz
+        data = self.prices_dataset[pd.Timestamp("2018-12-31 16:00:00")]
+        self.assertEquals(len(data), 2)
+        self.assertEquals(data.index.to_list(), ["GE", "BA"])
+        self.assertAlmostEquals(data.loc["GE"], 35.61, places=2)
+        self.assertAlmostEquals(data.loc["BA"], 313.39, places=2)
+
+    def test_current_price_before_oppen(self) -> None:
+
+        # Fetch OCHLV data
+        # TODO: Add timezone awareness, tz=self.nytz
+        data = self.prices_dataset[pd.Timestamp("2018-12-31 8:00:00")]
+        self.assertEquals(len(data), 2)
+        self.assertEquals(data.index.to_list(), ["GE", "BA"])
+        self.assertAlmostEquals(data.loc["GE"], 35.33, places=2)
+        self.assertAlmostEquals(data.loc["BA"], 307.44, places=2)
 
 
 if __name__ == "__main__":

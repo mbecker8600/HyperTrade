@@ -16,7 +16,7 @@ from hypertrade.libs.tsfd.sources.types import DataSource
 
 
 # trunk-ignore(mypy/misc)
-class TsfdDataset(IterableDataset):
+class TsfdDataset(IterableDataset[pd.DataFrame]):
     """
     Abstract base class for all datasets. A dataset is a collection of data that can be
     fetched at a specific point in time. It adheres to a protocol compatible with

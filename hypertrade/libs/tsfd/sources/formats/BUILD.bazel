@@ -7,10 +7,10 @@ py_library(
     srcs = [],
     data = [],
     deps = [
+        ":default",
         ":macro",
         ":news",
         ":ohlvc",
-        ":types",
     ],
 )
 
