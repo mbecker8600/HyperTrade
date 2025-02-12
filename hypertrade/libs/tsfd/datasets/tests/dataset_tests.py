@@ -1,6 +1,7 @@
 import os
 import unittest
 
+import exchange_calendars as xcals
 import pandas as pd
 import pytz
 
@@ -17,6 +18,7 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
         self.ohlvc_sample_data_path = os.path.join(
             ws, "../../tests/data/ohlvc/sample.csv"
         )
+        self.tz = pytz.timezone("America/New_York")
 
     def test_single_index(self) -> None:
 
@@ -27,12 +29,12 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
             name="ohlvc",
         )
 
-        data = ohlvc_dataset[pd.Timestamp("2018-12-03")]
+        data = ohlvc_dataset[pd.Timestamp("2018-12-03", tz=self.tz)]
         self.assertEqual(data.shape, (3, 6))
         self.assertTrue(
             all(
                 [
-                    ts == pd.Timestamp("2018-12-03")
+                    ts == pd.Timestamp("2018-12-03", tz=self.tz)
                     for ts in data.index.get_level_values(0).to_list()
                 ]
             )
@@ -49,12 +51,12 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
             symbols=["GE", "BA"],
         )
 
-        data = ohlvc_dataset[pd.Timestamp("2018-12-03")]
+        data = ohlvc_dataset[pd.Timestamp("2018-12-03", tz=self.tz)]
         self.assertEqual(data.shape, (2, 6))
         self.assertTrue(
             all(
                 [
-                    ts == pd.Timestamp("2018-12-03")
+                    ts == pd.Timestamp("2018-12-03", tz=self.tz)
                     for ts in data.index.get_level_values(0).to_list()
                 ]
             )
@@ -82,44 +84,43 @@ class TestPricesCsvDataSet(unittest.TestCase):
     def setUp(self) -> None:
         ws = os.path.dirname(__file__)
         ohlvc_sample_data_path = os.path.join(ws, "../../tests/data/ohlvc/sample.csv")
+        self.cal = xcals.get_calendar("XNYS")
         self.prices_dataset = PricesDataset(
             data_source=OHLVCDataSourceFormat(
                 CSVSource(filepath=ohlvc_sample_data_path),
             ),
             symbols=["GE", "BA"],
             name="prices",
+            trading_calendar=self.cal,
         )
         self.nytz = pytz.timezone("America/New_York")
 
     def test_current_price_market_open(self) -> None:
 
         # Fetch OCHLV data
-        # TODO: Add timezone awareness, tz=self.nytz
-        data = self.prices_dataset[pd.Timestamp("2018-12-31 09:30:00")]
+        data = self.prices_dataset[pd.Timestamp("2018-12-31 09:30:00", tz=self.nytz)]
         self.assertEquals(len(data), 2)
-        self.assertEquals(data.index.to_list(), ["GE", "BA"])
-        self.assertAlmostEquals(data.loc["GE"], 35.37, places=2)
-        self.assertAlmostEquals(data.loc["BA"], 311.45, places=2)
+        self.assertEquals(set(data.index.to_list()), set(["GE", "BA"]))
+        self.assertEquals(data.loc["GE"].values[0], 35.37)
+        self.assertEquals(data.loc["BA"].values[0], 311.45)
 
     def test_current_price_market_close(self) -> None:
 
         # Fetch OCHLV data
-        # TODO: Add timezone awareness, tz=self.nytz
-        data = self.prices_dataset[pd.Timestamp("2018-12-31 16:00:00")]
+        data = self.prices_dataset[pd.Timestamp("2018-12-31 16:00:00", tz=self.nytz)]
         self.assertEquals(len(data), 2)
-        self.assertEquals(data.index.to_list(), ["GE", "BA"])
-        self.assertAlmostEquals(data.loc["GE"], 35.61, places=2)
-        self.assertAlmostEquals(data.loc["BA"], 313.39, places=2)
+        self.assertEquals(set(data.index.to_list()), set(["GE", "BA"]))
+        self.assertEquals(data.loc["GE"].values[0], 35.61)
+        self.assertEquals(data.loc["BA"].values[0], 313.39)
 
-    def test_current_price_before_oppen(self) -> None:
+    def test_current_price_before_open(self) -> None:
 
         # Fetch OCHLV data
-        # TODO: Add timezone awareness, tz=self.nytz
-        data = self.prices_dataset[pd.Timestamp("2018-12-31 8:00:00")]
+        data = self.prices_dataset[pd.Timestamp("2018-12-31 8:00:00", tz=self.nytz)]
         self.assertEquals(len(data), 2)
-        self.assertEquals(data.index.to_list(), ["GE", "BA"])
-        self.assertAlmostEquals(data.loc["GE"], 35.33, places=2)
-        self.assertAlmostEquals(data.loc["BA"], 307.44, places=2)
+        self.assertEquals(set(data.index.to_list()), set(["GE", "BA"]))
+        self.assertEquals(data.loc["GE"].values[0], 35.33)
+        self.assertEquals(data.loc["BA"].values[0], 307.44)
 
 
 if __name__ == "__main__":

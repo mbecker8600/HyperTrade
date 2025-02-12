@@ -44,10 +44,11 @@ class TsfdDataset(IterableDataset[pd.DataFrame]):
 
 class TimeSeriesDataset(TsfdDataset):
     """
-    Abstract base class for all datasets. A dataset is a collection of data that can be
-    fetched at a specific point in time. It adheres to a protocol compatible with
-    the PyTorch Dataset and IterableDataset classes so that it can be used with PyTorch
-    DataLoader objects.
+    The TimeSeriesDataset is an abstraction for applying domain-specific logic to time-series data.
+    It references a DataSource (or DataSourceFormat) and adapts the returned data for a particular
+    use case, such as OHLCV or current prices. Its role is to manage symbols, apply domain filters or
+    transformations, and ensure data integrity at the dataset level, while delegating raw access
+    and format validations to the underlying DataSource or DataSourceFormat.
     """
 
     def __init__(self, data_source: DataSource, name: Optional[str] = None):

@@ -114,15 +114,18 @@ class Event(Generic[T]):
         return f"Event Type: {self.event_type}, Time: {self.time}, Data: {self.data}"
 
     def __lt__(self, other: Event[Any]) -> bool:
-        assert isinstance(
-            other, Event
-        ), f"Events should only compare to other events, but {type(other)} as passed."
-        return self.id < other.id
+        if isinstance(other, Event):
+            return self.id < other.id
+        else:
+            raise ValueError(
+                f"Events should only compare to other events, but {type(other)} as passed."
+            )
 
     def __le__(self, other: Event[Any]) -> bool:
-        assert isinstance(
-            other, Event
-        ), f"Events should only compare to other events, but {type(other)} as passed."
+        if not isinstance(other, Event):
+            raise ValueError(
+                f"Events should only compare to other events, but {type(other)} as passed."
+            )
         return self.id <= other.id
 
 
@@ -199,6 +202,7 @@ class EventManager:
         exchange: str = "XNYS",
         frequency: Frequency = Frequency.DAILY,
         tz: str = "America/New_York",
+        # trunk-ignore(bandit/B108)
         event_log_dir: str = "/tmp/logs/hypertrade/events",
     ) -> None:
         """Initialize the event manager.
@@ -332,10 +336,10 @@ class EventManager:
         next_market_event: Event[Any] = self._market_events.next_market_event(
             self._current_time
         )
-
-        assert (
-            next_market_event.time is not None
-        ), "next_market_event came back with None time. Something went wrong"
+        if next_market_event.time is None:
+            raise ValueError(
+                "next_market_event came back with None time. Something went wrong"
+            )
         # Drain event queue if there are events scheduled and it's time to handle them
         if self._event_queue and self._event_queue[0][0] <= next_market_event.time:
             event_time, event = heapq.heappop(self._event_queue)

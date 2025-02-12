@@ -18,50 +18,42 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
         self.ohlvc_sample_data_path = os.path.join(
             ws, "../../tests/data/ohlvc/sample.csv"
         )
+        self.csv_source = OHLVCDataSourceFormat(
+            CSVSource(filepath=self.ohlvc_sample_data_path)
+        )
         self.bad_schema_ohlvc_sample_data_path = os.path.join(
             ws, "../../tests/data/ohlvc/bad_schema.csv"
+        )
+        self.bad_csv_source = OHLVCDataSourceFormat(
+            CSVSource(filepath=self.bad_schema_ohlvc_sample_data_path)
         )
         self.tz = pytz.timezone("America/New_York")
 
     def test_bad_schema(self) -> None:
         with self.assertRaises(ValueError):
-            source = OHLVCDataSourceFormat(
-                CSVSource(filepath=self.bad_schema_ohlvc_sample_data_path)
-            )
-            source.fetch()
+            self.bad_csv_source.fetch()
 
     def test_full_data_load(self) -> None:
 
-        csv_source = OHLVCDataSourceFormat(
-            CSVSource(filepath=self.ohlvc_sample_data_path)
-        )
-
-        full_data = csv_source.fetch()
+        full_data = self.csv_source.fetch()
 
         # Note that it is 7 columns because the date is the index
         self.assertEqual(full_data.shape, (246, 6))
-        self.assertEqual(len(csv_source), 82)
+        self.assertEqual(len(self.csv_source), 82)
 
     def test_partial_data_load(self) -> None:
 
-        csv_source = OHLVCDataSourceFormat(
-            CSVSource(filepath=self.ohlvc_sample_data_path)
-        )
-        partial_data = csv_source.fetch(
+        partial_data = self.csv_source.fetch(
             timestamp=pd.Timestamp("2018-12-03", tz=self.tz)
         )
 
         # There are three symbols in the sample data so it should have 3 rows
         self.assertEqual(partial_data.shape, (3, 6))
-        self.assertEqual(len(csv_source), 82)
+        self.assertEqual(len(self.csv_source), 82)
 
     def test_int_index(self) -> None:
 
-        csv_source = OHLVCDataSourceFormat(
-            CSVSource(filepath=self.ohlvc_sample_data_path)
-        )
-
-        partial_data = csv_source.fetch(
+        partial_data = self.csv_source.fetch(
             timestamp=1,
         )
 
@@ -75,14 +67,11 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
                 ]
             )
         )
-        self.assertEqual(len(csv_source), 82)
+        self.assertEqual(len(self.csv_source), 82)
 
     def test_slice(self) -> None:
-        csv_source = OHLVCDataSourceFormat(
-            CSVSource(filepath=self.ohlvc_sample_data_path)
-        )
 
-        data = csv_source.fetch(
+        data = self.csv_source.fetch(
             timestamp=slice(
                 pd.Timestamp("2018-12-03", tz=self.tz),
                 pd.Timestamp("2018-12-06", tz=self.tz),
@@ -92,6 +81,13 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
         # Start index: The slice includes the element at the start index.
         # End index: The slice goes up to, but does not include, the element at the end index.
         self.assertEqual(data.shape, (6, 6))
+
+    def test_latest_valid_ts(self) -> None:
+        """Test that the latest valid timestamp is returned that isn't beyond the searched time"""
+        data = self.csv_source.fetch(
+            timestamp=pd.Timestamp("2018-12-03 09:30:00", tz=self.tz)
+        )
+        self.assertEquals(data.xs("GE", level="ticker")["open"].values[0], 35.42)
 
 
 class TestHeadlineCsvDatasource(unittest.TestCase):
@@ -148,6 +144,16 @@ class TestHeadlineCsvDatasource(unittest.TestCase):
         )
 
         self.assertEqual(data.shape, (8, 2))
+
+    def test_latest_valid_ts(self) -> None:
+        """Test that the latest valid timestamp is returned that isn't beyond the searched time"""
+        data = self.csv_source.fetch(
+            timestamp=pd.Timestamp("2020-07-16 9:00:00", tz=self.tz)
+        )
+        self.assertEquals(
+            data.index.to_list()[0],
+            pd.Timestamp("2020-07-16 12:54:00", tz=pytz.timezone("UTC")),
+        )
 
 
 if __name__ == "__main__":

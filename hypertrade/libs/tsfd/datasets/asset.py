@@ -1,13 +1,16 @@
 from abc import abstractmethod
-from typing import List, Optional
+from typing import List, Optional, cast
 
+import exchange_calendars as xcals
 import pandas as pd
+import pandera as pa
 from pandas._libs.tslibs.nattype import NaTType
 
 from hypertrade.libs.tsfd.datasets.types import TimeSeriesDataset
 from hypertrade.libs.tsfd.schemas.ohlvc import ohlvc_schema
 from hypertrade.libs.tsfd.schemas.prices import prices_schema
 from hypertrade.libs.tsfd.sources.types import DataSource, Granularity
+from hypertrade.libs.tsfd.utils.dataframe import get_index_strategy
 
 
 class OhlvcDatasetAdapter(DataSource):
@@ -61,8 +64,22 @@ class PricesDatasetAdapter(DataSource):
 
     @abstractmethod
     def prices_adapter(
-        self, idx: pd.Timestamp | NaTType | slice | int, df: pd.DataFrame
-    ) -> pd.DataFrame: ...
+        self,
+        idx: pd.Timestamp | NaTType | slice | int,
+        df: pd.DataFrame,
+        trading_calendar: xcals.ExchangeCalendar,
+    ) -> pd.DataFrame:
+        """Adapt the data to the PricesDataset format based on the
+        trading calendar and the timestamp.
+
+        Example:
+            index                  price    symbol
+            2004-01-09 16:00:00    83.10    'MSFT'
+            2004-01-13 09:30:00    340.43   'AAPL'
+            2004-01-13 16:00:00    340.43   'AAPL'
+
+        """
+        ...
 
 
 class PricesDataset(TimeSeriesDataset):
@@ -103,6 +120,7 @@ class PricesDataset(TimeSeriesDataset):
     def __init__(
         self,
         data_source: PricesDatasetAdapter,
+        trading_calendar: xcals.ExchangeCalendar,
         name: Optional[str] = None,
         symbols: Optional[List[str]] = None,
         granularity: Granularity = Granularity.DAILY,
@@ -111,15 +129,33 @@ class PricesDataset(TimeSeriesDataset):
         self.symbols = symbols
         self.data_source: PricesDatasetAdapter = data_source
         self.granularity = granularity
+        self.trading_calendar = trading_calendar
 
     def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame:
-        if isinstance(idx, pd.Timestamp) and idx.tzinfo is None:
-            idx = idx.tz_localize("UTC")
+
+        original_idx = idx
+        if isinstance(idx, NaTType):
+            raise ValueError("Invalid timestamp passed to fetch data")
+
+        if isinstance(idx, pd.Timestamp):
+            if idx.tzinfo is None:
+                idx = idx.tz_localize("UTC")
+
+            # Need to pass in a slice because if the timestamp is before the current
+            # day close, we need to fetch the previous close data
+            idx = slice(
+                self.trading_calendar.previous_close(idx.normalize()).normalize(), idx
+            )
+
         data = self.data_source.fetch(timestamp=idx)
-        data = self.data_source.prices_adapter(idx, data)
+        data = self.data_source.prices_adapter(idx, data, self.trading_calendar)
         if self.symbols is not None:
-            data = data.loc[pd.IndexSlice[:, self.symbols], :]
+            data = data.loc[pd.IndexSlice[:, self.symbols], :].sort_index()
         if isinstance(data, pd.Series):
             data = data.to_frame().T
+
+        index_strategy = get_index_strategy(data.index)
+        data = index_strategy.loc(data, original_idx)
+        data.reset_index(level=0, drop=True, inplace=True)
         self._schema.validate(data)
         return data

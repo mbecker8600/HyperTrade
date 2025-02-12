@@ -8,3 +8,10 @@ py_library(
     data = [],
     deps = [],
 )
+
+py_library(
+    name = "dataframe",
+    srcs = ["dataframe.py"],
+    data = [],
+    deps = [],
+)

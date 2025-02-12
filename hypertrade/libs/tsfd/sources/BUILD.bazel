@@ -19,6 +19,7 @@ py_library(
     deps = [
         ":types",
         "//hypertrade/libs/tsfd/sources/formats:default",
+        "//hypertrade/libs/tsfd/utils:dataframe",
         "//hypertrade/libs/tsfd/utils:time",
     ],
 )

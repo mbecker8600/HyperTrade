@@ -30,5 +30,6 @@ py_library(
         "//hypertrade/libs/tsfd/schemas:ohlvc",
         "//hypertrade/libs/tsfd/schemas:prices",
         "//hypertrade/libs/tsfd/sources:types",
+        "//hypertrade/libs/tsfd/utils:dataframe",
     ],
 )
