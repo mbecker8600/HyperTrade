@@ -46,6 +46,7 @@ from hypertrade.ai.rl.env import TradingEnvironment
 # -----------------
 
 
+# trunk-ignore-all(mypy,bandit,pyright)
 def env_maker(cfg: DictConfig, env_type: str) -> EnvBase:
     symbol_file = cfg.portfolio.symbol_file
     symbols_df = pd.read_csv(symbol_file, header=0)

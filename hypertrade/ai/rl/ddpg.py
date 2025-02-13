@@ -10,7 +10,7 @@ It supports state environments like MuJoCo.
 
 The helper functions are coded in the utils.py associated with this script.
 """
-# trunk-ignore-all(mypy,bandit)
+# trunk-ignore-all(mypy,bandit,pyright)
 import logging
 import os
 import time

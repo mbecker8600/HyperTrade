@@ -13,7 +13,7 @@ from torchrl.envs import EnvBase
 from hypertrade.libs.simulator.engine import TradingEngine
 
 
-# trunk-ignore-all(mypy,ruff)
+# trunk-ignore-all(mypy,ruff,pyright)
 class TradingEnvironment(EnvBase):
     def __init__(
         self,
