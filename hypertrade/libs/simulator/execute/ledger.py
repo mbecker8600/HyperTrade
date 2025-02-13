@@ -25,6 +25,7 @@ class Ledger:
     """
 
     def __init__(self) -> None:
+        # trunk-ignore(pyright/reportArgumentType)
         self.transactions = pd.DataFrame(columns=["amount", "price", "symbol"])
 
 

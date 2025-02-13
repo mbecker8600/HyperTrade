@@ -3,7 +3,7 @@ from datetime import datetime
 import click
 
 
-# trunk-ignore-all(mypy,bandit,pyright)
+# trunk-ignore-all(mypy)
 @click.group()
 def cli() -> None:
     pass

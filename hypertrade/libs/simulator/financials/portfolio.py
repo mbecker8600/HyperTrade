@@ -75,7 +75,9 @@ class Portfolio:
 
         """
         self.positions: pd.DataFrame = pd.DataFrame(
-            columns=["amount", "cost_basis"], index=pd.MultiIndex.from_arrays([[], []])
+            # trunk-ignore(pyright/reportArgumentType)
+            columns=["amount", "cost_basis"],
+            index=pd.MultiIndex.from_arrays([[], []]),
         )
         self.starting_cash = capital_base
         self.cash = capital_base

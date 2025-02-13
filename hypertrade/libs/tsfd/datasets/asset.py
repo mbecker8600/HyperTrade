@@ -10,6 +10,7 @@ from hypertrade.libs.tsfd.schemas.ohlvc import ohlvc_schema
 from hypertrade.libs.tsfd.schemas.prices import prices_schema
 from hypertrade.libs.tsfd.sources.types import DataSource, Granularity
 from hypertrade.libs.tsfd.utils.dataframe import get_index_strategy
+from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 
 class OhlvcDatasetAdapter(DataSource):
@@ -175,7 +176,11 @@ class PricesDataset(TimeSeriesDataset):
             data = data.to_frame().T
 
         index_strategy = get_index_strategy(data.index)
-        data = index_strategy.loc(data, original_idx)
+        if isinstance(original_idx, pd.Timestamp):
+            original_idx = cast_timestamp(original_idx)
+            data = index_strategy.loc(data, original_idx)
+        if isinstance(original_idx, slice):
+            data = index_strategy.loc_slice(data, original_idx)
         data.reset_index(level=0, drop=True, inplace=True)
         self._schema.validate(data)
         return data

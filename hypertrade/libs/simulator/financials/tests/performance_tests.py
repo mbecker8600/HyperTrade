@@ -40,6 +40,7 @@ class TestPerformanceTracker(unittest.TestCase):
 
         self.portfolio.positions = pd.DataFrame(
             data,
+            # trunk-ignore(pyright/reportArgumentType)
             columns=["symbol", "dt", "amount", "cost_basis"],
         )
         self.portfolio.positions.set_index(["symbol", "dt"], inplace=True)
