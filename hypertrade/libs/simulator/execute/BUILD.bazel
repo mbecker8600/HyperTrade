@@ -12,7 +12,7 @@ py_library(
         "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator:assets",
         "//hypertrade/libs/simulator:event",
-        "//hypertrade/libs/simulator/data:datasource",
+        "//hypertrade/libs/tsfd/datasets:asset",
     ],
 )
 

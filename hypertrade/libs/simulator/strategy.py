@@ -8,10 +8,11 @@ import pandas as pd
 
 from hypertrade.libs.service.locator import ServiceLocator
 from hypertrade.libs.simulator.assets import Asset
-from hypertrade.libs.simulator.data.datasource import Dataset
 from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
 from hypertrade.libs.simulator.execute.broker import BrokerService
 from hypertrade.libs.simulator.financials.portfolio import Portfolio, PortfolioManager
+from hypertrade.libs.tsfd.datasets.asset import PricesDataset
+from hypertrade.libs.tsfd.datasets.types import TsfdDataset
 
 
 # Officially supported datatypes
@@ -52,17 +53,18 @@ class StrategyBuilder:
         self.assets = assets
         return self
 
-    def with_current_prices(self, data: Dataset) -> StrategyBuilder:
+    def with_current_prices(self, data: PricesDataset) -> StrategyBuilder:
+        data.symbols = [asset.symbol for asset in self.assets]
         self._data_sources.append(
             lambda event: (
                 DATA_TYPE.CURRENT_PRICES,
-                data.fetch_current_price(event.time, assets=self.assets),
+                data[event.time]["price"],
             )
         )
         return self
 
     def with_historical_data(
-        self, lookback_period: pd.Timedelta, data: Dataset
+        self, lookback_period: pd.Timedelta, data: TsfdDataset
     ) -> StrategyBuilder:
         self._data_sources.append(
             lambda event: (
@@ -129,6 +131,8 @@ class TradingStrategy:
         broker_service: BrokerService = ServiceLocator[BrokerService]().get(
             BrokerService.SERVICE_NAME
         )
+        if event.time is None:
+            raise ValueError("Event time is None")
         context = StrategyContext(
             portfolio=portfolio,
             time=event.time,

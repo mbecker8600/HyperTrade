@@ -5,10 +5,10 @@ from loguru import logger
 
 from hypertrade.libs.service.locator import ServiceLocator, register_service
 from hypertrade.libs.simulator.assets import Asset
-from hypertrade.libs.simulator.data.datasource import Dataset
 from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
 from hypertrade.libs.simulator.execute.commission import CommissionModel, NoCommission
 from hypertrade.libs.simulator.execute.types import Order, Transaction
+from hypertrade.libs.tsfd.datasets.asset import PricesDataset
 
 BROKER_SERVICE_NAME = "broker_service"
 DEFAULT_EXECUTION_DELAY = pd.Timedelta(milliseconds=3)
@@ -17,11 +17,11 @@ DEFAULT_EXECUTION_DELAY = pd.Timedelta(milliseconds=3)
 @register_service(BROKER_SERVICE_NAME)
 class BrokerService:
 
-    SERVICE_NAME = BROKER_SERVICE_NAME
+    SERVICE_NAME: str = BROKER_SERVICE_NAME
 
     def __init__(
         self,
-        dataset: Dataset,
+        dataset: PricesDataset,
         execution_delay: pd.Timedelta = DEFAULT_EXECUTION_DELAY,
         commission_model: Type[CommissionModel] = NoCommission,
     ) -> None:
@@ -62,9 +62,7 @@ class BrokerService:
             raise ValueError("Order data is None")
         order: Order = event.data
         current_price = float(
-            self.dataset.fetch_current_price(current_time, [order.asset]).loc[
-                order.asset.symbol
-            ]
+            self.dataset[current_time]["price"].loc[order.asset.symbol]
         )
         transaction = Transaction(
             dt=current_time + self.execution_delay,

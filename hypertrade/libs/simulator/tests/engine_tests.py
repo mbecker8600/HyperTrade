@@ -2,13 +2,14 @@ import os
 import unittest
 from unittest.mock import patch
 
+import exchange_calendars as xcals
 import pandas as pd
 import pytz
 from loguru import logger
 
+# import hypertrade.libs.debugging  # donotcommit
 from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.simulator.assets import Asset
-from hypertrade.libs.simulator.data.datasource import CSVDataSource, OHLCVDataset
 from hypertrade.libs.simulator.engine import TradingEngine
 from hypertrade.libs.simulator.event import EVENT_TYPE
 from hypertrade.libs.simulator.strategy import (
@@ -17,8 +18,9 @@ from hypertrade.libs.simulator.strategy import (
     StrategyContext,
     StrategyData,
 )
-
-# import hypertrade.libs.debugging  # donotcommit
+from hypertrade.libs.tsfd.datasets.asset import PricesDataset
+from hypertrade.libs.tsfd.sources.csv import CSVSource
+from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
 
 
 def buy_hold_strategy(context: StrategyContext, data: StrategyData) -> None:
@@ -56,8 +58,15 @@ class TestTradingEngine(unittest.TestCase):
         sample_data_path = os.path.join(ws, "../data/tests/data/ohlvc/sample.csv")
 
         # Create an OCHLV data source using a CSV file
-        csv_source = CSVDataSource(sample_data_path, index_col=["date", "ticker"])
-        ohlvc_dataset = OHLCVDataset(csv_source)
+        cal = xcals.get_calendar("XNYS")
+        ohlvc_dataset = PricesDataset(
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath=sample_data_path),
+            ),
+            symbols=["GE", "BA"],
+            name="prices",
+            trading_calendar=cal,
+        )
 
         strategy_builder = (
             StrategyBuilder()

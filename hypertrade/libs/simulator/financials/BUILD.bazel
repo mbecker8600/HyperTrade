@@ -29,7 +29,9 @@ py_library(
         "//hypertrade/libs/simulator:assets",
         "//hypertrade/libs/simulator:event",
         "//hypertrade/libs/simulator:market",
-        "//hypertrade/libs/simulator/data:datasource",
         "//hypertrade/libs/simulator/execute:types",
+        "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/sources:csv",
+        "//hypertrade/libs/tsfd/sources/formats:ohlvc",
     ],
 )

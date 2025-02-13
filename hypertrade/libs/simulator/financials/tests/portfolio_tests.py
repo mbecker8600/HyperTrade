@@ -1,18 +1,20 @@
 import os
 import unittest
 
+import exchange_calendars as xcals
 import pandas as pd
 import pytz
 from loguru import logger
 
+# import hypertrade.libs.debugging  # donotcommit
 from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.simulator.assets import Asset
-from hypertrade.libs.simulator.data.datasource import CSVDataSource, OHLCVDataset
 from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
 from hypertrade.libs.simulator.execute.types import Transaction
 from hypertrade.libs.simulator.financials.portfolio import Portfolio, PortfolioManager
-
-# import hypertrade.libs.debugging  # donotcommit
+from hypertrade.libs.tsfd.datasets.asset import PricesDataset
+from hypertrade.libs.tsfd.sources.csv import CSVSource
+from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
 
 
 class TestPortfolioService(unittest.TestCase):
@@ -23,8 +25,15 @@ class TestPortfolioService(unittest.TestCase):
         sample_data_path = os.path.join(ws, "../../data/tests/data/ohlvc/sample.csv")
 
         # Create an OCHLV data source using a CSV file
-        csv_source = CSVDataSource(sample_data_path, index_col=["date", "ticker"])
-        self.ohlvc_dataset = OHLCVDataset(csv_source)
+        self.cal = xcals.get_calendar("XNYS")
+        self.ohlvc_dataset = PricesDataset(
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath=sample_data_path),
+            ),
+            symbols=["GE", "BA"],
+            name="prices",
+            trading_calendar=self.cal,
+        )
 
         nytz = pytz.timezone("America/New_York")
         start_time = pd.Timestamp("2018-12-26", tz=nytz)
@@ -124,8 +133,15 @@ class TestPortfolio(unittest.TestCase):
         sample_data_path = os.path.join(ws, "../../data/tests/data/ohlvc/sample.csv")
 
         # Create an OCHLV data source using a CSV file
-        csv_source = CSVDataSource(sample_data_path, index_col=["date", "ticker"])
-        self.ohlvc_dataset = OHLCVDataset(csv_source)
+        self.cal = xcals.get_calendar("XNYS")
+        self.ohlvc_dataset = PricesDataset(
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath=sample_data_path),
+            ),
+            symbols=["GE", "BA"],
+            name="prices",
+            trading_calendar=self.cal,
+        )
 
         nytz = pytz.timezone("America/New_York")
         start_time = pd.Timestamp("2018-12-26", tz=nytz)
@@ -167,9 +183,11 @@ class TestPortfolio(unittest.TestCase):
             price=tx_price,
             order_id="testing",
         )
-        prices = self.ohlvc_dataset.fetch_current_price(
-            self.event_manager.current_time, [boeing_asset]
-        )
+
+        prices = self.ohlvc_dataset[self.event_manager.current_time]["price"]
+        prices = prices.filter([boeing_asset.symbol])
+        if not isinstance(prices, pd.Series):
+            raise ValueError("Prices df is not a series")
         portfolio.update(tx=tx)
         portfolio.current_market_prices = prices
         self.assertEqual(portfolio.cash, capital_base - (n_shares * tx_price))
@@ -181,9 +199,10 @@ class TestPortfolio(unittest.TestCase):
         self.assertEqual(portfolio.positions_value, tx_price)
 
         next(self.event_manager)  # Simulate to the next market event
-        prices = self.ohlvc_dataset.fetch_current_price(
-            self.event_manager.current_time, [boeing_asset]
-        )
+        prices = self.ohlvc_dataset[self.event_manager.current_time]["price"]
+        prices = prices.filter([boeing_asset.symbol])
+        if not isinstance(prices, pd.Series):
+            raise ValueError("Prices df is not a series")
         portfolio.current_market_prices = prices
         self.assertEqual(weights[boeing_asset.symbol], 1.0)
         # Now the portfolio value should change because the market value has changed.

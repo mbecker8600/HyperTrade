@@ -21,6 +21,6 @@ py_test(
         "//hypertrade/libs/debugging:python_debugger",
         "//hypertrade/libs/logging:py_setup",
         "//hypertrade/libs/simulator:engine",
-        "//hypertrade/libs/simulator/data:datasource",
+        "//hypertrade/libs/tsfd/datasets:asset",
     ],
 )

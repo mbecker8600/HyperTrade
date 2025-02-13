@@ -1,7 +1,6 @@
 import pandas as pd
 
 from hypertrade.libs.simulator.assets import Asset
-from hypertrade.libs.simulator.data.datasource import Dataset
 from hypertrade.libs.simulator.event import EventManager, Frequency
 from hypertrade.libs.simulator.execute.broker import BrokerService
 from hypertrade.libs.simulator.execute.ledger import LedgerService
@@ -11,6 +10,7 @@ from hypertrade.libs.simulator.financials.performance import (
 from hypertrade.libs.simulator.financials.portfolio import PortfolioManager
 from hypertrade.libs.simulator.market import MarketPriceSimulator
 from hypertrade.libs.simulator.strategy import StrategyBuilder, StrategyFunction
+from hypertrade.libs.tsfd.datasets.asset import PricesDataset
 
 
 class TradingEngine:
@@ -18,7 +18,7 @@ class TradingEngine:
         self,
         start_time: pd.Timestamp,
         end_time: pd.Timestamp,
-        prices_dataset: Dataset,
+        prices_dataset: PricesDataset,
         strategy_builder: StrategyBuilder,
         strategy_function: StrategyFunction,
         frequency: Frequency = Frequency.DAILY,

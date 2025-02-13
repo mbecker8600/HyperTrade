@@ -193,7 +193,7 @@ EVENT_SERVICE_NAME = "event_manager"
 class EventManager:
     """Handles event creation, scheduling (with timestamps), and dispatching to subscribers"""
 
-    SERVICE_NAME = EVENT_SERVICE_NAME
+    SERVICE_NAME: str = EVENT_SERVICE_NAME
 
     def __init__(
         self,

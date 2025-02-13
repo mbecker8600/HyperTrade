@@ -7,10 +7,10 @@ import pandera as pa
 from loguru import logger
 
 from hypertrade.libs.service.locator import ServiceLocator, register_service
-from hypertrade.libs.simulator.data.datasource import Dataset
 from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
 from hypertrade.libs.simulator.execute.types import Transaction
 from hypertrade.libs.simulator.market import PriceChangeData
+from hypertrade.libs.tsfd.datasets.asset import PricesDataset
 
 PRICES_SCHEMA: pa.SeriesSchema = pa.SeriesSchema()
 
@@ -166,11 +166,11 @@ class PortfolioManager:
 
     """
 
-    SERVICE_NAME = PORTFOLIO_SERVICE_NAME
+    SERVICE_NAME: str = PORTFOLIO_SERVICE_NAME
 
     def __init__(
         self,
-        dataset: Dataset,
+        dataset: PricesDataset,
         capital_base: float = 0.0,
     ) -> None:
 
@@ -184,10 +184,12 @@ class PortfolioManager:
     def _set_portfolio_market_price(self) -> None:
         """Set the current market prices for the portfolio's positions."""
         assets = self.portfolio.positions.groupby(level=0).sum().index.to_list()
-        prices = self.dataset.fetch_current_price(
-            self.event_manager.current_time, assets
-        )
-        self.portfolio.current_market_prices = prices
+        prices = self.dataset[self.event_manager.current_time]["price"]
+        filtered_prices = prices.filter(assets)
+        if isinstance(filtered_prices, pd.Series):
+            self.portfolio.current_market_prices = filtered_prices
+        else:
+            raise ValueError("Prices df is not a series")
 
     def handle_price_change(self, event: Event[PriceChangeData]) -> None:
         """Handle price change events and invalidate the portfolio's cached properties."""

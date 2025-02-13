@@ -57,7 +57,8 @@ class PerformanceTracker:
             ) / self._previous_portfolio.portfolio_value
 
         current_positions_df = pd.DataFrame(
-            portfolio.positions.groupby(level=0).sum()["amount"].to_dict(), index=[date]
+            portfolio.positions.groupby(level=0).sum()["amount"].to_dict(),
+            index=pd.Index([date]),
         )
         self.daily_positions = pd.concat(
             [self.daily_positions, current_positions_df], axis=0
@@ -72,7 +73,7 @@ METRICS_SERVICE_NAME = "metrics_service"
 class PerformanceTrackingService:
     """"""
 
-    SERVICE_NAME = METRICS_SERVICE_NAME
+    SERVICE_NAME: str = METRICS_SERVICE_NAME
 
     def __init__(
         self,

@@ -34,7 +34,7 @@ LEDGER_SERVICE_NAME = "ledger_service"
 @register_service(LEDGER_SERVICE_NAME)
 class LedgerService:
 
-    SERVICE_NAME = LEDGER_SERVICE_NAME
+    SERVICE_NAME: str = LEDGER_SERVICE_NAME
 
     def __init__(self) -> None:
         self.ledger = Ledger()

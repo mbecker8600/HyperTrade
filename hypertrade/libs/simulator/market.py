@@ -20,7 +20,7 @@ MARKET_PRICE_SIMULATOR_SERVICE_NAME = "market_price_simulator"
 @register_service(MARKET_PRICE_SIMULATOR_SERVICE_NAME)
 class MarketPriceSimulator:
 
-    SERVICE_NAME = MARKET_PRICE_SIMULATOR_SERVICE_NAME
+    SERVICE_NAME: str = MARKET_PRICE_SIMULATOR_SERVICE_NAME
 
     def __init__(self, universe: List[Asset]) -> None:
         service_locator = ServiceLocator[EventManager]()

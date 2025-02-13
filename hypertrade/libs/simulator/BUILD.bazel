@@ -31,11 +31,11 @@ py_library(
         ":event",
         ":market",
         ":strategy",
-        "//hypertrade/libs/simulator/data:datasource",
         "//hypertrade/libs/simulator/execute:broker",
         "//hypertrade/libs/simulator/execute:ledger",
         "//hypertrade/libs/simulator/financials:performance",
         "//hypertrade/libs/simulator/financials:portfolio",
+        "//hypertrade/libs/tsfd/datasets:asset",
     ],
 )
 
