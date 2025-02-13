@@ -232,7 +232,7 @@ class EventManager:
         self._market_events = MarketEvents(
             exchange=exchange, frequency=frequency, tz=tz
         )
-        self._event_queue: List[Tuple[datetime.datetime, Event[Any]]] = []
+        self._event_queue: List[Tuple[Timestamp, Event[Any]]] = []
 
         self._configure_event_logging(event_log_dir=event_log_dir)
 

@@ -94,7 +94,14 @@ class TestTradingEngine(unittest.TestCase):
                 strategy_builder=strategy_builder,
             )
             engine.run()
-            pass
+            self.assertEqual(engine.portfolio_manager.portfolio.cash, 967.12)
+            self.assertEqual(
+                engine.portfolio_manager.portfolio.portfolio_value, 1002.45
+            )
+            self.assertEqual(
+                engine.portfolio_manager.portfolio.current_portfolio_weights.loc["GE"],
+                1.0,
+            )
 
 
 if __name__ == "__main__":

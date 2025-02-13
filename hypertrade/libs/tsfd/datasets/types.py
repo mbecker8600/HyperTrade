@@ -5,7 +5,6 @@ from typing import (
     Any,
     Generator,
     Optional,
-    Tuple,
 )
 
 import pandas as pd
@@ -66,11 +65,11 @@ class TimeSeriesDataset(TsfdDataset):
     def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame: ...
 
     def __repr__(self) -> str:  # Improved representation for easier debugging
-        return f"{self.__class__.__name__}(name={self.name}, shape={len(self)}, time_range={self.get_time_range()})"
+        return f"{self.__class__.__name__}(name={self.name}, shape={len(self)})"
 
-    def get_time_range(self) -> Tuple[pd.Timestamp, pd.Timestamp]:
-        """Returns the start and end timestamps of the dataset."""
-        return self.timestamps.min(), self.timestamps.max()
+    # def get_time_range(self) -> Tuple[pd.Timestamp, pd.Timestamp]:
+    #     """Returns the start and end timestamps of the dataset."""
+    #     return self.timestamps.min(), self.timestamps.max()
 
     def __iter__(self) -> Generator[pd.DataFrame, Any, None]:
         for idx in range(len(self)):

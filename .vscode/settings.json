@@ -17,5 +17,6 @@
   "python.linting.ignorePatterns": ["**/.local/**/*.py"],
   "mypy-type-checker.reportingScope": "workspace",
   "mypy-type-checker.preferDaemon": true,
-  "python.analysis.typeCheckingMode": "off"
+  "python.analysis.typeCheckingMode": "off",
+  "mypyright.analysis.typeCheckingMode": "off"
 }
