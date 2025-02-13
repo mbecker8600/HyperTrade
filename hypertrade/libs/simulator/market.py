@@ -26,22 +26,12 @@ class MarketPriceSimulator:
     def __init__(self, universe: List[Asset]) -> None:
         service_locator = ServiceLocator[EventManager]()
         self.event_manager = service_locator.get(EventManager.SERVICE_NAME)
-        self.event_manager.subscribe(EVENT_TYPE.MARKET_CLOSE, self.handle_market_close)
-        self.event_manager.subscribe(EVENT_TYPE.MARKET_OPEN, self.handle_market_open)
+        self.event_manager.subscribe(EVENT_TYPE.MARKET_CLOSE, self.handle_market_event)
+        self.event_manager.subscribe(EVENT_TYPE.MARKET_OPEN, self.handle_market_event)
 
         self.universe = universe
 
-    def handle_market_close(self, event: Event[None]) -> None:
-        logger.bind(simulation_time=self.event_manager.current_time).debug(
-            f"Handling price changes at {event}"
-        )
-        time = cast_timestamp(event.time)
-        prices = self._get_prices(time)
-        self.event_manager.schedule_event(
-            Event(EVENT_TYPE.PRICE_CHANGE, data=PriceChangeData(prices=prices))
-        )
-
-    def handle_market_open(self, event: Event[None]) -> None:
+    def handle_market_event(self, event: Event[None]) -> None:
         logger.bind(simulation_time=self.event_manager.current_time).debug(
             f"Handling price changes at {event}"
         )
