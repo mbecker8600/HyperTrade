@@ -48,14 +48,13 @@ from hypertrade.ai.rl.env import TradingEnvironment
 
 # trunk-ignore-all(mypy,pyright)
 def env_maker(cfg: DictConfig, env_type: str) -> EnvBase:
-    symbol_file = cfg.portfolio.symbol_file
-    symbols_df = pd.read_csv(symbol_file, header=0)
     device = cfg.env.device
+    # TODO: Change hardcoded symbols
     if env_type == "train":
         start = pd.Timestamp(cfg.env.training_start)
         end = pd.Timestamp(cfg.env.training_end)
         return TradingEnvironment(
-            symbols=symbols_df.symbol.to_list(),
+            symbols=["GE", "BA", "AAPL"],
             min_start=start,
             max_end=end,
             env_type=env_type,
@@ -66,7 +65,7 @@ def env_maker(cfg: DictConfig, env_type: str) -> EnvBase:
         start = pd.Timestamp(cfg.env.eval_start)
         end = pd.Timestamp(cfg.env.eval_end)
         return TradingEnvironment(
-            symbols=symbols_df.symbol.to_list(),
+            symbols=["GE", "BA", "AAPL"],
             min_start=start,
             max_end=end,
             env_type=env_type,
@@ -365,7 +364,7 @@ def make_optimizer(cfg: DictConfig, loss_module):
     return optimizer_actor, optimizer_critic
 
 
-# ====================================================================
+# ============================== ======================================
 # General utils
 # ---------
 

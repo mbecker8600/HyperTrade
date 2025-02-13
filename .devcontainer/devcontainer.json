@@ -45,7 +45,8 @@
         "ms-python.mypy-type-checker",
         "liamrwilkins.mypy-ini-intellisense",
         "mashin.mypyright",
-        "trunk.io"
+        "trunk.io",
+        "Gruntfuggly.todo-tree"
       ]
     }
   },
