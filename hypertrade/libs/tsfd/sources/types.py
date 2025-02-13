@@ -32,9 +32,36 @@ class FetchMode(Enum):
 class DataSource(ABC):
     """
     The DataSource is responsible for raw data access and fetch logic. It provides a core API
-    for retrieving data by timestamp (or slices) at the specified granularity, without applying
-    format-specific rules or dataset-specific logic. Concrete implementations must override
-    _fetch() to return the requested data, and also define __len__ and format management.
+    for retrieving data by timestamp at the specified granularity, without applying format-specific
+    or dataset-specific logic.
+
+    Usage:
+        1. Instantiate a concrete DataSource, such as:
+           - CSVSource (hypertrade.libs.tsfd.sources.csv.CSVSource)
+           - DefaultDataSourceFormat (hypertrade.libs.tsfd.sources.formats.default.DefaultDataSourceFormat)
+           - OHLVCDataSourceFormat (hypertrade.libs.tsfd.sources.formats.ohlvc.OHLVCDataSourceFormat)
+        2. Call fetch(timestamp, mode) to retrieve the dataset as a pandas DataFrame.
+
+    How to extend:
+        - Subclass DataSource and implement:
+          * _fetch(): Core retrieval logic
+          * __len__(): Return the size of the underlying data
+          * format getters/setters: Manage interaction with a DataSourceFormat
+        - Overriding fetch() is usually not required unless specialized preprocessing is needed.
+
+    Example:
+        class MyAPIBasedSource(DataSource):
+            def _fetch(self, timestamp, mode):
+                # retrieve data from an external API
+                return pd.DataFrame(...)
+            def __len__(self):
+                return 100
+            @property
+            def format(self):
+                return self._format
+            @format.setter
+            def format(self, value):
+                self._format = value
     """
 
     def __init__(self, granularity: Granularity = Granularity.DAILY):

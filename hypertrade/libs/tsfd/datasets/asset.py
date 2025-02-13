@@ -1,9 +1,8 @@
 from abc import abstractmethod
-from typing import List, Optional, cast
+from typing import List, Optional
 
 import exchange_calendars as xcals
 import pandas as pd
-import pandera as pa
 from pandas._libs.tslibs.nattype import NaTType
 
 from hypertrade.libs.tsfd.datasets.types import TimeSeriesDataset
@@ -26,6 +25,27 @@ class OhlvcDatasetAdapter(DataSource):
 
 
 class OHLVCDataset(TimeSeriesDataset):
+    """
+    OHLVCDataset is designed for retrieving OHLCV data (Open, High, Low, Close, Volume) from a DataSource
+    or DataSourceFormat implementing the OhlvcDatasetAdapter interface. It enforces the ohlvc_schema
+    for validation.
+
+    Usage:
+        ohlvc_dataset = OHLVCDataset(
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath="path/to/data.csv"),
+            ),
+            name="ohlvc_example",
+            symbols=["AAPL", "MSFT"],
+        )
+        # Fetch data at a specific timestamp
+        data = ohlvc_dataset[pd.Timestamp("2020-01-02")]
+        print(data.head())
+
+    Returns:
+        A pandas DataFrame indexed by date (and symbol if multi-index), with columns such as open, high,
+        low, close, volume. The exact columns are validated by ohlvc_schema.
+    """
 
     _schema = ohlvc_schema
 
