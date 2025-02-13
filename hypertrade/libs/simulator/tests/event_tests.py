@@ -12,6 +12,7 @@ from loguru import logger
 from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.service.locator import ServiceLocator
 from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 # import hypertrade.libs.debugging  # donotcommit
 
@@ -70,11 +71,11 @@ class TestEventManager(unittest.TestCase):
     def test_basic_simulation_market_events(self) -> None:
         """Test market events are properly published with no over events scheduled"""
         nytz = pytz.timezone("America/New_York")
-        start_time = pd.Timestamp("2020-01-01", tz=nytz)
+        start_time = cast_timestamp(pd.Timestamp("2020-01-01", tz=nytz))
 
         # Since no time is provide, the timestamp defaults to 00:00:00, meaning this day will not be
         # included in the simulation.
-        end_time = pd.Timestamp("2020-01-10", tz=nytz)
+        end_time = cast_timestamp(pd.Timestamp("2020-01-10", tz=nytz))
         event_manager = EventManager(start_time=start_time, end_time=end_time)
 
         no_event_handler = MockNoEventPublishHandler[None]()
@@ -106,8 +107,8 @@ class TestEventManager(unittest.TestCase):
     def test_simulation_with_scheduled_events(self) -> None:
         """Test scheduled events are properly published"""
         nytz = pytz.timezone("America/New_York")
-        start_time = pd.Timestamp("2020-01-02", tz=nytz)
-        end_time = pd.Timestamp("2020-01-03", tz=nytz)
+        start_time = cast_timestamp(pd.Timestamp("2020-01-02", tz=nytz))
+        end_time = cast_timestamp(pd.Timestamp("2020-01-03", tz=nytz))
 
         event_manager = EventManager(start_time=start_time, end_time=end_time)
         strategy_handler = MockStrategyHandler()
@@ -146,8 +147,8 @@ class TestEventManager(unittest.TestCase):
     def test_simulation_with_chained_events(self) -> None:
         """Test scheduled events are properly published"""
         nytz = pytz.timezone("America/New_York")
-        start_time = pd.Timestamp("2020-01-02", tz=nytz)
-        end_time = pd.Timestamp("2020-01-03", tz=nytz)
+        start_time = cast_timestamp(pd.Timestamp("2020-01-02", tz=nytz))
+        end_time = cast_timestamp(pd.Timestamp("2020-01-03", tz=nytz))
 
         event_manager = EventManager(start_time=start_time, end_time=end_time)
         strategy_handler = MockStrategyHandler()
@@ -200,8 +201,8 @@ class TestEventManager(unittest.TestCase):
     def test_simulation_with_unordered_publishing(self) -> None:
         """Test scheduled events with longer delay are not scheduled before shorter delay"""
         nytz = pytz.timezone("America/New_York")
-        start_time = pd.Timestamp("2020-01-02", tz=nytz)
-        end_time = pd.Timestamp("2020-01-03", tz=nytz)
+        start_time = cast_timestamp(pd.Timestamp("2020-01-02", tz=nytz))
+        end_time = cast_timestamp(pd.Timestamp("2020-01-03", tz=nytz))
 
         event_manager = EventManager(start_time=start_time, end_time=end_time)
         strategy_handler = MockStrategyHandler()
@@ -274,8 +275,8 @@ class TestEventManager(unittest.TestCase):
     def test_simulation_bad_subscriber_fn(self) -> None:
         """Test failure occurs when someone subscribes a function to a publish event with mismatching data object"""
         nytz = pytz.timezone("America/New_York")
-        start_time = pd.Timestamp("2020-01-02", tz=nytz)
-        end_time = pd.Timestamp("2020-01-03", tz=nytz)
+        start_time = cast_timestamp(pd.Timestamp("2020-01-02", tz=nytz))
+        end_time = cast_timestamp(pd.Timestamp("2020-01-03", tz=nytz))
 
         event_manager = EventManager(start_time=start_time, end_time=end_time)
         order_handler = MockOrderHandler()

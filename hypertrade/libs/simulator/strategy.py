@@ -13,6 +13,7 @@ from hypertrade.libs.simulator.execute.broker import BrokerService
 from hypertrade.libs.simulator.financials.portfolio import Portfolio, PortfolioManager
 from hypertrade.libs.tsfd.datasets.asset import PricesDataset
 from hypertrade.libs.tsfd.datasets.types import TsfdDataset
+from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 
 # Officially supported datatypes
@@ -56,9 +57,9 @@ class StrategyBuilder:
     def with_current_prices(self, data: PricesDataset) -> StrategyBuilder:
         data.symbols = [asset.symbol for asset in self.assets]
         self._data_sources.append(
-            lambda event: (
+            lambda current_event: (
                 DATA_TYPE.CURRENT_PRICES,
-                data[event.time]["price"],
+                data[cast_timestamp(current_event.time)]["price"],
             )
         )
         return self
@@ -67,9 +68,12 @@ class StrategyBuilder:
         self, lookback_period: pd.Timedelta, data: TsfdDataset
     ) -> StrategyBuilder:
         self._data_sources.append(
-            lambda event: (
+            lambda current_event: (
                 DATA_TYPE.HISTORICAL_PRICES,
-                data.fetch(event.time, lookback=lookback_period, assets=self.assets),
+                data[
+                    current_event.time : cast_timestamp(current_event.time)
+                    - lookback_period
+                ],
             )
         )
         return self

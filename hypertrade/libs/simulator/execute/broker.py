@@ -2,6 +2,7 @@ from typing import Type
 
 import pandas as pd
 from loguru import logger
+from pandas._libs.tslibs.nattype import NaTType
 
 from hypertrade.libs.service.locator import ServiceLocator, register_service
 from hypertrade.libs.simulator.assets import Asset
@@ -22,14 +23,16 @@ class BrokerService:
     def __init__(
         self,
         dataset: PricesDataset,
-        execution_delay: pd.Timedelta = DEFAULT_EXECUTION_DELAY,
+        execution_delay: pd.Timedelta | NaTType = DEFAULT_EXECUTION_DELAY,
         commission_model: Type[CommissionModel] = NoCommission,
     ) -> None:
         self.event_manager: EventManager = ServiceLocator[EventManager]().get(
             EventManager.SERVICE_NAME
         )
         self.commission_model = commission_model
-        self.execution_delay = execution_delay
+        if isinstance(execution_delay, NaTType):
+            raise ValueError("Execution delay cannot be NaT")
+        self.execution_delay: pd.Timedelta = execution_delay
         self.event_manager.subscribe(EVENT_TYPE.ORDER_PLACED, self._execute_trade)
         self.dataset = dataset
 

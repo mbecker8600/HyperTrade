@@ -15,6 +15,7 @@ from hypertrade.libs.simulator.financials.portfolio import Portfolio, PortfolioM
 from hypertrade.libs.tsfd.datasets.asset import PricesDataset
 from hypertrade.libs.tsfd.sources.csv import CSVSource
 from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
+from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 
 class TestPortfolioService(unittest.TestCase):
@@ -36,11 +37,11 @@ class TestPortfolioService(unittest.TestCase):
         )
 
         nytz = pytz.timezone("America/New_York")
-        start_time = pd.Timestamp("2018-12-26", tz=nytz)
+        start_time = cast_timestamp(pd.Timestamp("2018-12-26", tz=nytz))
 
         # Since no time is provide, the timestamp defaults to 00:00:00, meaning this day will not be
         # included in the simulation.
-        end_time = pd.Timestamp("2018-12-31", tz=nytz)
+        end_time = cast_timestamp(pd.Timestamp("2018-12-31", tz=nytz))
         self.event_manager = EventManager(start_time=start_time, end_time=end_time)
         self.portfolio_manager = PortfolioManager(
             self.ohlvc_dataset, capital_base=1000.0
@@ -71,7 +72,7 @@ class TestPortfolioService(unittest.TestCase):
                     asset=Asset(
                         sid=1, symbol="BA", asset_name="Boeing", price_multiplier=1.0
                     ),
-                    dt=pd.Timestamp("2018-12-26 09:30:00"),
+                    dt=cast_timestamp(pd.Timestamp("2018-12-26 09:30:00")),
                     price=290.18,
                     order_id="testing",
                 ),
@@ -92,7 +93,7 @@ class TestPortfolioService(unittest.TestCase):
                         asset_name="General Electric",
                         price_multiplier=1.0,
                     ),
-                    dt=pd.Timestamp("2018-12-26 09:30:00"),
+                    dt=cast_timestamp(pd.Timestamp("2018-12-26 09:30:00")),
                     price=32.88,
                     order_id="testing",
                 ),
@@ -144,11 +145,11 @@ class TestPortfolio(unittest.TestCase):
         )
 
         nytz = pytz.timezone("America/New_York")
-        start_time = pd.Timestamp("2018-12-26", tz=nytz)
+        start_time = cast_timestamp(pd.Timestamp("2018-12-26", tz=nytz))
 
         # Since no time is provide, the timestamp defaults to 00:00:00, meaning this day will not be
         # included in the simulation.
-        end_time = pd.Timestamp("2018-12-31", tz=nytz)
+        end_time = cast_timestamp(pd.Timestamp("2018-12-31", tz=nytz))
         self.event_manager = EventManager(start_time=start_time, end_time=end_time)
         next(self.event_manager)  # Simulate to the first market event
 
@@ -179,7 +180,7 @@ class TestPortfolio(unittest.TestCase):
         tx = Transaction(
             amount=n_shares,
             asset=boeing_asset,
-            dt=pd.Timestamp("2018-12-26 09:30:00"),
+            dt=cast_timestamp(pd.Timestamp("2018-12-26 09:30:00")),
             price=tx_price,
             order_id="testing",
         )

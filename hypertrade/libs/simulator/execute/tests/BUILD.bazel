@@ -7,5 +7,6 @@ py_test(
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
         "//hypertrade/libs/simulator/execute:commission",
+        "//hypertrade/libs/tsfd/utils:time",
     ],
 )

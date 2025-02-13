@@ -60,5 +60,6 @@ py_library(
         "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator/execute:broker",
         "//hypertrade/libs/simulator/financials:portfolio",
+        "//hypertrade/libs/tsfd/utils:time",
     ],
 )

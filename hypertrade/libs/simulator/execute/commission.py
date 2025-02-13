@@ -25,8 +25,9 @@ class CommissionModel(ABCMeta):
     # Asset types that are compatible with the given model.
     allowed_asset_types = (Equity, Future)
 
+    @staticmethod
     @abstractmethod
-    def calculate(self, order: Order, transaction: Transaction) -> float:
+    def calculate(order: Order, transaction: Transaction) -> float:
         """
         Calculate the amount of commission to charge on ``order`` as a result
         of ``transaction``.

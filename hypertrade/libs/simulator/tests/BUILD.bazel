@@ -10,6 +10,7 @@ py_test(
         "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator:event",
         "//hypertrade/libs/simulator/execute:types",
+        "//hypertrade/libs/tsfd/utils:time",
     ],
 )
 
@@ -22,5 +23,6 @@ py_test(
         "//hypertrade/libs/logging:py_setup",
         "//hypertrade/libs/simulator:engine",
         "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/utils:time",
     ],
 )

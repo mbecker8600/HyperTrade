@@ -21,6 +21,7 @@ from hypertrade.libs.simulator.strategy import (
 from hypertrade.libs.tsfd.datasets.asset import PricesDataset
 from hypertrade.libs.tsfd.sources.csv import CSVSource
 from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
+from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 
 def buy_hold_strategy(context: StrategyContext, data: StrategyData) -> None:
@@ -47,11 +48,11 @@ class TestTradingEngine(unittest.TestCase):
             - Using buy_hold_strategy
         """
         nytz = pytz.timezone("America/New_York")
-        start_time = pd.Timestamp("2018-12-26", tz=nytz)
+        start_time = cast_timestamp(pd.Timestamp("2018-12-26", tz=nytz))
 
         # Since no time is provide, the timestamp defaults to 00:00:00, meaning this day will not be
         # included in the simulation.
-        end_time = pd.Timestamp("2018-12-31", tz=nytz)
+        end_time = cast_timestamp(pd.Timestamp("2018-12-31", tz=nytz))
 
         # Use sample data for testing
         ws = os.path.dirname(__file__)

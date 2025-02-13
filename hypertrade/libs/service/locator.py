@@ -92,6 +92,7 @@ def register_service(service_name: str, cls: Optional[Type[T]] = None) -> Any:
             Modified __init__ method to register the instance.
             """
             # Call the original __init__
+            # trunk-ignore(pyright/reportArgumentType)
             original_init(self, *args, **kwargs)
             service_locator.register(service_name, self)  # Register the instance
 

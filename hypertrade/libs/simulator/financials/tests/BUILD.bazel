@@ -11,6 +11,7 @@ py_test(
         "//hypertrade/libs/simulator:event",
         "//hypertrade/libs/simulator/financials:portfolio",
         "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/utils:time",
     ],
 )
 
@@ -21,5 +22,6 @@ py_test(
         "//hypertrade/libs/debugging:python_debugger",
         "//hypertrade/libs/logging:py_setup",
         "//hypertrade/libs/simulator/financials:performance",
+        "//hypertrade/libs/tsfd/utils:time",
     ],
 )
