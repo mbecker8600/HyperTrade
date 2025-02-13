@@ -57,6 +57,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Get Python
+        # Set up Python and install dependencies.
+        uses: actions/setup-python@v5
+        with:
+          cache: pip # caching pip dependencies
+      - run: pip install -r third-party/requirements.txt
 
       - name: Trunk Code Quality
         uses: trunk-io/trunk-action@v1
