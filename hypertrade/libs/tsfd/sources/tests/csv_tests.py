@@ -87,7 +87,7 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
         data = self.csv_source.fetch(
             timestamp=pd.Timestamp("2018-12-03 09:30:00", tz=self.tz)
         )
-        self.assertEquals(data.xs("GE", level="ticker")["open"].values[0], 35.42)
+        self.assertEqual(data.xs("GE", level="ticker")["open"].values[0], 35.42)
 
 
 class TestHeadlineCsvDatasource(unittest.TestCase):
@@ -150,7 +150,7 @@ class TestHeadlineCsvDatasource(unittest.TestCase):
         data = self.csv_source.fetch(
             timestamp=pd.Timestamp("2020-07-16 9:00:00", tz=self.tz)
         )
-        self.assertEquals(
+        self.assertEqual(
             data.index.to_list()[0],
             pd.Timestamp("2020-07-16 12:54:00", tz=pytz.timezone("UTC")),
         )

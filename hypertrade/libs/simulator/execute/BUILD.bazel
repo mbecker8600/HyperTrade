@@ -1,3 +1,4 @@
+load("@pypi//:requirements.bzl", "requirement")
 load("@rules_python//python:defs.bzl", "py_library")
 
 package(default_visibility = ["//visibility:public"])
@@ -13,6 +14,8 @@ py_library(
         "//hypertrade/libs/simulator:assets",
         "//hypertrade/libs/simulator:event",
         "//hypertrade/libs/tsfd/datasets:asset",
+        requirement("loguru"),
+        requirement("pandas"),
     ],
 )
 
@@ -32,6 +35,7 @@ py_library(
     data = [],
     deps = [
         "//hypertrade/libs/simulator:assets",
+        requirement("pandas"),
     ],
 )
 
@@ -42,5 +46,7 @@ py_library(
     deps = [
         "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator:event",
+        requirement("loguru"),
+        requirement("pandas"),
     ],
 )

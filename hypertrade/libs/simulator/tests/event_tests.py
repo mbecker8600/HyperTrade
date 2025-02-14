@@ -97,12 +97,12 @@ class TestEventManager(unittest.TestCase):
             # There are 6 trading sessions between 2020-01-01 and 2020-01-10 (midnight)
             # therefore we should get 6 market open and 6 market close events.
             # There is a holiday on the 1st and a weekend on the 6th and 7th.
-            self.assertEquals(mock.call_count, 12)
+            self.assertEqual(mock.call_count, 12)
             event_counter = Counter(
                 args[0][0].event_type for args in mock.call_args_list
             )
-            self.assertEquals(event_counter[EVENT_TYPE.MARKET_OPEN], 6)
-            self.assertEquals(event_counter[EVENT_TYPE.MARKET_CLOSE], 6)
+            self.assertEqual(event_counter[EVENT_TYPE.MARKET_OPEN], 6)
+            self.assertEqual(event_counter[EVENT_TYPE.MARKET_CLOSE], 6)
 
     def test_simulation_with_scheduled_events(self) -> None:
         """Test scheduled events are properly published"""
@@ -123,22 +123,22 @@ class TestEventManager(unittest.TestCase):
 
             # First event is market open
             market_open_event = next(event_manager)
-            self.assertEquals(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
-            self.assertEquals(
+            self.assertEqual(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
+            self.assertEqual(
                 market_open_event.time, pd.Timestamp("2020-01-02 09:30", tz=nytz)
             )
 
             # Second event is from the strategy handler, no delay so time is the same
             order_placed_event = next(event_manager)
-            self.assertEquals(order_placed_event.event_type, EVENT_TYPE.ORDER_PLACED)
-            self.assertEquals(
+            self.assertEqual(order_placed_event.event_type, EVENT_TYPE.ORDER_PLACED)
+            self.assertEqual(
                 order_placed_event.time, pd.Timestamp("2020-01-02 09:30", tz=nytz)
             )
 
             # Third event is market close
             market_close_event = next(event_manager)
-            self.assertEquals(market_close_event.event_type, EVENT_TYPE.MARKET_CLOSE)
-            self.assertEquals(
+            self.assertEqual(market_close_event.event_type, EVENT_TYPE.MARKET_CLOSE)
+            self.assertEqual(
                 market_close_event.time, pd.Timestamp("2020-01-02 16:00", tz=nytz)
             )
 
@@ -169,29 +169,29 @@ class TestEventManager(unittest.TestCase):
 
             # First event is market open
             market_open_event = next(event_manager)
-            self.assertEquals(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
-            self.assertEquals(
+            self.assertEqual(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
+            self.assertEqual(
                 market_open_event.time, pd.Timestamp("2020-01-02 09:30", tz=nytz)
             )
 
             # Second event is from the strategy handler, no delay so time is the same
             order_placed_event = next(event_manager)
-            self.assertEquals(order_placed_event.event_type, EVENT_TYPE.ORDER_PLACED)
-            self.assertEquals(
+            self.assertEqual(order_placed_event.event_type, EVENT_TYPE.ORDER_PLACED)
+            self.assertEqual(
                 order_placed_event.time, pd.Timestamp("2020-01-02 09:30", tz=nytz)
             )
 
             # Third event is from the strategy handler, no delay so time is the same
             order_placed_event = next(event_manager)
-            self.assertEquals(order_placed_event.event_type, EVENT_TYPE.ORDER_FULFILLED)
-            self.assertEquals(
+            self.assertEqual(order_placed_event.event_type, EVENT_TYPE.ORDER_FULFILLED)
+            self.assertEqual(
                 order_placed_event.time, pd.Timestamp("2020-01-02 09:30:03", tz=nytz)
             )
 
             # Fourth event is market close
             market_close_event = next(event_manager)
-            self.assertEquals(market_close_event.event_type, EVENT_TYPE.MARKET_CLOSE)
-            self.assertEquals(
+            self.assertEqual(market_close_event.event_type, EVENT_TYPE.MARKET_CLOSE)
+            self.assertEqual(
                 market_close_event.time, pd.Timestamp("2020-01-02 16:00", tz=nytz)
             )
 
@@ -235,36 +235,36 @@ class TestEventManager(unittest.TestCase):
 
             # First event is market open
             market_open_event = next(event_manager)
-            self.assertEquals(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
-            self.assertEquals(
+            self.assertEqual(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
+            self.assertEqual(
                 market_open_event.time, pd.Timestamp("2020-01-02 09:30", tz=nytz)
             )
 
             # Second event is from the strategy handler, no delay so time is the same
             order_placed_event = next(event_manager)
-            self.assertEquals(order_placed_event.event_type, EVENT_TYPE.ORDER_PLACED)
-            self.assertEquals(
+            self.assertEqual(order_placed_event.event_type, EVENT_TYPE.ORDER_PLACED)
+            self.assertEqual(
                 order_placed_event.time, pd.Timestamp("2020-01-02 09:30", tz=nytz)
             )
 
             # Third event is from the portfolio handler, since it only has a delay of 1
             port_update_event = next(event_manager)
-            self.assertEquals(port_update_event.event_type, EVENT_TYPE.PORTFOLIO_UPDATE)
-            self.assertEquals(
+            self.assertEqual(port_update_event.event_type, EVENT_TYPE.PORTFOLIO_UPDATE)
+            self.assertEqual(
                 port_update_event.time, pd.Timestamp("2020-01-02 09:30:01", tz=nytz)
             )
 
             # Fourth event is from the order handler, since it has a delay of 3
             order_placed_event = next(event_manager)
-            self.assertEquals(order_placed_event.event_type, EVENT_TYPE.ORDER_FULFILLED)
-            self.assertEquals(
+            self.assertEqual(order_placed_event.event_type, EVENT_TYPE.ORDER_FULFILLED)
+            self.assertEqual(
                 order_placed_event.time, pd.Timestamp("2020-01-02 09:30:03", tz=nytz)
             )
 
             # Last event is market close
             market_close_event = next(event_manager)
-            self.assertEquals(market_close_event.event_type, EVENT_TYPE.MARKET_CLOSE)
-            self.assertEquals(
+            self.assertEqual(market_close_event.event_type, EVENT_TYPE.MARKET_CLOSE)
+            self.assertEqual(
                 market_close_event.time, pd.Timestamp("2020-01-02 16:00", tz=nytz)
             )
 
@@ -292,8 +292,8 @@ class TestEventManager(unittest.TestCase):
 
             # First event is market open
             market_open_event = next(event_manager)
-            self.assertEquals(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
-            self.assertEquals(
+            self.assertEqual(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
+            self.assertEqual(
                 market_open_event.time, pd.Timestamp("2020-01-02 09:30", tz=nytz)
             )
 

@@ -99,28 +99,28 @@ class TestPricesCsvDataSet(unittest.TestCase):
 
         # Fetch OCHLV data
         data = self.prices_dataset[pd.Timestamp("2018-12-31 09:30:00", tz=self.nytz)]
-        self.assertEquals(len(data), 2)
-        self.assertEquals(set(data.index.to_list()), set(["GE", "BA"]))
-        self.assertEquals(data.loc["GE"].values[0], 35.37)
-        self.assertEquals(data.loc["BA"].values[0], 311.45)
+        self.assertEqual(len(data), 2)
+        self.assertEqual(set(data.index.to_list()), set(["GE", "BA"]))
+        self.assertEqual(data.loc["GE"].values[0], 35.37)
+        self.assertEqual(data.loc["BA"].values[0], 311.45)
 
     def test_current_price_market_close(self) -> None:
 
         # Fetch OCHLV data
         data = self.prices_dataset[pd.Timestamp("2018-12-31 16:00:00", tz=self.nytz)]
-        self.assertEquals(len(data), 2)
-        self.assertEquals(set(data.index.to_list()), set(["GE", "BA"]))
-        self.assertEquals(data.loc["GE"].values[0], 35.61)
-        self.assertEquals(data.loc["BA"].values[0], 313.39)
+        self.assertEqual(len(data), 2)
+        self.assertEqual(set(data.index.to_list()), set(["GE", "BA"]))
+        self.assertEqual(data.loc["GE"].values[0], 35.61)
+        self.assertEqual(data.loc["BA"].values[0], 313.39)
 
     def test_current_price_before_open(self) -> None:
 
         # Fetch OCHLV data
         data = self.prices_dataset[pd.Timestamp("2018-12-31 8:00:00", tz=self.nytz)]
-        self.assertEquals(len(data), 2)
-        self.assertEquals(set(data.index.to_list()), set(["GE", "BA"]))
-        self.assertEquals(data.loc["GE"].values[0], 35.33)
-        self.assertEquals(data.loc["BA"].values[0], 307.44)
+        self.assertEqual(len(data), 2)
+        self.assertEqual(set(data.index.to_list()), set(["GE", "BA"]))
+        self.assertEqual(data.loc["GE"].values[0], 35.33)
+        self.assertEqual(data.loc["BA"].values[0], 307.44)
 
 
 if __name__ == "__main__":

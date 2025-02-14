@@ -1,3 +1,4 @@
+load("@pypi//:requirements.bzl", "requirement")
 load("@rules_python//python:defs.bzl", "py_library")
 
 package(default_visibility = ["//visibility:public"])
@@ -20,7 +21,13 @@ py_library(
     name = "event",
     srcs = ["event.py"],
     data = [],
-    deps = ["//hypertrade/libs/service:locator"],
+    deps = [
+        "//hypertrade/libs/service:locator",
+        requirement("pandas"),
+        requirement("exchange_calendars"),
+        requirement("pytz"),
+        requirement("loguru"),
+    ],
 )
 
 py_library(
@@ -36,6 +43,7 @@ py_library(
         "//hypertrade/libs/simulator/financials:performance",
         "//hypertrade/libs/simulator/financials:portfolio",
         "//hypertrade/libs/tsfd/datasets:asset",
+        requirement("pandas"),
     ],
 )
 
@@ -47,6 +55,8 @@ py_library(
         ":assets",
         ":event",
         "//hypertrade/libs/service:locator",
+        requirement("pandas"),
+        requirement("loguru"),
     ],
 )
 
@@ -61,5 +71,6 @@ py_library(
         "//hypertrade/libs/simulator/execute:broker",
         "//hypertrade/libs/simulator/financials:portfolio",
         "//hypertrade/libs/tsfd/utils:time",
+        requirement("pandas"),
     ],
 )

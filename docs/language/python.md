@@ -7,7 +7,9 @@ root of the monorepo:
 
 ```bash
 pip install <package-name>
-pip freeze > third-party/requirements.txt
+pip freeze > third-party/requirements.in
+
+bazel run //third-party:requirements.update
 ```
 
 ## Running notebooks
