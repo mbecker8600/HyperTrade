@@ -5,7 +5,11 @@ py_library(
     name = "env",
     srcs = ["env.py"],
     data = [],
-    deps = ["//hypertrade/libs/simulator:engine"],
+    deps = [
+        "//hypertrade/libs/simulator:engine",
+        "//hypertrade/libs/tsfd/datasets:asset",
+        requirement("exchange_calendars"),
+    ],
 )
 
 py_library(

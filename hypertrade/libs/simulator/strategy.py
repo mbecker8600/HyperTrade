@@ -108,12 +108,7 @@ class TradingStrategy:
         if builder._strategy_function is None:
             raise ValueError("Strategy function is None")
         self._strategy_function: StrategyFunction = builder._strategy_function
-
-        self.event_manager = ServiceLocator[EventManager]().get(
-            EventManager.SERVICE_NAME
-        )
-        for event in builder.events:
-            self.event_manager.subscribe(event, self.execute)
+        self.events = builder.events
 
     def get_market_data(self, event: Event[Any]) -> StrategyData:
         """Fetches and processes data for the given event."""
@@ -148,3 +143,14 @@ class TradingStrategy:
             self.event_manager.schedule_event(
                 event=Event(EVENT_TYPE.ORDER_PLACED, data=order)
             )
+
+    def register_strategy(self) -> None:
+        """Should be called by the TradingEngine to register the strategy with the event manager.
+
+        This method subscribes the strategy to the events it is interested in.
+        """
+        self.event_manager = ServiceLocator[EventManager]().get(
+            EventManager.SERVICE_NAME
+        )
+        for event in self.events:
+            self.event_manager.subscribe(event, self.execute)

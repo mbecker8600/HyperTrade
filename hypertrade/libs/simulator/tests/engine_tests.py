@@ -85,13 +85,14 @@ class TestTradingEngine(unittest.TestCase):
             "__main__.buy_hold_strategy",
             wraps=buy_hold_strategy,
         ):
+
+            trading_strategy = strategy_builder.build(buy_hold_strategy)
             engine = TradingEngine(
                 start_time=start_time,
                 end_time=end_time,
                 prices_dataset=ohlvc_dataset,
                 capital_base=1000,
-                strategy_function=buy_hold_strategy,
-                strategy_builder=strategy_builder,
+                trading_strategy=trading_strategy,
             )
             engine.run()
             self.assertEqual(engine.portfolio_manager.portfolio.cash, 967.12)

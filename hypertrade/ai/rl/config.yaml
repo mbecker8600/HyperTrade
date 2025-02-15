@@ -4,10 +4,10 @@ env:
   task: ""
   max_episode_steps: 730
   seed: 42
-  training_start: 2002-01-01
-  training_end: 2022-01-01
-  eval_start: 2022-01-01
-  eval_end: 2024-01-01
+  training_start: 2018-09-04
+  training_end: 2018-12-31
+  eval_start: 2018-09-04
+  eval_end: 2018-12-31
   device: cuda:0
   transforms:
     reward_scaling:
@@ -28,6 +28,9 @@ env:
 # portfolio
 portfolio:
   symbol_file: /workspaces/rl_trading/code/trading/symbols.csv
+
+data:
+  prices_file: /workspaces/HyperTrade/hypertrade/libs/simulator/data/tests/data/ohlvc/sample.csv
 
 # collector
 collector:

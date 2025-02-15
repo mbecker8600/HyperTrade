@@ -49,7 +49,7 @@ from hypertrade.ai.rl.env import TradingEnvironment
 # trunk-ignore-all(mypy,pyright)
 def env_maker(cfg: DictConfig, env_type: str) -> EnvBase:
     device = cfg.env.device
-    # TODO: Change hardcoded symbols
+    # FIXME: Change hardcoded symbols
     if env_type == "train":
         start = pd.Timestamp(cfg.env.training_start)
         end = pd.Timestamp(cfg.env.training_end)
