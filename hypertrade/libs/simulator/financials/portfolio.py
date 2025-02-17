@@ -10,7 +10,7 @@ from hypertrade.libs.service.locator import ServiceLocator, register_service
 from hypertrade.libs.simulator.event.service import EventManager
 from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.simulator.execute.types import Transaction
-from hypertrade.libs.simulator.market import PriceChangeData
+from hypertrade.libs.simulator.market_types import PriceChangeData
 from hypertrade.libs.tsfd.datasets.asset import PricesDataset
 
 PRICES_SCHEMA: pa.SeriesSchema = pa.SeriesSchema()

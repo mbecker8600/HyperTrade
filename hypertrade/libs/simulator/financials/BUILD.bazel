@@ -17,6 +17,7 @@ py_library(
     deps = [
         ":portfolio",
         "//hypertrade/libs/service:locator",
+        "//hypertrade/libs/simulator:market_types",
         "//hypertrade/libs/simulator/event:service",
         "//hypertrade/libs/simulator/event:types",
         requirement("loguru"),
@@ -31,7 +32,7 @@ py_library(
     deps = [
         "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator:assets",
-        "//hypertrade/libs/simulator:market",
+        "//hypertrade/libs/simulator:market_types",
         "//hypertrade/libs/simulator/event:service",
         "//hypertrade/libs/simulator/event:types",
         "//hypertrade/libs/simulator/execute:types",
