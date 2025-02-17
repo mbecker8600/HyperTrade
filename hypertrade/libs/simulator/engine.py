@@ -3,7 +3,8 @@ from typing import Any, Optional
 import pandas as pd
 
 from hypertrade.libs.simulator.assets import Asset
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager, Frequency
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event, Frequency
 from hypertrade.libs.simulator.execute.broker import BrokerService
 from hypertrade.libs.simulator.execute.ledger import LedgerService
 from hypertrade.libs.simulator.financials.performance import (

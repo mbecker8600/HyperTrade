@@ -5,7 +5,8 @@ import pandas as pd
 from loguru import logger
 
 from hypertrade.libs.service.locator import ServiceLocator, register_service
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.simulator.financials.portfolio import Portfolio, PortfolioManager
 from hypertrade.libs.simulator.market import PriceChangeData
 

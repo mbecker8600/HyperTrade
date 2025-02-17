@@ -6,7 +6,8 @@ from loguru import logger
 
 from hypertrade.libs.service.locator import ServiceLocator, register_service
 from hypertrade.libs.simulator.assets import Asset
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 
@@ -38,7 +39,7 @@ class MarketPriceSimulator:
         time = cast_timestamp(event.time)
         prices = self._get_prices(time)
         self.event_manager.schedule_event(
-            Event(EVENT_TYPE.PRICE_CHANGE, data=PriceChangeData(prices=prices))
+            Event(EVENT_TYPE.PRICE_CHANGE, payload=PriceChangeData(prices=prices))
         )
 
     def _get_prices(self, time: pd.Timestamp) -> pd.Series:

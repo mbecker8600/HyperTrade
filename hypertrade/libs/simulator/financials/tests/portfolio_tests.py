@@ -9,7 +9,8 @@ from loguru import logger
 # import hypertrade.libs.debugging  # donotcommit
 from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.simulator.assets import Asset
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.simulator.execute.types import Transaction
 from hypertrade.libs.simulator.financials.portfolio import Portfolio, PortfolioManager
 from hypertrade.libs.tsfd.datasets.asset import PricesDataset
@@ -67,7 +68,7 @@ class TestPortfolioService(unittest.TestCase):
         self.event_manager.schedule_event(
             Event(
                 event_type=EVENT_TYPE.ORDER_FULFILLED,
-                data=Transaction(
+                payload=Transaction(
                     amount=1,
                     asset=Asset(
                         sid=1, symbol="BA", asset_name="Boeing", price_multiplier=1.0
@@ -85,7 +86,7 @@ class TestPortfolioService(unittest.TestCase):
         self.event_manager.schedule_event(
             Event(
                 event_type=EVENT_TYPE.ORDER_FULFILLED,
-                data=Transaction(
+                payload=Transaction(
                     amount=1,
                     asset=Asset(
                         sid=2,
@@ -110,7 +111,7 @@ class TestPortfolioService(unittest.TestCase):
         self.event_manager.schedule_event(
             Event(
                 event_type=EVENT_TYPE.PRICE_CHANGE,
-                data=None,
+                payload=None,
             )
         )
         next(self.event_manager)  # advanced to price change event

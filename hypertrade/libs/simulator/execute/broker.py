@@ -6,7 +6,8 @@ from pandas._libs.tslibs.nattype import NaTType
 
 from hypertrade.libs.service.locator import ServiceLocator, register_service
 from hypertrade.libs.simulator.assets import Asset
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.simulator.execute.commission import CommissionModel, NoCommission
 from hypertrade.libs.simulator.execute.types import Order, Transaction
 from hypertrade.libs.tsfd.datasets.asset import PricesDataset
@@ -52,18 +53,18 @@ class BrokerService:
         )
         order = Order(asset=asset, amount=amount, order_placed=current_time)
         self.event_manager.schedule_event(
-            Event(event_type=EVENT_TYPE.ORDER_PLACED, data=order)
+            Event(event_type=EVENT_TYPE.ORDER_PLACED, payload=order)
         )
         return order
 
     def _execute_trade(self, event: Event[Order]) -> None:
         current_time = self.event_manager.current_time
         logger.bind(simulation_time=current_time).debug(
-            f"Executing trade order for order: {event.data}"
+            f"Executing trade order for order: {event.payload}"
         )
-        if event.data is None:
+        if event.payload is None:
             raise ValueError("Order data is None")
-        order: Order = event.data
+        order: Order = event.payload
         current_price = float(
             self.dataset[current_time]["price"].loc[order.asset.symbol]
         )
@@ -78,6 +79,6 @@ class BrokerService:
             f"Trade executed for {order}: {current_price}"
         )
         self.event_manager.schedule_event(
-            Event(event_type=EVENT_TYPE.ORDER_FULFILLED, data=transaction),
+            Event(event_type=EVENT_TYPE.ORDER_FULFILLED, payload=transaction),
             delay=self.execution_delay,
         )

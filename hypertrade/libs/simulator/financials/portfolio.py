@@ -7,7 +7,8 @@ import pandera as pa
 from loguru import logger
 
 from hypertrade.libs.service.locator import ServiceLocator, register_service
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.simulator.execute.types import Transaction
 from hypertrade.libs.simulator.market import PriceChangeData
 from hypertrade.libs.tsfd.datasets.asset import PricesDataset
@@ -205,8 +206,8 @@ class PortfolioManager:
         logger.bind(simulation_time=self.event_manager.current_time).debug(
             f"Updating portfolio positions: {event}"
         )
-        if event.data is None:
+        if event.payload is None:
             raise ValueError("Empty transaction passed to update positions")
-        transaction: Transaction = event.data
+        transaction: Transaction = event.payload
         self.portfolio.update(transaction)
         self._set_portfolio_market_price()

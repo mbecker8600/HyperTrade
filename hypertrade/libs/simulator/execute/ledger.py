@@ -2,7 +2,8 @@ import pandas as pd
 from loguru import logger
 
 from hypertrade.libs.service.locator import ServiceLocator, register_service
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.simulator.execute.types import Transaction
 
 
@@ -51,7 +52,7 @@ class LedgerService:
         logger.bind(simulation_time=self.event_manager.current_time).debug(
             f"Recording transaction in ledger : {event}"
         )
-        transaction = event.data
+        transaction = event.payload
         if transaction is None:
             raise ValueError("Transaction data is None")
         self.ledger.transactions.loc[transaction.dt] = [

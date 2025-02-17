@@ -1,0 +1,39 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "market",
+    srcs = ["market.py"],
+    data = [],
+    deps = [
+        ":types",
+        requirement("pandas"),
+        requirement("exchange_calendars"),
+        requirement("pytz"),
+    ],
+)
+
+py_library(
+    name = "service",
+    srcs = ["service.py"],
+    data = [],
+    deps = [
+        ":market",
+        ":types",
+        "//hypertrade/libs/service:locator",
+        "//hypertrade/libs/simulator/execute:types",
+        requirement("pandas"),
+        requirement("loguru"),
+    ],
+)
+
+py_library(
+    name = "types",
+    srcs = ["types.py"],
+    data = [],
+    deps = [
+        requirement("pandas"),
+    ],
+)

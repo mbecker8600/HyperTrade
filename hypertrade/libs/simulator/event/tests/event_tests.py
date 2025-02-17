@@ -11,7 +11,8 @@ from loguru import logger
 
 from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.service.locator import ServiceLocator
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 # import hypertrade.libs.debugging  # donotcommit
@@ -39,7 +40,7 @@ class MockStrategyHandler:
         event_manager.schedule_event(
             Event[OrderPlacedData](
                 event_type=EVENT_TYPE.ORDER_PLACED,
-                data=OrderPlacedData("GOOGL", 10),
+                payload=OrderPlacedData("GOOGL", 10),
             )
         )
 

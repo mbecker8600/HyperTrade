@@ -11,7 +11,7 @@ from loguru import logger
 from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.engine import TradingEngine
-from hypertrade.libs.simulator.event import EVENT_TYPE
+from hypertrade.libs.simulator.event.types import EVENT_TYPE
 from hypertrade.libs.simulator.strategy import (
     DATA_TYPE,
     StrategyBuilder,
