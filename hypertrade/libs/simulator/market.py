@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List
 
 import pandas as pd
@@ -8,19 +7,14 @@ from hypertrade.libs.service.locator import ServiceLocator, register_service
 from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.event.service import EventManager
 from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
+from hypertrade.libs.simulator.market_types import PriceChangeData
 from hypertrade.libs.tsfd.utils.time import cast_timestamp
-
-
-@dataclass
-class PriceChangeData:
-    prices: pd.Series
-
 
 MARKET_PRICE_SIMULATOR_SERVICE_NAME = "market_price_simulator"
 
 
 @register_service(MARKET_PRICE_SIMULATOR_SERVICE_NAME)
-class MarketPriceSimulator:
+class MarketPriceService:
 
     SERVICE_NAME: str = MARKET_PRICE_SIMULATOR_SERVICE_NAME
 

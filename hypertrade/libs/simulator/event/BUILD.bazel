@@ -23,6 +23,7 @@ py_library(
         ":market",
         ":types",
         "//hypertrade/libs/service:locator",
+        "//hypertrade/libs/simulator:market_types",
         "//hypertrade/libs/simulator/execute:types",
         requirement("pandas"),
         requirement("loguru"),

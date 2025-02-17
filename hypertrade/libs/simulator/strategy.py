@@ -142,7 +142,7 @@ class TradingStrategy:
         order = self._strategy_function(context, market_data)
         if order is not None:
             self.event_manager.schedule_event(
-                event=Event(EVENT_TYPE.ORDER_PLACED, data=order)
+                event=Event(EVENT_TYPE.ORDER_PLACED, payload=order)
             )
 
     def register_strategy(self) -> None:
@@ -154,4 +154,6 @@ class TradingStrategy:
             EventManager.SERVICE_NAME
         )
         for event in self.events:
+            # FIXME: Figure out why this overload doesn't work
+            # trunk-ignore-all(pyright,mypy)
             self.event_manager.subscribe(event, self.execute)

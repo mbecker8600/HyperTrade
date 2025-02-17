@@ -41,11 +41,21 @@ py_library(
     data = [],
     deps = [
         ":assets",
+        ":market_types",
         "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator/event:service",
         "//hypertrade/libs/simulator/event:types",
         requirement("pandas"),
         requirement("loguru"),
+    ],
+)
+
+py_library(
+    name = "market_types",
+    srcs = ["market_types.py"],
+    data = [],
+    deps = [
+        requirement("pandas"),
     ],
 )
 

@@ -2,19 +2,9 @@ from __future__ import annotations
 
 import enum
 import uuid
-from typing import Any, Generic, Optional, TypedDict, TypeVar
+from typing import Any, Generic, Optional, TypeVar
 
 from pandas import Timestamp
-
-
-class OrderPlacedData(TypedDict):
-    order_id: str
-    quantity: float
-
-
-class PriceChangeData(TypedDict):
-    # ...any fields needed...
-    pass
 
 
 class EVENT_TYPE(enum.Enum):

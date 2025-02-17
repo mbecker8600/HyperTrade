@@ -1,6 +1,5 @@
 import unittest
 from collections import Counter
-from dataclasses import dataclass
 from datetime import timedelta
 from typing import Generic, TypeVar
 from unittest.mock import patch
@@ -11,8 +10,10 @@ from loguru import logger
 
 from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.service.locator import ServiceLocator
+from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.event.service import EventManager
 from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
+from hypertrade.libs.simulator.execute.types import Order
 from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 # import hypertrade.libs.debugging  # donotcommit
@@ -26,28 +27,28 @@ class MockNoEventPublishHandler(Generic[T]):
         pass
 
 
-@dataclass
-class OrderPlacedData:
-    symbol: str
-    amount: int
-
-
 class MockStrategyHandler:
 
     def handle_event(self, event: Event[None]) -> None:
         service_locator = ServiceLocator[EventManager]()
         event_manager = service_locator.get(EventManager.SERVICE_NAME)
         event_manager.schedule_event(
-            Event[OrderPlacedData](
+            Event[Order](
                 event_type=EVENT_TYPE.ORDER_PLACED,
-                payload=OrderPlacedData("GOOGL", 10),
+                payload=Order(
+                    Asset(1, "GOOGL", "Google"),
+                    10,
+                    cast_timestamp(
+                        pd.Timestamp("2020-01-02 09:30", tz="America/New_York")
+                    ),
+                ),
             )
         )
 
 
 class MockOrderHandler:
 
-    def handle_event(self, event: Event[OrderPlacedData]) -> None:
+    def handle_event(self, event: Event[Order]) -> None:
         service_locator = ServiceLocator[EventManager]()
         event_manager = service_locator.get(EventManager.SERVICE_NAME)
         event_manager.schedule_event(
@@ -58,7 +59,7 @@ class MockOrderHandler:
 
 class MockPortfolioHandler:
 
-    def handle_event(self, event: Event[OrderPlacedData]) -> None:
+    def handle_event(self, event: Event[Order]) -> None:
         service_locator = ServiceLocator[EventManager]()
         event_manager = service_locator.get(EventManager.SERVICE_NAME)
         event_manager.schedule_event(
@@ -288,7 +289,10 @@ class TestEventManager(unittest.TestCase):
             wraps=order_handler.handle_event,
         ):
             # the OrderHandler.handle_event expects an OrderPlacedData object to be passed, but
-            # the EVENT_TYPE.MARKET_OPEN doesn't pass any data
+            # the EVENT_TYPE.MARKET_OPEN doesn't pass any data. The following lint ignore should
+            # be suppressing the mypy error to show it is working properly.
+
+            # trunk-ignore-all(pyright,mypy)
             event_manager.subscribe(EVENT_TYPE.MARKET_OPEN, order_handler.handle_event)
 
             # First event is market open

@@ -11,7 +11,7 @@ from hypertrade.libs.simulator.financials.performance import (
     PerformanceTrackingService,
 )
 from hypertrade.libs.simulator.financials.portfolio import PortfolioManager
-from hypertrade.libs.simulator.market import MarketPriceSimulator
+from hypertrade.libs.simulator.market import MarketPriceService
 from hypertrade.libs.simulator.strategy import (
     TradingStrategy,
 )
@@ -31,7 +31,7 @@ class TradingEngine:
         self.event_manager = EventManager(start_time=start_time, end_time=end_time)
 
         self.portfolio_manager = PortfolioManager(prices_dataset, capital_base)
-        self.market_price_simulator = MarketPriceSimulator(
+        self.market_price_simulator = MarketPriceService(
             universe=[Asset(1, "GOOGL", "Google")]
         )
         self.order_manager = BrokerService(dataset=prices_dataset)

@@ -22,6 +22,7 @@ from hypertrade.libs.service.locator import register_service
 from hypertrade.libs.simulator.event.market import MarketEvents
 from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event, Frequency
 from hypertrade.libs.simulator.execute.types import Order, Transaction
+from hypertrade.libs.simulator.market_types import PriceChangeData
 
 if TYPE_CHECKING:
     from loguru import Record
