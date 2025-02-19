@@ -78,8 +78,8 @@ class TradingEnvironment(EnvBase):
         logger.bind(simulation_time=self.trading_engine.current_time).debug(
             "Starting _step()"
         )
-        # Step until desired event (e.g. MARKET_OPEN)
-        next_event = self.trading_engine.step_until_event(EVENT_TYPE.MARKET_OPEN)
+        # Step until desired event (e.g. MARKET_PRE_OPEN)
+        next_event = self.trading_engine.step_until_event(EVENT_TYPE.PRE_MARKET_OPEN)
 
         tensordict["action"]
 

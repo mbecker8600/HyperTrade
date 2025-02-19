@@ -104,6 +104,47 @@ class TestTradingEngine(unittest.TestCase):
                 1.0,
             )
 
+    def test_step_until_event_daily_cycle(self) -> None:
+        tz = pytz.timezone("America/New_York")
+        start_time = cast_timestamp(pd.Timestamp("2018-11-27", tz=tz))
+        end_time = cast_timestamp(pd.Timestamp("2018-11-30", tz=tz))
+
+        # Use sample data for testing
+        ws = os.path.dirname(__file__)
+        sample_data_path = os.path.join(ws, "../data/tests/data/ohlvc/sample.csv")
+
+        # Create an OCHLV data source using a CSV file
+        cal = xcals.get_calendar("XNYS")
+        ohlvc_dataset = PricesDataset(
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath=sample_data_path),
+            ),
+            symbols=["GE", "BA"],
+            name="prices",
+            trading_calendar=cal,
+        )
+
+        engine = TradingEngine(
+            start_time=start_time,
+            end_time=end_time,
+            prices_dataset=ohlvc_dataset,
+            capital_base=1000,
+        )
+        days = [
+            pd.Timestamp("2018-11-27 09:15:00-0500", tz="America/New_York"),
+            pd.Timestamp("2018-11-28 09:15:00-0500", tz="America/New_York"),
+            pd.Timestamp("2018-11-29 09:15:00-0500", tz="America/New_York"),
+            pd.Timestamp("2018-11-30 09:15:00-0500", tz="America/New_York"),
+        ]
+        # Step day by day until MARKET_PRE_OPEN, checking updates
+        while True:
+            try:
+                evt = engine.step_until_event(EVENT_TYPE.PRE_MARKET_OPEN)
+                next_day = days.pop(0)
+                self.assertEqual(evt.time, next_day)
+            except StopIteration:
+                break
+
 
 if __name__ == "__main__":
     initialize_logging(level="TRACE")

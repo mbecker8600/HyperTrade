@@ -52,6 +52,15 @@ class TradingEngine:
     def step_until_event(self, event_type: EVENT_TYPE) -> Event[Any]:
         """
         Advances the simulation until the specified event is reached.
+
+        Args:
+            event_type (EVENT_TYPE): The event type to wait for.
+
+        Returns:
+            Event[Any]: The event that was waited for.
+
+        Raises:
+            StopIteration: If the iteration stops before the event is reached.
         """
         while True:
             evt = next(self.event_manager)
