@@ -22,7 +22,10 @@ py_library(
 py_binary(
     name = "ddpg",
     srcs = ["ddpg.py"],
-    data = ["//hypertrade/ai/rl:config.yaml"],
+    data = [
+        "//hypertrade/ai/rl:config.yaml",
+        "//hypertrade/libs/simulator/data/tests:data/ohlvc/sample.csv",
+    ],
     main = "ddpg.py",
     deps = [
         ":env",
