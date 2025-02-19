@@ -38,22 +38,26 @@ class BrokerService:
         self.dataset = dataset
 
     def place_order(self, asset: Asset, amount: int) -> Order:
-        """
-
-        Raises:
-
-
-        Returns:
-            Order: The pending placed order (if successful).
-                NOTE: This doesn't mean it has been executed
-        """
         current_time = self.event_manager.current_time
-        logger.bind(simulation_time=current_time).debug(
-            f"Placing order for asset: {asset} and amount: {amount}"
-        )
-        order = Order(asset=asset, amount=amount, order_placed=current_time)
+        open_time = self.event_manager._market_events.calendar.next_open(current_time)
+        close_time = self.event_manager._market_events.calendar.next_close(current_time)
+
+        if not self.event_manager._market_events.calendar.is_trading_minute(
+            current_time
+        ) and not (open_time <= current_time < close_time):
+            logger.bind(simulation_time=current_time).debug(
+                "Scheduling order for next market open"
+            )
+            delayed_time = open_time
+        else:
+            delayed_time = current_time
+
+        order = Order(asset=asset, amount=amount, order_placed=delayed_time)
         self.event_manager.schedule_event(
-            Event(event_type=EVENT_TYPE.ORDER_PLACED, payload=order)
+            Event(event_type=EVENT_TYPE.ORDER_PLACED, payload=order),
+            delay=(
+                (delayed_time - current_time) if delayed_time > current_time else None
+            ),
         )
         return order
 

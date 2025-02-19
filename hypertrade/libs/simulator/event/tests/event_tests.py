@@ -8,6 +8,7 @@ import pandas as pd
 import pytz
 from loguru import logger
 
+# import hypertrade.libs.debugging  # donotcommit
 from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.service.locator import ServiceLocator
 from hypertrade.libs.simulator.assets import Asset
@@ -15,8 +16,6 @@ from hypertrade.libs.simulator.event.service import EventManager
 from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.simulator.execute.types import Order
 from hypertrade.libs.tsfd.utils.time import cast_timestamp
-
-# import hypertrade.libs.debugging  # donotcommit
 
 T = TypeVar("T")
 
@@ -123,7 +122,14 @@ class TestEventManager(unittest.TestCase):
                 EVENT_TYPE.MARKET_OPEN, strategy_handler.handle_event
             )
 
-            # First event is market open
+            # First event is before market open
+            market_open_event = next(event_manager)
+            self.assertEqual(market_open_event.event_type, EVENT_TYPE.PRE_MARKET_OPEN)
+            self.assertEqual(
+                market_open_event.time, pd.Timestamp("2020-01-02 09:15", tz=nytz)
+            )
+
+            # next event is market open
             market_open_event = next(event_manager)
             self.assertEqual(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
             self.assertEqual(
@@ -169,21 +175,28 @@ class TestEventManager(unittest.TestCase):
             )
             event_manager.subscribe(EVENT_TYPE.ORDER_PLACED, order_handler.handle_event)
 
-            # First event is market open
+            # First event is before market open
+            market_open_event = next(event_manager)
+            self.assertEqual(market_open_event.event_type, EVENT_TYPE.PRE_MARKET_OPEN)
+            self.assertEqual(
+                market_open_event.time, pd.Timestamp("2020-01-02 09:15", tz=nytz)
+            )
+
+            # Next event is market open
             market_open_event = next(event_manager)
             self.assertEqual(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
             self.assertEqual(
                 market_open_event.time, pd.Timestamp("2020-01-02 09:30", tz=nytz)
             )
 
-            # Second event is from the strategy handler, no delay so time is the same
+            # next event is from the strategy handler, no delay so time is the same
             order_placed_event = next(event_manager)
             self.assertEqual(order_placed_event.event_type, EVENT_TYPE.ORDER_PLACED)
             self.assertEqual(
                 order_placed_event.time, pd.Timestamp("2020-01-02 09:30", tz=nytz)
             )
 
-            # Third event is from the strategy handler, no delay so time is the same
+            # next event is from the strategy handler, no delay so time is the same
             order_placed_event = next(event_manager)
             self.assertEqual(order_placed_event.event_type, EVENT_TYPE.ORDER_FULFILLED)
             self.assertEqual(
@@ -195,6 +208,15 @@ class TestEventManager(unittest.TestCase):
             self.assertEqual(market_close_event.event_type, EVENT_TYPE.MARKET_CLOSE)
             self.assertEqual(
                 market_close_event.time, pd.Timestamp("2020-01-02 16:00", tz=nytz)
+            )
+
+            # Fourth event is market close
+            market_close_event = next(event_manager)
+            self.assertEqual(
+                market_close_event.event_type, EVENT_TYPE.POST_MARKET_CLOSE
+            )
+            self.assertEqual(
+                market_close_event.time, pd.Timestamp("2020-01-02 16:15", tz=nytz)
             )
 
             mock_strategy_handler.assert_called_once()
@@ -235,7 +257,14 @@ class TestEventManager(unittest.TestCase):
                 EVENT_TYPE.ORDER_PLACED, portfolio_handler.handle_event
             )
 
-            # First event is market open
+            # First event is before market open
+            market_open_event = next(event_manager)
+            self.assertEqual(market_open_event.event_type, EVENT_TYPE.PRE_MARKET_OPEN)
+            self.assertEqual(
+                market_open_event.time, pd.Timestamp("2020-01-02 09:15", tz=nytz)
+            )
+
+            # Next event is market open
             market_open_event = next(event_manager)
             self.assertEqual(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
             self.assertEqual(
@@ -295,7 +324,14 @@ class TestEventManager(unittest.TestCase):
             # trunk-ignore-all(pyright,mypy)
             event_manager.subscribe(EVENT_TYPE.MARKET_OPEN, order_handler.handle_event)
 
-            # First event is market open
+            # First event is before market open
+            market_open_event = next(event_manager)
+            self.assertEqual(market_open_event.event_type, EVENT_TYPE.PRE_MARKET_OPEN)
+            self.assertEqual(
+                market_open_event.time, pd.Timestamp("2020-01-02 09:15", tz=nytz)
+            )
+
+            # Next event is market open
             market_open_event = next(event_manager)
             self.assertEqual(market_open_event.event_type, EVENT_TYPE.MARKET_OPEN)
             self.assertEqual(

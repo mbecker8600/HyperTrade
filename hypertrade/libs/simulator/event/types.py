@@ -8,54 +8,54 @@ from pandas import Timestamp
 
 
 class EVENT_TYPE(enum.Enum):
-    """Registry of all events that can be subscribed to ensure easy discoveryability for anyone looking for
-    Events to subscribe to.
-
-    Each event should specify three things:
-    1. what it does
-    2. what class publishes it
-    3. what data object should be used when handling the event. This should be type safe using generics
-
-    Note, if the event doesn't have data (and data is Optional[T]), the typing on the event should be
-    Event[None] to indicate there is no data available.
-
-    """
+    """Registry of all events that can be subscribed to."""
 
     MARKET_OPEN = 1
-    """MARKET_OPEN
-    Description:
-    Publisher: :py:class:`~hypertrade.libs.simulator.event.MarketEvents`
+    """Emitted at market open.
+    Publisher: MarketEvents
     Payload: None
     """
+
     MARKET_CLOSE = 2
-    """MARKET_CLOSE
-    Description:
-    Publisher: :py:class:`~hypertrade.libs.simulator.event.MarketEvents`
+    """Emitted at market close.
+    Publisher: MarketEvents
     Payload: None
     """
+
     ORDER_PLACED = 3
-    """ORDER_PLACED
-    Description:
-    Publisher:
-    Payload:
+    """Emitted when a strategy places an order.
+    Publisher: TradingStrategy
+    Payload: Order
     """
+
     ORDER_FULFILLED = 4
-    """ORDER_FULFILLED
-    Description:
-    Publisher:
-    Payload:
+    """Emitted when an order executes.
+    Publisher: BrokerService
+    Payload: Transaction
     """
+
     PORTFOLIO_UPDATE = 5
-    """PORTFOLIO_UPDATE
-    Description:
-    Publisher:
-    Payload:
+    """Emitted when the portfolio changes.
+    Publisher: PortfolioManager
+    Payload: None
     """
+
     PRICE_CHANGE = 6
-    """PRICE_CHANGE
-    Description:
-    Publisher:
-    Payload:
+    """Emitted on new price data.
+    Publisher: MarketPriceService
+    Payload: PriceChangeData
+    """
+
+    PRE_MARKET_OPEN = 7
+    """Emitted 15 minutes before market open.
+    Publisher: MarketEvents
+    Payload: None
+    """
+
+    POST_MARKET_CLOSE = 8
+    """Emitted 15 minutes after market close.
+    Publisher: MarketEvents
+    Payload: None
     """
 
 

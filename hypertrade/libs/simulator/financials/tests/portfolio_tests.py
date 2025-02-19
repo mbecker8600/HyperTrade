@@ -37,17 +37,17 @@ class TestPortfolioService(unittest.TestCase):
             trading_calendar=self.cal,
         )
 
-        nytz = pytz.timezone("America/New_York")
-        start_time = cast_timestamp(pd.Timestamp("2018-12-26", tz=nytz))
+        self.nytz = pytz.timezone("America/New_York")
+        start_time = cast_timestamp(pd.Timestamp("2018-12-26", tz=self.nytz))
 
         # Since no time is provide, the timestamp defaults to 00:00:00, meaning this day will not be
         # included in the simulation.
-        end_time = cast_timestamp(pd.Timestamp("2018-12-31", tz=nytz))
+        end_time = cast_timestamp(pd.Timestamp("2018-12-31", tz=self.nytz))
         self.event_manager = EventManager(start_time=start_time, end_time=end_time)
         self.portfolio_manager = PortfolioManager(
             self.ohlvc_dataset, capital_base=1000.0
         )
-        next(self.event_manager)  # Simulate to the first market event
+        next(self.event_manager)  # Simulate to the pre market event
 
     def test_portfolio_manager_initialization(self) -> None:
         """Basic initialization of the PortfolioManager object"""
@@ -64,6 +64,11 @@ class TestPortfolioService(unittest.TestCase):
     def test_buy_hold_multiple_positions(self) -> None:
         """Test buying and holding a single asset"""
         logger.debug("Testing buying and holding a single asset")
+        next(self.event_manager)  # Simulate to the first market event
+        self.assertEqual(
+            self.event_manager.current_time,
+            cast_timestamp(pd.Timestamp("2018-12-26 09:30:00", tz=self.nytz)),
+        )
         # Buy 1 share of Boeing
         self.event_manager.schedule_event(
             Event(
@@ -73,7 +78,7 @@ class TestPortfolioService(unittest.TestCase):
                     asset=Asset(
                         sid=1, symbol="BA", asset_name="Boeing", price_multiplier=1.0
                     ),
-                    dt=cast_timestamp(pd.Timestamp("2018-12-26 09:30:00")),
+                    dt=cast_timestamp(self.event_manager.current_time),
                     price=290.18,
                     order_id="testing",
                 ),
@@ -94,7 +99,7 @@ class TestPortfolioService(unittest.TestCase):
                         asset_name="General Electric",
                         price_multiplier=1.0,
                     ),
-                    dt=cast_timestamp(pd.Timestamp("2018-12-26 09:30:00")),
+                    dt=cast_timestamp(self.event_manager.current_time),
                     price=32.88,
                     order_id="testing",
                 ),
@@ -152,6 +157,7 @@ class TestPortfolio(unittest.TestCase):
         # included in the simulation.
         end_time = cast_timestamp(pd.Timestamp("2018-12-31", tz=nytz))
         self.event_manager = EventManager(start_time=start_time, end_time=end_time)
+        next(self.event_manager)  # Simulate to the pre-market open event
         next(self.event_manager)  # Simulate to the first market event
 
     def test_portfolio_initialization(self) -> None:

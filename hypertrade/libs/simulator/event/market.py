@@ -39,21 +39,24 @@ class MarketEvents:
         Returns the next market event after the given time.
         """
         if self.frequency == Frequency.DAILY:
-            if time.time() < datetime.time(9, 30, tzinfo=self.tz):
-                return Event(
-                    event_type=EVENT_TYPE.MARKET_OPEN,
-                    time=self.calendar.next_open(time).tz_convert(self.tz),
-                )
+            open_time = self.calendar.next_open(time).tz_convert(self.tz)
+            # Account when the current time being passed is the close time
+            close_time = (
+                self.calendar.next_close(time).tz_convert(self.tz)
+                if self.calendar.next_close(time.normalize()) != time
+                else time.tz_convert(self.tz)
+            )
+            pre_open_time = open_time - datetime.timedelta(minutes=15)
+            post_close_time = close_time + datetime.timedelta(minutes=15)
 
-            elif time.time() < datetime.time(16, 0, tzinfo=self.tz):
-                return Event(
-                    event_type=EVENT_TYPE.MARKET_CLOSE,
-                    time=self.calendar.next_close(time).tz_convert(self.tz),
-                )
-            else:
-                return Event(
-                    event_type=EVENT_TYPE.MARKET_OPEN,
-                    time=self.calendar.next_open(time).tz_convert(self.tz),
-                )
+            times_events = [
+                (pre_open_time, EVENT_TYPE.PRE_MARKET_OPEN),
+                (open_time, EVENT_TYPE.MARKET_OPEN),
+                (close_time, EVENT_TYPE.MARKET_CLOSE),
+                (post_close_time, EVENT_TYPE.POST_MARKET_CLOSE),
+            ]
+            future_times = [(t, e) for (t, e) in times_events if t > time]
+            next_time, next_type = min(future_times, key=lambda x: x[0])
+            return Event(event_type=next_type, time=next_time)
         else:
             raise NotImplementedError("Only daily frequency is supported")

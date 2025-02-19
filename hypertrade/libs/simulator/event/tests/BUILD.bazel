@@ -16,5 +16,6 @@ py_test(
         requirement("pandas"),
         requirement("pytz"),
         requirement("loguru"),
+        requirement("debugpy"),
     ],
 )

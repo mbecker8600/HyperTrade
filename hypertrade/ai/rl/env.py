@@ -13,7 +13,7 @@ from torchrl.data.utils import DEVICE_TYPING
 from torchrl.envs import EnvBase
 
 from hypertrade.libs.simulator.engine import TradingEngine
-from hypertrade.libs.simulator.event import EVENT_TYPE
+from hypertrade.libs.simulator.event.types import EVENT_TYPE
 from hypertrade.libs.tsfd.datasets.asset import PricesDataset
 from hypertrade.libs.tsfd.sources.csv import CSVSource
 from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat

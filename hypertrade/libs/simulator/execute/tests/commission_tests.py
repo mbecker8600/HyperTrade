@@ -2,6 +2,7 @@ import unittest
 
 import pandas as pd
 
+from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.execute.commission import NoCommission
 from hypertrade.libs.simulator.execute.types import Order, Transaction
@@ -26,3 +27,8 @@ class TestNoCommisionModel(unittest.TestCase):
             order_id="1234",
         )
         self.assertEqual(NoCommission.calculate(dummy_order, dummy_txn), 0.0)
+
+
+if __name__ == "__main__":
+    initialize_logging(level="DEBUG")
+    unittest.main()
