@@ -1,0 +1,21 @@
+{
+  "exclude": [
+    "**/node_modules",
+    "**/bazel-out",
+    "**/bazel-bin",
+    "**/bazel-HyperTrade",
+    "**/bazel-testlogs",
+    "**/.local",
+    "**/__pycache__"
+  ],
+  "ignore": [
+    "**/node_modules",
+    "**/bazel-out",
+    "**/bazel-bin",
+    "**/bazel-HyperTrade",
+    "**/bazel-testlogs",
+    "**/__pycache__",
+    "**/.local"
+  ]
+  // "extraPaths": ["bazel-bin", "./bazel-ubuntu"],
+}

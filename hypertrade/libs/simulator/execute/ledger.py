@@ -1,9 +1,9 @@
-from loguru import logger
 import pandas as pd
-from pyparsing import col
+from loguru import logger
 
 from hypertrade.libs.service.locator import ServiceLocator, register_service
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.simulator.execute.types import Transaction
 
 
@@ -26,6 +26,7 @@ class Ledger:
     """
 
     def __init__(self) -> None:
+        # trunk-ignore(pyright/reportArgumentType)
         self.transactions = pd.DataFrame(columns=["amount", "price", "symbol"])
 
 
@@ -35,7 +36,7 @@ LEDGER_SERVICE_NAME = "ledger_service"
 @register_service(LEDGER_SERVICE_NAME)
 class LedgerService:
 
-    SERVICE_NAME = LEDGER_SERVICE_NAME
+    SERVICE_NAME: str = LEDGER_SERVICE_NAME
 
     def __init__(self) -> None:
         self.ledger = Ledger()
@@ -51,8 +52,9 @@ class LedgerService:
         logger.bind(simulation_time=self.event_manager.current_time).debug(
             f"Recording transaction in ledger : {event}"
         )
-        transaction = event.data
-        assert transaction is not None, "Transaction data is None"
+        transaction = event.payload
+        if transaction is None:
+            raise ValueError("Transaction data is None")
         self.ledger.transactions.loc[transaction.dt] = [
             transaction.amount,
             transaction.price,

@@ -1,0 +1,15 @@
+load("@rules_python//python:py_library.bzl", "py_library")
+
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "all",
+    srcs = [],
+    data = [],
+    deps = [
+        "//hypertrade/libs/tsfd/datasets:all",
+        "//hypertrade/libs/tsfd/schemas:all",
+        "//hypertrade/libs/tsfd/sources:all",
+        "//hypertrade/libs/tsfd/sources/formats:all",
+    ],
+)

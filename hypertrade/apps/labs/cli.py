@@ -1,7 +1,9 @@
-import click
 from datetime import datetime
 
+import click
 
+
+# trunk-ignore-all(mypy)
 @click.group()
 def cli() -> None:
     pass

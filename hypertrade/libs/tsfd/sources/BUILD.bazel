@@ -1,0 +1,32 @@
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "all",
+    srcs = [],
+    data = [],
+    deps = [
+        ":csv",
+        ":types",
+    ],
+)
+
+py_library(
+    name = "csv",
+    srcs = ["csv.py"],
+    data = [],
+    deps = [
+        ":types",
+        "//hypertrade/libs/tsfd/sources/formats:default",
+        "//hypertrade/libs/tsfd/utils:dataframe",
+        "//hypertrade/libs/tsfd/utils:time",
+    ],
+)
+
+py_library(
+    name = "types",
+    srcs = ["types.py"],
+    data = [],
+    deps = [],
+)

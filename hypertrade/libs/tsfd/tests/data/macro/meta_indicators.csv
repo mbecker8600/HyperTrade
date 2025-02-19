@@ -1,0 +1,50 @@
+code,indicator
+001,GDP Current Prices
+002,"GDP Current Prices, sa"
+003,GDP growth
+004,"GDP Real Constant Prices, sa"
+005,Final consumption expenditure
+006,Gross capital formation
+007,Exports of goods and services
+008,"Exports of goods & services, current prices"
+009,"Exports of goods & services, constant prices"
+010,Imports of goods and services
+011,"Imports of goods & services, current prices"
+012,"Imports of goods & services, constant prices"
+013,"GDP Volume, sa"
+014,"Agriculture, value added"
+015,"Industry, value added"
+016,"Manufacturing, value added"
+017,"Services, value added"
+018,"GDP per capita, constant prices"
+019,"GDP per capita, constant prices PPP"
+020,"GNI per capita, Atlas method (current)"
+021,"GNI per capita, PPP (current)"
+022,Gross savings
+023,"Adjusted net savings, including particulate emission damage"
+024,CPI All
+025,"CPI All, sa"
+026,"CPI All Households, sa"
+027,Current account balance
+028,"Current account balance, sa"
+029,Total Reserves
+030,"Foreign direct investment, net inflows"
+031,"Personal remittances, received"
+032,Export value index
+033,Import value index
+034,Export unit value index
+035,Import unit value index
+036,Net barter terms of trade index
+037,Short-term debt
+038,Long-term debt
+039,General government gross debt
+040,"Population, total"
+041,"Unemployment, total"
+042,"Agriculture value added per worker, constant prices"
+043,"Industry value added per worker, constant prices"
+044,"Services value added per worker, constant prices"
+045,"GDP per person employed, constant prices PPP"
+046,Consumer price index
+047,"GNI per capita, Atlas method (current US$)"
+048,"GNI per capita, PPP (current international $)"
+049,Net barter terms of trade index

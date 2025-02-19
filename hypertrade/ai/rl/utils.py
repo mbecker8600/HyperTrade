@@ -1,65 +1,60 @@
 # Description: Utility functions for RL training
 from typing import Tuple
-from omegaconf import DictConfig
+
 import pandas as pd
 import torch
-
+from omegaconf import DictConfig
 from torch import nn, optim
-from torchrl.collectors import SyncDataCollector, MultiSyncDataCollector
+from torchrl.collectors import MultiSyncDataCollector, SyncDataCollector
+from torchrl.collectors.collectors import DataCollectorBase
 from torchrl.data import TensorDictPrioritizedReplayBuffer, TensorDictReplayBuffer
+from torchrl.data.replay_buffers import ReplayBuffer
 from torchrl.data.replay_buffers.storages import LazyMemmapStorage
+from torchrl.data.utils import DEVICE_TYPING
 from torchrl.envs import (
+    CatTensors,
     Compose,
     DoubleToFloat,
+    EnvBase,
     EnvCreator,
     InitTracker,
     ParallelEnv,
+    RewardClipping,
+    RewardScaling,
     RewardSum,
     StepCounter,
     TransformedEnv,
-    CatTensors,
-    RewardScaling,
-    RewardClipping,
-    ObservationNorm,
 )
-from torchrl.objectives import LossModule
-from torchrl.objectives.utils import TargetNetUpdater
-from torchrl.envs import EnvBase
-from torchrl.collectors.collectors import DataCollectorBase
 from torchrl.envs.utils import ExplorationType, set_exploration_type
 from torchrl.modules import (
-    AdditiveGaussianWrapper,
     MLP,
+    AdditiveGaussianWrapper,
     OrnsteinUhlenbeckProcessWrapper,
     SafeModule,
     SafeSequential,
     TanhModule,
     ValueOperator,
 )
-from torchrl.data.replay_buffers import ReplayBuffer
-from torchrl.objectives.utils import ValueEstimators
-from torchrl.data.utils import DEVICE_TYPING
-
-from torchrl.objectives import SoftUpdate
+from torchrl.objectives import LossModule, SoftUpdate
 from torchrl.objectives.ddpg import DDPGLoss
+from torchrl.objectives.utils import TargetNetUpdater, ValueEstimators
 
 from hypertrade.ai.rl.env import TradingEnvironment
-
 
 # ====================================================================
 # Environment utils
 # -----------------
 
 
+# trunk-ignore-all(mypy,pyright)
 def env_maker(cfg: DictConfig, env_type: str) -> EnvBase:
-    symbol_file = cfg.portfolio.symbol_file
-    symbols_df = pd.read_csv(symbol_file, header=0)
     device = cfg.env.device
+    # FIXME: Change hardcoded symbols
     if env_type == "train":
         start = pd.Timestamp(cfg.env.training_start)
         end = pd.Timestamp(cfg.env.training_end)
         return TradingEnvironment(
-            symbols=symbols_df.symbol.to_list(),
+            symbols=["GE", "BA", "AAPL"],
             min_start=start,
             max_end=end,
             env_type=env_type,
@@ -70,7 +65,7 @@ def env_maker(cfg: DictConfig, env_type: str) -> EnvBase:
         start = pd.Timestamp(cfg.env.eval_start)
         end = pd.Timestamp(cfg.env.eval_end)
         return TradingEnvironment(
-            symbols=symbols_df.symbol.to_list(),
+            symbols=["GE", "BA", "AAPL"],
             min_start=start,
             max_end=end,
             env_type=env_type,
@@ -145,7 +140,6 @@ def make_environment(cfg: DictConfig) -> Tuple[EnvBase, EnvBase]:
     parallel_env.set_seed(cfg.env.seed)
 
     train_env = apply_env_transforms(parallel_env, cfg)
-    dim = 0 if cfg.collector.env_per_collector == 1 else 1
     # train_env.transform[4].init_stats(
     #     num_iter=1000, reduce_dim=dim
     # )  # initialize stats for observation norm
@@ -370,7 +364,7 @@ def make_optimizer(cfg: DictConfig, loss_module):
     return optimizer_actor, optimizer_critic
 
 
-# ====================================================================
+# ============================== ======================================
 # General utils
 # ---------
 

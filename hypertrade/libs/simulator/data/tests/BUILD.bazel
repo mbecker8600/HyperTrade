@@ -1,12 +1,3 @@
 package(default_visibility = ["//visibility:public"])
 
-py_test(
-    name = "datasource_tests",
-    srcs = ["datasource_tests.py"],
-    data = ["//hypertrade/libs/simulator/data/tests:data/ohlvc/sample.csv"],
-    deps = [
-        "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/simulator/data:datasource",
-        "//hypertrade/libs/logging:py_setup",
-    ],
-)
+exports_files(["data/ohlvc/sample.csv"])

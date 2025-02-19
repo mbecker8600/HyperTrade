@@ -1,14 +1,23 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_test")
+
 py_test(
     name = "portfolio_tests",
     srcs = ["portfolio_tests.py"],
     data = ["//hypertrade/libs/simulator/data/tests:data/ohlvc/sample.csv"],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/simulator:assets",
-        "//hypertrade/libs/simulator:event",
-        "//hypertrade/libs/simulator/financials:portfolio",
-        "//hypertrade/libs/simulator/data:datasource",
         "//hypertrade/libs/logging:py_setup",
+        "//hypertrade/libs/simulator:assets",
+        "//hypertrade/libs/simulator/event:service",
+        "//hypertrade/libs/simulator/event:types",
+        "//hypertrade/libs/simulator/financials:portfolio",
+        "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/utils:time",
+        requirement("loguru"),
+        requirement("pandas"),
+        requirement("pytz"),
+        requirement("exchange_calendars"),
     ],
 )
 
@@ -17,7 +26,9 @@ py_test(
     srcs = ["performance_tests.py"],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/simulator/financials:performance",
         "//hypertrade/libs/logging:py_setup",
+        "//hypertrade/libs/simulator/financials:performance",
+        "//hypertrade/libs/tsfd/utils:time",
+        requirement("pandas"),
     ],
 )

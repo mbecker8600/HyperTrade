@@ -1,0 +1,21 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_test")
+
+py_test(
+    name = "event_tests",
+    srcs = ["event_tests.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/logging:py_setup",
+        "//hypertrade/libs/service:locator",
+        "//hypertrade/libs/simulator/event:service",
+        "//hypertrade/libs/simulator/event:types",
+        "//hypertrade/libs/simulator/execute:types",
+        "//hypertrade/libs/tsfd/utils:time",
+        requirement("pandas"),
+        requirement("pytz"),
+        requirement("loguru"),
+        requirement("debugpy"),
+    ],
+)

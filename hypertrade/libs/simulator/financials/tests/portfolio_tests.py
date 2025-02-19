@@ -1,20 +1,22 @@
-from calendar import c
 import os
 import unittest
 
-import pytz
+import exchange_calendars as xcals
 import pandas as pd
+import pytz
 from loguru import logger
 
+# import hypertrade.libs.debugging  # donotcommit
+from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.simulator.assets import Asset
-from hypertrade.libs.simulator.data.datasource import CSVDataSource, OHLCVDataset
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.simulator.execute.types import Transaction
 from hypertrade.libs.simulator.financials.portfolio import Portfolio, PortfolioManager
-
-from hypertrade.libs.logging.setup import initialize_logging
-
-# import hypertrade.libs.debugging  # donotcommit
+from hypertrade.libs.tsfd.datasets.asset import PricesDataset
+from hypertrade.libs.tsfd.sources.csv import CSVSource
+from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
+from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 
 class TestPortfolioService(unittest.TestCase):
@@ -25,20 +27,27 @@ class TestPortfolioService(unittest.TestCase):
         sample_data_path = os.path.join(ws, "../../data/tests/data/ohlvc/sample.csv")
 
         # Create an OCHLV data source using a CSV file
-        csv_source = CSVDataSource(sample_data_path, index_col=["date", "ticker"])
-        self.ohlvc_dataset = OHLCVDataset(csv_source)
+        self.cal = xcals.get_calendar("XNYS")
+        self.ohlvc_dataset = PricesDataset(
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath=sample_data_path),
+            ),
+            symbols=["GE", "BA"],
+            name="prices",
+            trading_calendar=self.cal,
+        )
 
-        nytz = pytz.timezone("America/New_York")
-        start_time = pd.Timestamp("2018-12-26", tz=nytz)
+        self.nytz = pytz.timezone("America/New_York")
+        start_time = cast_timestamp(pd.Timestamp("2018-12-26", tz=self.nytz))
 
         # Since no time is provide, the timestamp defaults to 00:00:00, meaning this day will not be
         # included in the simulation.
-        end_time = pd.Timestamp("2018-12-31", tz=nytz)
+        end_time = cast_timestamp(pd.Timestamp("2018-12-31", tz=self.nytz))
         self.event_manager = EventManager(start_time=start_time, end_time=end_time)
         self.portfolio_manager = PortfolioManager(
             self.ohlvc_dataset, capital_base=1000.0
         )
-        next(self.event_manager)  # Simulate to the first market event
+        next(self.event_manager)  # Simulate to the pre market event
 
     def test_portfolio_manager_initialization(self) -> None:
         """Basic initialization of the PortfolioManager object"""
@@ -55,16 +64,21 @@ class TestPortfolioService(unittest.TestCase):
     def test_buy_hold_multiple_positions(self) -> None:
         """Test buying and holding a single asset"""
         logger.debug("Testing buying and holding a single asset")
+        next(self.event_manager)  # Simulate to the first market event
+        self.assertEqual(
+            self.event_manager.current_time,
+            cast_timestamp(pd.Timestamp("2018-12-26 09:30:00", tz=self.nytz)),
+        )
         # Buy 1 share of Boeing
         self.event_manager.schedule_event(
             Event(
                 event_type=EVENT_TYPE.ORDER_FULFILLED,
-                data=Transaction(
+                payload=Transaction(
                     amount=1,
                     asset=Asset(
                         sid=1, symbol="BA", asset_name="Boeing", price_multiplier=1.0
                     ),
-                    dt=pd.Timestamp("2018-12-26 09:30:00"),
+                    dt=cast_timestamp(self.event_manager.current_time),
                     price=290.18,
                     order_id="testing",
                 ),
@@ -77,7 +91,7 @@ class TestPortfolioService(unittest.TestCase):
         self.event_manager.schedule_event(
             Event(
                 event_type=EVENT_TYPE.ORDER_FULFILLED,
-                data=Transaction(
+                payload=Transaction(
                     amount=1,
                     asset=Asset(
                         sid=2,
@@ -85,7 +99,7 @@ class TestPortfolioService(unittest.TestCase):
                         asset_name="General Electric",
                         price_multiplier=1.0,
                     ),
-                    dt=pd.Timestamp("2018-12-26 09:30:00"),
+                    dt=cast_timestamp(self.event_manager.current_time),
                     price=32.88,
                     order_id="testing",
                 ),
@@ -102,7 +116,7 @@ class TestPortfolioService(unittest.TestCase):
         self.event_manager.schedule_event(
             Event(
                 event_type=EVENT_TYPE.PRICE_CHANGE,
-                data=None,
+                payload=None,
             )
         )
         next(self.event_manager)  # advanced to price change event
@@ -126,16 +140,24 @@ class TestPortfolio(unittest.TestCase):
         sample_data_path = os.path.join(ws, "../../data/tests/data/ohlvc/sample.csv")
 
         # Create an OCHLV data source using a CSV file
-        csv_source = CSVDataSource(sample_data_path, index_col=["date", "ticker"])
-        self.ohlvc_dataset = OHLCVDataset(csv_source)
+        self.cal = xcals.get_calendar("XNYS")
+        self.ohlvc_dataset = PricesDataset(
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath=sample_data_path),
+            ),
+            symbols=["GE", "BA"],
+            name="prices",
+            trading_calendar=self.cal,
+        )
 
         nytz = pytz.timezone("America/New_York")
-        start_time = pd.Timestamp("2018-12-26", tz=nytz)
+        start_time = cast_timestamp(pd.Timestamp("2018-12-26", tz=nytz))
 
         # Since no time is provide, the timestamp defaults to 00:00:00, meaning this day will not be
         # included in the simulation.
-        end_time = pd.Timestamp("2018-12-31", tz=nytz)
+        end_time = cast_timestamp(pd.Timestamp("2018-12-31", tz=nytz))
         self.event_manager = EventManager(start_time=start_time, end_time=end_time)
+        next(self.event_manager)  # Simulate to the pre-market open event
         next(self.event_manager)  # Simulate to the first market event
 
     def test_portfolio_initialization(self) -> None:
@@ -165,13 +187,15 @@ class TestPortfolio(unittest.TestCase):
         tx = Transaction(
             amount=n_shares,
             asset=boeing_asset,
-            dt=pd.Timestamp("2018-12-26 09:30:00"),
+            dt=cast_timestamp(pd.Timestamp("2018-12-26 09:30:00")),
             price=tx_price,
             order_id="testing",
         )
-        prices = self.ohlvc_dataset.fetch_current_price(
-            self.event_manager.current_time, [boeing_asset]
-        )
+
+        prices = self.ohlvc_dataset[self.event_manager.current_time]["price"]
+        prices = prices.filter([boeing_asset.symbol])
+        if not isinstance(prices, pd.Series):
+            raise ValueError("Prices df is not a series")
         portfolio.update(tx=tx)
         portfolio.current_market_prices = prices
         self.assertEqual(portfolio.cash, capital_base - (n_shares * tx_price))
@@ -183,9 +207,10 @@ class TestPortfolio(unittest.TestCase):
         self.assertEqual(portfolio.positions_value, tx_price)
 
         next(self.event_manager)  # Simulate to the next market event
-        prices = self.ohlvc_dataset.fetch_current_price(
-            self.event_manager.current_time, [boeing_asset]
-        )
+        prices = self.ohlvc_dataset[self.event_manager.current_time]["price"]
+        prices = prices.filter([boeing_asset.symbol])
+        if not isinstance(prices, pd.Series):
+            raise ValueError("Prices df is not a series")
         portfolio.current_market_prices = prices
         self.assertEqual(weights[boeing_asset.symbol], 1.0)
         # Now the portfolio value should change because the market value has changed.

@@ -7,6 +7,8 @@ on:
     # Review gh actions docs if you want to further define triggers, paths, etc
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
+permissions: read-all
+
 jobs:
   # Build and test bazel targets #
   bazel-build-test:
@@ -23,7 +25,7 @@ jobs:
         # Set up Python and install dependencies.
         uses: actions/setup-python@v5
         with:
-          cache: "pip" # caching pip dependencies
+          cache: pip # caching pip dependencies
       - run: pip install -r third-party/requirements.txt
       - name: Get Bazel
         # Install Bazel.
@@ -44,6 +46,26 @@ jobs:
       - name: Bazel Test
         run: bazelisk test --test_output=all ...
   # Build and test bazel targets #
+
+  trunk_check:
+    name: Trunk Code Quality Runner
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write # For trunk to post annotations
+      contents: read # For repo checkout
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Get Python
+        # Set up Python and install dependencies.
+        uses: actions/setup-python@v5
+        with:
+          cache: pip # caching pip dependencies
+      - run: pip install -r third-party/requirements.txt
+
+      - name: Trunk Code Quality
+        uses: trunk-io/trunk-action@v1
 
   # Test documentation deploy #
   test-docs-deploy:

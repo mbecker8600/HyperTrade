@@ -12,6 +12,7 @@ linting.bazelrc
 **/__pycache__/
 
 **/__pycache__/
+.hypothesis
 
 ##################
 # Intellij
@@ -28,3 +29,8 @@ infrastructure/**/.terraform/**
 # mypy
 ##################
 **/.mypy_cache/
+
+##################
+# Python
+##################
+**__pycache__/

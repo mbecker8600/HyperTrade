@@ -10,25 +10,22 @@ It supports state environments like MuJoCo.
 
 The helper functions are coded in the utils.py associated with this script.
 """
+# trunk-ignore-all(mypy,bandit,pyright)
 import logging
 import os
+import time
 import warnings
 
-
-import time
-
 import hydra
-
 import numpy as np
 import torch
 import torch.cuda
 import tqdm
-
 from omegaconf import DictConfig
-
 from torchrl._utils import logger as torchrl_logger
 from torchrl.envs.utils import ExplorationType, set_exploration_type
 from torchrl.record.loggers import generate_exp_name, get_logger
+
 from hypertrade.ai.rl.utils import (
     log_metrics,
     make_collector,

@@ -1,20 +1,25 @@
 from __future__ import annotations
 
-
+import os
 from typing import List, Optional
-from loguru import logger
+
+import exchange_calendars as xcals
 import pandas as pd
-
 import torch
-
+from loguru import logger
 from tensordict import TensorDict, TensorDictBase
 from torchrl.data import Bounded, Composite, Unbounded
-from torchrl.envs import EnvBase
 from torchrl.data.utils import DEVICE_TYPING
+from torchrl.envs import EnvBase
 
 from hypertrade.libs.simulator.engine import TradingEngine
+from hypertrade.libs.simulator.event.types import EVENT_TYPE
+from hypertrade.libs.tsfd.datasets.asset import PricesDataset
+from hypertrade.libs.tsfd.sources.csv import CSVSource
+from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
 
 
+# trunk-ignore-all(mypy,ruff,pyright)
 class TradingEnvironment(EnvBase):
     def __init__(
         self,
@@ -37,11 +42,24 @@ class TradingEnvironment(EnvBase):
             shape=(),
         )
 
+        # Use sample data for testing
+        ws = os.path.dirname(__file__)
+        sample_data_path = os.path.join(ws, "../data/tests/data/ohlvc/sample.csv")
+
+        # Create an OCHLV data source using a CSV file
+        cal = xcals.get_calendar("XNYS")
+        ohlvc_dataset = PricesDataset(
+            data_source=OHLVCDataSourceFormat(
+                CSVSource(filepath=sample_data_path),
+            ),
+            name="prices",
+            trading_calendar=cal,
+        )
+
         self.trading_engine = TradingEngine(
-            symbols=self.symbols,
             start_time=min_start,
             end_time=max_end,
-            device=device,
+            prices_dataset=ohlvc_dataset,
         )
 
         self.state_spec = self.full_observation_spec.clone()
@@ -58,10 +76,12 @@ class TradingEnvironment(EnvBase):
 
     def _step(self, tensordict: TensorDictBase) -> TensorDictBase:
         logger.bind(simulation_time=self.trading_engine.current_time).debug(
-            f"Starting _step()"
+            "Starting _step()"
         )
+        # Step until desired event (e.g. MARKET_PRE_OPEN)
+        next_event = self.trading_engine.step_until_event(EVENT_TYPE.PRE_MARKET_OPEN)
 
-        action = tensordict["action"]
+        tensordict["action"]
 
         out = TensorDict(
             {
@@ -80,7 +100,7 @@ class TradingEnvironment(EnvBase):
 
     def _reset(self) -> TensorDictBase:
         logger.bind(simulation_time=self.trading_engine.current_time).debug(
-            f"Starting _reset()"
+            "Starting _reset()"
         )
 
         out = TensorDict(

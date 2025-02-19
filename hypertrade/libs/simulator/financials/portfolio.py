@@ -2,16 +2,16 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from loguru import logger
-import pandera as pa
 import pandas as pd
+import pandera as pa
+from loguru import logger
 
-from hypertrade.libs.simulator.data.datasource import Dataset
-from hypertrade.libs.simulator.execute.types import Transaction
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
-from hypertrade.libs.simulator.market import PriceChangeData
 from hypertrade.libs.service.locator import ServiceLocator, register_service
-
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
+from hypertrade.libs.simulator.execute.types import Transaction
+from hypertrade.libs.simulator.market_types import PriceChangeData
+from hypertrade.libs.tsfd.datasets.asset import PricesDataset
 
 PRICES_SCHEMA: pa.SeriesSchema = pa.SeriesSchema()
 
@@ -76,7 +76,9 @@ class Portfolio:
 
         """
         self.positions: pd.DataFrame = pd.DataFrame(
-            columns=["amount", "cost_basis"], index=pd.MultiIndex.from_arrays([[], []])
+            # trunk-ignore(pyright/reportArgumentType)
+            columns=["amount", "cost_basis"],
+            index=pd.MultiIndex.from_arrays([[], []]),
         )
         self.starting_cash = capital_base
         self.cash = capital_base
@@ -167,11 +169,11 @@ class PortfolioManager:
 
     """
 
-    SERVICE_NAME = PORTFOLIO_SERVICE_NAME
+    SERVICE_NAME: str = PORTFOLIO_SERVICE_NAME
 
     def __init__(
         self,
-        dataset: Dataset,
+        dataset: PricesDataset,
         capital_base: float = 0.0,
     ) -> None:
 
@@ -185,16 +187,18 @@ class PortfolioManager:
     def _set_portfolio_market_price(self) -> None:
         """Set the current market prices for the portfolio's positions."""
         assets = self.portfolio.positions.groupby(level=0).sum().index.to_list()
-        prices = self.dataset.fetch_current_price(
-            self.event_manager.current_time, assets
-        )
-        self.portfolio.current_market_prices = prices
+        prices = self.dataset[self.event_manager.current_time]["price"]
+        filtered_prices = prices.filter(assets)
+        if isinstance(filtered_prices, pd.Series):
+            self.portfolio.current_market_prices = filtered_prices
+        else:
+            raise ValueError("Prices df is not a series")
 
     def handle_price_change(self, event: Event[PriceChangeData]) -> None:
         """Handle price change events and invalidate the portfolio's cached properties."""
         if not self.portfolio.positions.empty:
             logger.bind(simulation_time=self.event_manager.current_time).debug(
-                f"Setting new market prices on portfolio object"
+                "Setting new market prices on portfolio object"
             )
             self._set_portfolio_market_price()
 
@@ -202,7 +206,8 @@ class PortfolioManager:
         logger.bind(simulation_time=self.event_manager.current_time).debug(
             f"Updating portfolio positions: {event}"
         )
-        assert event.data is not None, "Empty transaction passed to update positions"
-        transaction: Transaction = event.data
+        if event.payload is None:
+            raise ValueError("Empty transaction passed to update positions")
+        transaction: Transaction = event.payload
         self.portfolio.update(transaction)
         self._set_portfolio_market_price()

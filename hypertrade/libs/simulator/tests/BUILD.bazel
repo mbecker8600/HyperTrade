@@ -1,15 +1,5 @@
-py_test(
-    name = "event_tests",
-    srcs = ["event_tests.py"],
-    data = [],
-    deps = [
-        "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/simulator:event",
-        "//hypertrade/libs/simulator/execute:types",
-        "//hypertrade/libs/logging:py_setup",
-        "//hypertrade/libs/service:locator",
-    ],
-)
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_test")
 
 py_test(
     name = "engine_tests",
@@ -17,8 +7,14 @@ py_test(
     data = ["//hypertrade/libs/simulator/data/tests:data/ohlvc/sample.csv"],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
-        "//hypertrade/libs/simulator:engine",
-        "//hypertrade/libs/simulator/data:datasource",
         "//hypertrade/libs/logging:py_setup",
+        "//hypertrade/libs/simulator:engine",
+        "//hypertrade/libs/simulator/event:types",
+        "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/utils:time",
+        requirement("pandas"),
+        requirement("exchange_calendars"),
+        requirement("pytz"),
+        requirement("loguru"),
     ],
 )

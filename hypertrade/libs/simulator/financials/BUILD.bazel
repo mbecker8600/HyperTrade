@@ -1,3 +1,6 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_library")
+
 package(default_visibility = ["//visibility:public"])
 
 py_library(
@@ -12,9 +15,13 @@ py_library(
     srcs = ["performance.py"],
     data = [],
     deps = [
-        "//hypertrade/libs/service:locator",
-        "//hypertrade/libs/simulator:event",
         ":portfolio",
+        "//hypertrade/libs/service:locator",
+        "//hypertrade/libs/simulator:market_types",
+        "//hypertrade/libs/simulator/event:service",
+        "//hypertrade/libs/simulator/event:types",
+        requirement("loguru"),
+        requirement("pandas"),
     ],
 )
 
@@ -23,11 +30,17 @@ py_library(
     srcs = ["portfolio.py"],
     data = [],
     deps = [
-        "//hypertrade/libs/simulator:assets",
-        "//hypertrade/libs/simulator:event",
-        "//hypertrade/libs/simulator:market",
-        "//hypertrade/libs/simulator/execute:types",
         "//hypertrade/libs/service:locator",
-        "//hypertrade/libs/simulator/data:datasource",
+        "//hypertrade/libs/simulator:assets",
+        "//hypertrade/libs/simulator:market_types",
+        "//hypertrade/libs/simulator/event:service",
+        "//hypertrade/libs/simulator/event:types",
+        "//hypertrade/libs/simulator/execute:types",
+        "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/sources:csv",
+        "//hypertrade/libs/tsfd/sources/formats:ohlvc",
+        requirement("loguru"),
+        requirement("pandas"),
+        requirement("pandera"),
     ],
 )

@@ -1,10 +1,15 @@
-load("@python_deps//:requirements.bzl", "requirement")
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 
 py_library(
     name = "env",
     srcs = ["env.py"],
     data = [],
-    deps = ["//hypertrade/libs/simulator:engine"],
+    deps = [
+        "//hypertrade/libs/simulator:engine",
+        "//hypertrade/libs/tsfd/datasets:asset",
+        requirement("exchange_calendars"),
+    ],
 )
 
 py_library(
@@ -17,7 +22,17 @@ py_library(
 py_binary(
     name = "ddpg",
     srcs = ["ddpg.py"],
-    data = [],
+    data = ["//hypertrade/ai/rl:config.yaml"],
     main = "ddpg.py",
-    deps = [":env"],
+    deps = [
+        ":env",
+        ":utils",
+        requirement("torchrl"),
+        requirement("omegaconf"),
+        requirement("hydra-core"),
+        requirement("numpy"),
+        requirement("torch"),
+        requirement("tqdm"),
+        requirement("tensorboard"),
+    ],
 )

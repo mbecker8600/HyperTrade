@@ -1,0 +1,63 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "all",
+    srcs = [],
+    data = [],
+    deps = [
+        ":macro",
+        ":news",
+        ":ohlvc",
+        ":prices",
+    ],
+)
+
+py_library(
+    name = "ohlvc",
+    srcs = ["ohlvc.py"],
+    data = [],
+    deps = [
+        requirement("pandas"),
+        requirement("pandera"),
+    ],
+)
+
+py_library(
+    name = "news",
+    srcs = ["news.py"],
+    data = [],
+    deps = [
+        requirement("pandas"),
+        requirement("pandera"),
+    ],
+)
+
+py_library(
+    name = "default",
+    srcs = ["default.py"],
+    data = [],
+    deps = [
+        requirement("pandas"),
+        requirement("pandera"),
+    ],
+)
+
+py_library(
+    name = "macro",
+    srcs = ["macro.py"],
+    data = [],
+    deps = [
+        requirement("pandas"),
+        requirement("pandera"),
+    ],
+)
+
+py_library(
+    name = "prices",
+    srcs = ["prices.py"],
+    data = [],
+    deps = [requirement("pandera")],
+)

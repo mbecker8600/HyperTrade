@@ -4,10 +4,25 @@
   "files.autoSave": "onFocusChange",
   "bazel.buildifierFixOnFormat": true,
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.defaultFormatter": "trunk.io",
     "editor.formatOnSave": true
   },
-  "python.defaultInterpreterPath": "/usr/bin/python3",
+  "[markdown]": {
+    "editor.defaultFormatter": "trunk.io",
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "trunk.io",
+    "editor.formatOnSave": true
+  },
+  "[starlark]": {
+    "editor.defaultFormatter": "trunk.io",
+    "editor.formatOnSave": true
+  },
+  "python.defaultInterpreterPath": "/usr/local/python/current/bin/python",
+  "python.linting.ignorePatterns": ["**/.local/**/*.py"],
   "mypy-type-checker.reportingScope": "workspace",
-  "mypy-type-checker.preferDaemon": true
+  "mypy-type-checker.preferDaemon": true,
+  "python.analysis.typeCheckingMode": "off",
+  "mypyright.analysis.typeCheckingMode": "off"
 }

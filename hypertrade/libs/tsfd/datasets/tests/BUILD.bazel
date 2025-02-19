@@ -1,0 +1,13 @@
+load("@rules_python//python:defs.bzl", "py_test")
+
+py_test(
+    name = "dataset_tests",
+    srcs = ["dataset_tests.py"],
+    data = ["//hypertrade/libs/tsfd/tests:data/ohlvc/sample.csv"],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/sources:csv",
+        "//hypertrade/libs/tsfd/sources/formats:ohlvc",
+    ],
+)

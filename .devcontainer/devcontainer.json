@@ -3,14 +3,20 @@
 {
   "name": "HyperTrade Dev Container",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "build": {
-    // Path is relative to the devcontainer.json file.
-    "dockerfile": "Dockerfile"
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "deep_learning_framework",
+  "containerEnv": {
+    "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
+    "GITHUB_USER": "${localEnv:GITHUB_USER}",
+    "NASDAQ_API_KEY": "${localEnv:NASDAQ_API_KEY}"
   },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/devcontainers/features/go:1": {},
-    "ghcr.io/devcontainers/features/python:1": {},
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.10.12"
+    },
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
       "packages": "curl,vim"
     },
@@ -43,7 +49,10 @@
         "ms-python.black-formatter",
         "ms-toolsai.datawrangler",
         "ms-python.mypy-type-checker",
-        "liamrwilkins.mypy-ini-intellisense"
+        "liamrwilkins.mypy-ini-intellisense",
+        "mashin.mypyright",
+        "trunk.io",
+        "Gruntfuggly.todo-tree"
       ]
     }
   },
@@ -54,5 +63,5 @@
   // Configure tool-specific properties.
   // "customizations": {},
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  // "remoteUser": "root"
+  // "containerUser": "testuser"
 }

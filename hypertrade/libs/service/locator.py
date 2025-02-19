@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import (
     Any,
     Callable,
@@ -90,11 +91,15 @@ def register_service(service_name: str, cls: Optional[Type[T]] = None) -> Any:
             """
             Modified __init__ method to register the instance.
             """
-            original_init(self, *args, **kwargs)  # Call the original __init__
+            # Call the original __init__
+            # trunk-ignore(pyright/reportArgumentType)
+            original_init(self, *args, **kwargs)
             service_locator.register(service_name, self)  # Register the instance
 
         # Replace the original __init__ with the modified one
-        setattr(cls, "__init__", __init__)
+        # trunk-ignore(mypy/assignment)
+        # trunk-ignore(mypy/method-assign)
+        cls.__init__ = __init__
         return cls
 
     return decorator

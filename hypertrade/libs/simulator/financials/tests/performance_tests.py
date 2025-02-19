@@ -5,6 +5,7 @@ import pandas as pd
 from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.simulator.financials.performance import PerformanceTracker
 from hypertrade.libs.simulator.financials.portfolio import Portfolio
+from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 # import hypertrade.libs.debugging  # donotcommit
 
@@ -39,6 +40,7 @@ class TestPerformanceTracker(unittest.TestCase):
 
         self.portfolio.positions = pd.DataFrame(
             data,
+            # trunk-ignore(pyright/reportArgumentType)
             columns=["symbol", "dt", "amount", "cost_basis"],
         )
         self.portfolio.positions.set_index(["symbol", "dt"], inplace=True)
@@ -60,7 +62,7 @@ class TestPerformanceTracker(unittest.TestCase):
         )
 
         self.performance_tracker.record_daily_metrics(
-            date=pd.Timestamp("2019-01-01"), portfolio=self.portfolio
+            date=cast_timestamp(pd.Timestamp("2019-01-01")), portfolio=self.portfolio
         )
         self.assertEqual(
             self.performance_tracker.daily_positions.loc[pd.Timestamp("2019-01-01")][
@@ -85,7 +87,7 @@ class TestPerformanceTracker(unittest.TestCase):
             }
         )
         self.performance_tracker.record_daily_metrics(
-            date=pd.Timestamp("2019-01-01"), portfolio=self.portfolio
+            date=cast_timestamp(pd.Timestamp("2019-01-01")), portfolio=self.portfolio
         )
         self.portfolio.current_market_prices = pd.Series(
             {
@@ -94,7 +96,7 @@ class TestPerformanceTracker(unittest.TestCase):
             }
         )
         self.performance_tracker.record_daily_metrics(
-            date=pd.Timestamp("2019-01-02"), portfolio=self.portfolio
+            date=cast_timestamp(pd.Timestamp("2019-01-02")), portfolio=self.portfolio
         )
         self.assertAlmostEqual(
             self.performance_tracker.daily_returns.loc[pd.Timestamp("2019-01-02")],

@@ -1,0 +1,41 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "all",
+    srcs = [],
+    data = [],
+    deps = [
+        ":asset",
+        ":types",
+    ],
+)
+
+py_library(
+    name = "types",
+    srcs = ["types.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/tsfd/sources:types",
+        requirement("pandas"),
+        requirement("torch"),
+    ],
+)
+
+py_library(
+    name = "asset",
+    srcs = ["asset.py"],
+    data = [],
+    deps = [
+        ":types",
+        "//hypertrade/libs/tsfd/schemas:ohlvc",
+        "//hypertrade/libs/tsfd/schemas:prices",
+        "//hypertrade/libs/tsfd/sources:types",
+        "//hypertrade/libs/tsfd/utils:dataframe",
+        requirement("pandas"),
+        requirement("exchange_calendars"),
+        requirement("torch"),
+    ],
+)

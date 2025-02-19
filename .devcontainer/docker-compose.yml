@@ -1,0 +1,37 @@
+version: "2.0"
+services:
+  deep_learning_framework:
+    image: custom_pytorch
+
+    ports:
+      - 6006:6006
+    volumes:
+      - ../..:/workspaces:cached
+    build:
+      context: .
+      dockerfile: Dockerfile
+      shm_size: 130gb
+    # user: testuser
+    shm_size: 130gb
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+    deploy:
+      resources:
+        limits:
+          memory: 128G
+          cpus: 20
+        reservations:
+          memory: 128G
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      - DISPLAY
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_REQUIRE_CUDA=cuda>=12.1
+      - RL_LOGGING_LEVEL=INFO
+    # volumes:
+    #   - /home/albert/Desktop/reinforcement_learning_lunar_lander:/home/docker/reinforcement_learning_lunar_lander
+    network_mode: host

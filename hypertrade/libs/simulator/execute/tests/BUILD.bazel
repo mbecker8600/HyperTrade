@@ -1,9 +1,34 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_test")
+
 py_test(
     name = "commission_tests",
     srcs = ["commission_tests.py"],
     data = [],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/logging:py_setup",
         "//hypertrade/libs/simulator/execute:commission",
+        "//hypertrade/libs/tsfd/utils:time",
+        requirement("pandas"),
+    ],
+)
+
+py_test(
+    name = "broker_tests",
+    srcs = ["broker_tests.py"],
+    data = ["//hypertrade/libs/simulator/data/tests:data/ohlvc/sample.csv"],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/logging:py_setup",
+        "//hypertrade/libs/simulator:assets",
+        "//hypertrade/libs/simulator/event:service",
+        "//hypertrade/libs/simulator/execute:broker",
+        "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/sources:csv",
+        "//hypertrade/libs/tsfd/sources/formats:ohlvc",
+        requirement("pandas"),
+        requirement("pytz"),
+        requirement("exchange_calendars"),
     ],
 )

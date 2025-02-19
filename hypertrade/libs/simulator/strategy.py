@@ -1,17 +1,20 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 import enum
+from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import pandas as pd
 
+from hypertrade.libs.service.locator import ServiceLocator
 from hypertrade.libs.simulator.assets import Asset
-from hypertrade.libs.simulator.data.datasource import Dataset
-from hypertrade.libs.simulator.event import EVENT_TYPE, Event, EventManager
+from hypertrade.libs.simulator.event.service import EventManager
+from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.simulator.execute.broker import BrokerService
 from hypertrade.libs.simulator.financials.portfolio import Portfolio, PortfolioManager
-from hypertrade.libs.service.locator import ServiceLocator
+from hypertrade.libs.tsfd.datasets.asset import PricesDataset
+from hypertrade.libs.tsfd.datasets.types import TsfdDataset
+from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
 
 # Officially supported datatypes
@@ -52,22 +55,26 @@ class StrategyBuilder:
         self.assets = assets
         return self
 
-    def with_current_prices(self, data: Dataset) -> StrategyBuilder:
+    def with_current_prices(self, data: PricesDataset) -> StrategyBuilder:
+        data.symbols = [asset.symbol for asset in self.assets]
         self._data_sources.append(
-            lambda event: (
+            lambda current_event: (
                 DATA_TYPE.CURRENT_PRICES,
-                data.fetch_current_price(event.time, assets=self.assets),
+                data[cast_timestamp(current_event.time)]["price"],
             )
         )
         return self
 
     def with_historical_data(
-        self, lookback_period: pd.Timedelta, data: Dataset
+        self, lookback_period: pd.Timedelta, data: TsfdDataset
     ) -> StrategyBuilder:
         self._data_sources.append(
-            lambda event: (
+            lambda current_event: (
                 DATA_TYPE.HISTORICAL_PRICES,
-                data.fetch(event.time, lookback=lookback_period, assets=self.assets),
+                data[
+                    current_event.time : cast_timestamp(current_event.time)
+                    - lookback_period
+                ],
             )
         )
         return self
@@ -99,14 +106,10 @@ class TradingStrategy:
 
     def __init__(self, builder: StrategyBuilder) -> None:
         self._data_sources = builder._data_sources
-        assert builder._strategy_function, "Strategy function is None"
+        if builder._strategy_function is None:
+            raise ValueError("Strategy function is None")
         self._strategy_function: StrategyFunction = builder._strategy_function
-
-        self.event_manager = ServiceLocator[EventManager]().get(
-            EventManager.SERVICE_NAME
-        )
-        for event in builder.events:
-            self.event_manager.subscribe(event, self.execute)
+        self.events = builder.events
 
     def get_market_data(self, event: Event[Any]) -> StrategyData:
         """Fetches and processes data for the given event."""
@@ -128,6 +131,8 @@ class TradingStrategy:
         broker_service: BrokerService = ServiceLocator[BrokerService]().get(
             BrokerService.SERVICE_NAME
         )
+        if event.time is None:
+            raise ValueError("Event time is None")
         context = StrategyContext(
             portfolio=portfolio,
             time=event.time,
@@ -137,5 +142,18 @@ class TradingStrategy:
         order = self._strategy_function(context, market_data)
         if order is not None:
             self.event_manager.schedule_event(
-                event=Event(EVENT_TYPE.ORDER_PLACED, data=order)
+                event=Event(EVENT_TYPE.ORDER_PLACED, payload=order)
             )
+
+    def register_strategy(self) -> None:
+        """Should be called by the TradingEngine to register the strategy with the event manager.
+
+        This method subscribes the strategy to the events it is interested in.
+        """
+        self.event_manager = ServiceLocator[EventManager]().get(
+            EventManager.SERVICE_NAME
+        )
+        for event in self.events:
+            # FIXME: Figure out why this overload doesn't work
+            # trunk-ignore-all(pyright,mypy)
+            self.event_manager.subscribe(event, self.execute)
