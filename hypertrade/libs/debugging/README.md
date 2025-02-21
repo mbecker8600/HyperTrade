@@ -18,7 +18,7 @@ import hypertrade.libs.debugging
 
 ```bazel
 ...
-deps = ["//hypertrade/libs:python_debugger"]
+deps = ["//hypertrade/libs/debugging:python_debugger"]
 ```
 
 1. Run your code

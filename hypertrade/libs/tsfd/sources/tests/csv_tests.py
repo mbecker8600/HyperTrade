@@ -19,13 +19,13 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
             ws, "../../tests/data/ohlvc/sample.csv"
         )
         self.csv_source = OHLVCDataSourceFormat(
-            CSVSource(filepath=self.ohlvc_sample_data_path)
+            CSVSource(source=self.ohlvc_sample_data_path)
         )
         self.bad_schema_ohlvc_sample_data_path = os.path.join(
             ws, "../../tests/data/ohlvc/bad_schema.csv"
         )
         self.bad_csv_source = OHLVCDataSourceFormat(
-            CSVSource(filepath=self.bad_schema_ohlvc_sample_data_path)
+            CSVSource(source=self.bad_schema_ohlvc_sample_data_path)
         )
         self.tz = pytz.timezone("America/New_York")
 
@@ -99,7 +99,7 @@ class TestHeadlineCsvDatasource(unittest.TestCase):
             ws, "../../tests/data/news/headline_sample.csv"
         )
         self.csv_source = HeadlineDataSourceFormat(
-            CSVSource(filepath=ohlvc_sample_data_path)
+            CSVSource(source=ohlvc_sample_data_path)
         )
         self.tz = pytz.timezone("America/New_York")
 

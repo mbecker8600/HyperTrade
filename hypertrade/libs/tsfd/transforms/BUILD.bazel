@@ -1,0 +1,59 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "all",
+    srcs = ["__init__.py"],
+    data = [],
+    deps = [
+        ":interface",
+        ":rolling_features",
+        ":scale",
+        ":tensor",
+    ],
+)
+
+py_library(
+    name = "interface",
+    srcs = ["interface.py"],
+    data = [],
+    deps = [
+        requirement("pandas"),
+        requirement("torch"),
+    ],
+)
+
+py_library(
+    name = "scale",
+    srcs = ["scale.py"],
+    data = [],
+    deps = [
+        ":interface",
+        requirement("pandas"),
+        requirement("torch"),
+    ],
+)
+
+py_library(
+    name = "tensor",
+    srcs = ["tensor.py"],
+    data = [],
+    deps = [
+        ":interface",
+        requirement("pandas"),
+        requirement("torch"),
+    ],
+)
+
+py_library(
+    name = "rolling_features",
+    srcs = ["rolling_features.py"],
+    data = [],
+    deps = [
+        ":interface",
+        requirement("pandas"),
+        requirement("torch"),
+    ],
+)

@@ -9,6 +9,8 @@ import pytz
 from hypertrade.libs.tsfd.datasets.asset import OHLVCDataset, PricesDataset
 from hypertrade.libs.tsfd.sources.csv import CSVSource
 from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
+from hypertrade.libs.tsfd.transforms.interface import Compose
+from hypertrade.libs.tsfd.transforms.scale import Normalize
 
 
 class TestOHLVCCsvDataSet(unittest.TestCase):
@@ -24,7 +26,7 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
 
         ohlvc_dataset = OHLVCDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath=self.ohlvc_sample_data_path),
+                CSVSource(source=self.ohlvc_sample_data_path),
             ),
             name="ohlvc",
         )
@@ -45,7 +47,7 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
 
         ohlvc_dataset = OHLVCDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath=self.ohlvc_sample_data_path)
+                CSVSource(source=self.ohlvc_sample_data_path)
             ),
             name="ohlvc",
             symbols=["GE", "BA"],
@@ -65,16 +67,26 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
     def test_iterator(self) -> None:
         ohlvc_dataset = OHLVCDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath=self.ohlvc_sample_data_path)
+                CSVSource(source=self.ohlvc_sample_data_path)
             ),
             name="ohlvc",
         )
         for data in ohlvc_dataset:
             self.assertEqual(data.shape, (3, 6))
 
+    def test_transforms(self) -> None:
+        datasource = CSVSource(source=self.ohlvc_sample_data_path)
+        ohlvc_dataset = OHLVCDataset(
+            data_source=OHLVCDataSourceFormat(
+                datasource=datasource,
+            ),
+            name="ohlvc",
+            transforms=Compose(datasource=datasource, transforms=[Normalize()]),
+        )
+
     # def test_slice(self) -> None:
     #     ohlvc_dataset = OHLVCDataset(
-    #         data_source=CSVSource(filepath=self.ohlvc_sample_data_path), name="ohlvc"
+    #         data_source=CSVSource(source=self.ohlvc_sample_data_path), name="ohlvc"
     #     )
 
     #     data = ohlvc_dataset[pd.Timestamp("2018-12-03") : pd.Timestamp("2018-12-06")]
@@ -87,7 +99,7 @@ class TestPricesCsvDataSet(unittest.TestCase):
         self.cal = xcals.get_calendar("XNYS")
         self.prices_dataset = PricesDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath=ohlvc_sample_data_path),
+                CSVSource(source=ohlvc_sample_data_path),
             ),
             symbols=["GE", "BA"],
             name="prices",

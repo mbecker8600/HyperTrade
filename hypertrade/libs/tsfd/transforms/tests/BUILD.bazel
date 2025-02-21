@@ -1,0 +1,28 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_test")
+
+py_test(
+    name = "normalize_tests",
+    srcs = ["normalize_tests.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/tsfd/sources:csv",
+        "//hypertrade/libs/tsfd/transforms:all",
+        requirement("pandas"),
+        requirement("torch"),
+    ],
+)
+
+py_test(
+    name = "rolling_features_tests",
+    srcs = ["rolling_features_tests.py"],
+    data = [],
+    deps = [
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/tsfd/sources:csv",
+        "//hypertrade/libs/tsfd/transforms:all",
+        requirement("pandas"),
+        requirement("torch"),
+    ],
+)

@@ -2,6 +2,7 @@
 from typing import Tuple
 
 import pandas as pd
+import pytz
 import torch
 from omegaconf import DictConfig
 from torch import nn, optim
@@ -51,8 +52,10 @@ def env_maker(cfg: DictConfig, env_type: str) -> EnvBase:
     device = cfg.env.device
     # FIXME: Change hardcoded symbols
     if env_type == "train":
-        start = pd.Timestamp(cfg.env.training_start)
-        end = pd.Timestamp(cfg.env.training_end)
+        start = pd.Timestamp(
+            cfg.env.training_start, tz=pytz.timezone("America/New_York")
+        )
+        end = pd.Timestamp(cfg.env.training_end, tz=pytz.timezone("America/New_York"))
         return TradingEnvironment(
             symbols=["GE", "BA", "AAPL"],
             min_start=start,

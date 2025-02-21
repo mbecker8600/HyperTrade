@@ -12,6 +12,7 @@ from pandas._libs.tslibs.nattype import NaTType
 from torch.utils.data import IterableDataset
 
 from hypertrade.libs.tsfd.sources.types import DataSource
+from hypertrade.libs.tsfd.transforms import Transform
 
 
 # trunk-ignore(mypy/misc)
@@ -50,17 +51,26 @@ class TimeSeriesDataset(TsfdDataset):
     and format validations to the underlying DataSource or DataSourceFormat.
     """
 
-    def __init__(self, data_source: DataSource, name: Optional[str] = None):
+    def __init__(
+        self,
+        data_source: DataSource,
+        name: Optional[str] = None,
+        transforms: Optional[Transform] = None,
+    ) -> None:
         self.data_source = data_source
         self.name = name
         self.full_data: pd.DataFrame = self.data_source.fetch()
         self.timestamps: pd.Index = self.full_data.index
+        self.transforms = transforms
 
     def __len__(self) -> int:
         return len(self.data_source)
 
     def __getitem__(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame:
-        return self._load_data(idx)
+        df = self._load_data(idx)
+        if self.transforms:
+            df = self.transforms(df)
+        return df
 
     def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame: ...
 
@@ -73,4 +83,5 @@ class TimeSeriesDataset(TsfdDataset):
 
     def __iter__(self) -> Generator[pd.DataFrame, Any, None]:
         for idx in range(len(self)):
-            yield self.__getitem__(idx)
+            df = self.__getitem__(idx)
+            yield df

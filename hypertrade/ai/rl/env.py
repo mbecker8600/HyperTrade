@@ -28,6 +28,7 @@ class TradingEnvironment(EnvBase):
         max_end: pd.Timestamp,
         env_type: str = "train",
         max_episode_steps: Optional[int] = None,
+        capital_base: int = 100000,
         device: DEVICE_TYPING = "cpu",
     ) -> None:
         super().__init__(device=device, batch_size=[])
@@ -41,26 +42,30 @@ class TradingEnvironment(EnvBase):
             ),
             shape=(),
         )
+        self.min_start = min_start
+        self.max_end = max_end
+        self.env_type = env_type
+        self.max_episode_steps = max_episode_steps
+        self.capital_base = capital_base
 
+        # FIXME: This is a hack to get the testing data, but should clean this up.
         # Use sample data for testing
         ws = os.path.dirname(__file__)
-        sample_data_path = os.path.join(ws, "../data/tests/data/ohlvc/sample.csv")
+        sample_data_path = os.path.join(
+            ws, "../../libs/simulator/data/tests/data/ohlvc/sample.csv"
+        )
 
         # Create an OCHLV data source using a CSV file
         cal = xcals.get_calendar("XNYS")
-        ohlvc_dataset = PricesDataset(
+        self.ohlvc_dataset = PricesDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath=sample_data_path),
+                CSVSource(source=sample_data_path),
             ),
             name="prices",
             trading_calendar=cal,
         )
 
-        self.trading_engine = TradingEngine(
-            start_time=min_start,
-            end_time=max_end,
-            prices_dataset=ohlvc_dataset,
-        )
+        self.trading_engine: Optional[TradingEngine] = None
 
         self.state_spec = self.full_observation_spec.clone()
 
@@ -86,7 +91,7 @@ class TradingEnvironment(EnvBase):
         out = TensorDict(
             {
                 "reward": reward,
-                "allocations": port_weights,
+                "allocations": self._get_portfolio_allocations(),
                 "historical_rolling_averages": historical_rolling_averages,
                 "done": done,
             },
@@ -98,17 +103,40 @@ class TradingEnvironment(EnvBase):
     def _set_seed(self, seed: int) -> None:
         self.rng = torch.Generator(device=self.device).manual_seed(seed)
 
-    def _reset(self) -> TensorDictBase:
+    def _reset(self, tensordict: TensorDictBase) -> TensorDictBase:
+        logger.debug("Starting _reset()")
+        # TODO: Randomize the start/end dates for engine when restarting
+        self.trading_engine = TradingEngine(
+            start_time=self.min_start,
+            end_time=self.max_end,
+            prices_dataset=self.ohlvc_dataset,
+            capital_base=self.capital_base,
+        )
+        self.trading_engine.step_until_event(EVENT_TYPE.PRE_MARKET_OPEN)
         logger.bind(simulation_time=self.trading_engine.current_time).debug(
-            "Starting _reset()"
+            "Intialized Trading Engine"
         )
 
         out = TensorDict(
             {
-                "allocations": port_weights,
+                "allocations": self._get_portfolio_allocations(),
                 "historical_rolling_averages": historical_rolling_averages,
             },
             tensordict.shape,
             device=self.device,
         )
         return out
+
+    def _get_portfolio_allocations(self) -> torch.Tensor:
+        """
+        Returns the current portfolio allocations as a tensor and ensures they are padded
+        with zeros for any missing symbols.
+        """
+        return torch.from_numpy(
+            pd.Series(None, index=self.symbols)
+            .add(
+                self.trading_engine.portfolio_manager.portfolio.current_portfolio_weights
+            )
+            .fillna(0)
+            .values
+        )

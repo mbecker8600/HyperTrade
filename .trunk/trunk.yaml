@@ -42,6 +42,17 @@ lint:
     - svgo@3.3.2
     - trufflehog@3.88.10
     - yamllint@1.35.1
+  ignore:
+    - linters: [ALL]
+      paths:
+        # mypy cache
+        - .mypy_cache/**
+        # Bazel files
+        - bazel-*/**
+        # Node modules
+        - node_modules/**
+        # Python cache
+        - __pycache__/**
 actions:
   disabled:
     - trunk-announce

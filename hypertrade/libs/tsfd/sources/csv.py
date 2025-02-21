@@ -24,10 +24,21 @@ class CSVSource(DataSource):
     """
 
     def __init__(
-        self, filepath: str, granularity: Granularity = Granularity.DAILY, **kwargs: Any
+        self,
+        source: str | pd.DataFrame,
+        granularity: Granularity = Granularity.DAILY,
+        **kwargs: Any
     ) -> None:
+        """
+
+        Args:
+            source (str | pd.DataFrame): The source of the data. If a string, it is treated as a file path.
+            granularity (Granularity, optional): The granularity of the data. Defaults to Granularity.DAILY.
+            **kwargs (Any): Additional keyword arguments to pass to the pandas read_csv function.
+
+        """
         super().__init__(granularity)
-        self._filepath = filepath
+        self._source = source
         self._kwargs = kwargs
 
         self._format: DataSourceFormat = DefaultDataSourceFormat(self)
@@ -49,8 +60,12 @@ class CSVSource(DataSource):
     @cached_property
     def data(self) -> pd.DataFrame:
         index_col = cast(List[str], self._index.names)
-        data = pd.read_csv(
-            self._filepath, parse_dates=True, index_col=index_col, **self._kwargs
+        data = (
+            self._source
+            if isinstance(self._source, pd.DataFrame)
+            else pd.read_csv(
+                self._source, parse_dates=True, index_col=index_col, **self._kwargs
+            )
         )
         data = data.sort_index()
         self.format.schema.validate(data)
@@ -85,3 +100,11 @@ class CSVSource(DataSource):
         # Return data at timestamp
         data = self._index_strategy.loc(self.data, timestamp)
         return data
+
+    @cached_property
+    def mean(self) -> pd.Series:
+        return self.data.mean()
+
+    @cached_property
+    def std(self) -> pd.Series:
+        return self.data.std()

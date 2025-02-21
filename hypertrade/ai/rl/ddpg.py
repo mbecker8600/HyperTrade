@@ -26,6 +26,7 @@ from torchrl._utils import logger as torchrl_logger
 from torchrl.envs.utils import ExplorationType, set_exploration_type
 from torchrl.record.loggers import generate_exp_name, get_logger
 
+import hypertrade.libs.debugging  # donotcommit
 from hypertrade.ai.rl.utils import (
     log_metrics,
     make_collector,
@@ -35,6 +36,7 @@ from hypertrade.ai.rl.utils import (
     make_optimizer,
     make_replay_buffer,
 )
+from hypertrade.libs.logging.setup import initialize_logging
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 warnings.simplefilter(action="ignore", category=UserWarning)
@@ -44,6 +46,8 @@ warnings.simplefilter(action="ignore", category=UserWarning)
 def main(cfg: "DictConfig") -> None:
     """main loop for training ddpg"""
     device = torch.device(cfg.network.device)
+
+    initialize_logging(level=logging.DEBUG)
 
     if cfg.checkpoint.enabled:
         os.mkdir("checkpoints")

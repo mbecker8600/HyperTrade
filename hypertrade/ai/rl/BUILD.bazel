@@ -16,7 +16,7 @@ py_library(
     name = "utils",
     srcs = ["utils.py"],
     data = [],
-    deps = [],
+    deps = [requirement("pytz")],
 )
 
 py_binary(
@@ -30,6 +30,8 @@ py_binary(
     deps = [
         ":env",
         ":utils",
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/logging:py_setup",
         requirement("torchrl"),
         requirement("omegaconf"),
         requirement("hydra-core"),

@@ -9,5 +9,6 @@ py_test(
         "//hypertrade/libs/tsfd/datasets:asset",
         "//hypertrade/libs/tsfd/sources:csv",
         "//hypertrade/libs/tsfd/sources/formats:ohlvc",
+        "//hypertrade/libs/tsfd/transforms:all",
     ],
 )

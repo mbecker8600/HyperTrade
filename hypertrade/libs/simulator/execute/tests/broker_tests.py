@@ -31,7 +31,7 @@ class TestBrokerService(unittest.TestCase):
         cal = xcals.get_calendar("XNYS")
         self.dataset = PricesDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath=sample_data_path),
+                CSVSource(source=sample_data_path),
             ),
             symbols=["GE", "BA"],
             name="prices",

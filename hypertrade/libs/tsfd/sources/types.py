@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from enum import Enum
+from functools import cached_property
 from typing import ClassVar, Optional
 
 import pandas as pd
@@ -121,6 +122,14 @@ class DataSource(ABC):
     @abstractmethod
     def format(self, value: DataSourceFormat) -> None: ...
 
+    @cached_property
+    @abstractmethod
+    def mean(self) -> pd.Series: ...
+
+    @cached_property
+    @abstractmethod
+    def std(self) -> pd.Series: ...
+
 
 class DataSourceFormat(DataSource):
     """
@@ -154,3 +163,11 @@ class DataSourceFormat(DataSource):
     @format.setter
     def format(self, value: DataSourceFormat) -> None:
         raise ValueError("Cannot change format of a DataSourceFormat")
+
+    @cached_property
+    def mean(self) -> pd.Series:
+        return self._datasource.mean
+
+    @cached_property
+    def std(self) -> pd.Series:
+        return self._datasource.std
