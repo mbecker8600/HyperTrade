@@ -69,9 +69,10 @@ class BrokerService:
         if event.payload is None:
             raise ValueError("Order data is None")
         order: Order = event.payload
-        current_price = float(
-            self.dataset[current_time]["price"].loc[order.asset.symbol]
-        )
+        batch = self.dataset[current_time]
+        if not isinstance(batch, pd.DataFrame):
+            raise ValueError("Batch is not a DataFrame")
+        current_price = float(batch["price"].loc[order.asset.symbol])
         transaction = Transaction(
             dt=current_time + self.execution_delay,
             order_id=order.id,

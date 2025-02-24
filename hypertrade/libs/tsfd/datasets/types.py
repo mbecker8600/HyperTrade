@@ -13,7 +13,7 @@ from torch import Tensor
 from torch.utils.data import IterableDataset
 
 from hypertrade.libs.tsfd.sources.types import DataSource
-from hypertrade.libs.tsfd.transforms import Transform
+from hypertrade.libs.tsfd.transforms import RollingFeatures, Transform
 
 
 # trunk-ignore(mypy/misc)
@@ -70,10 +70,58 @@ class TimeSeriesDataset(TsfdDataset):
     def __getitem__(
         self, idx: pd.Timestamp | NaTType | slice | int
     ) -> pd.DataFrame | Tensor:
-        df = self._load_data(idx)
+        max_window = self._get_rolling_window()
+        df = self._load_data_with_window(idx, max_window)
         if self.transforms:
             df = self.transforms(df)
         return df
+
+    def _load_data_with_window(
+        self, idx: pd.Timestamp | NaTType | slice | int, window: int
+    ) -> pd.DataFrame:
+        # Convert a timestamp or integer to the appropriate slice to include (window - 1) extra periods.
+        if not window or window < 2:
+            return self._load_data(idx)
+
+        # If idx is a slice, expand the start backwards if possible
+        if isinstance(idx, slice):
+            start, stop = idx.start, idx.stop
+            # Expand the slice window backwards if start is a timestamp or int
+            if isinstance(start, pd.Timestamp):
+                pos = self.timestamps.get_loc(start)
+                start_pos = max(pos - (window - 1), 0)
+                start = self.timestamps[start_pos]
+            elif isinstance(start, int):
+                start = max(start - (window - 1), 0)
+            extended_slice = slice(start, stop, idx.step)
+            return self._load_data(extended_slice)
+
+        # If idx is a single timestamp, convert it to a slice that includes extra rows before
+        if isinstance(idx, pd.Timestamp):
+            pos = self.timestamps.get_loc(idx)
+            start_pos = max(pos - (window - 1), 0)
+            extended_slice = slice(self.timestamps[start_pos], idx)
+            return self._load_data(extended_slice)
+
+        # If idx is an integer, shift it backwards
+        if isinstance(idx, int):
+            start_idx = max(idx - window, 0)
+            extended_slice = slice(start_idx, idx)
+            return self._load_data(extended_slice)
+
+        # Fallback
+        return self._load_data(idx)
+
+    def _get_rolling_window(self) -> int:
+        if not self.transforms:
+            return 0
+        # If self.transforms is a Compose, gather all transforms; otherwise just wrap one transform
+        transforms_list = getattr(self.transforms, "transforms", [self.transforms])
+        max_window = 0
+        for t in transforms_list:
+            if isinstance(t, RollingFeatures):
+                max_window = max(max_window, t.window)
+        return max_window
 
     def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame: ...
 
@@ -85,6 +133,7 @@ class TimeSeriesDataset(TsfdDataset):
     #     return self.timestamps.min(), self.timestamps.max()
 
     def __iter__(self) -> Generator[pd.DataFrame | Tensor, Any, None]:
-        for idx in range(len(self)):
+        max_window = self._get_rolling_window()
+        for idx in range(max_window, len(self)):
             df = self.__getitem__(idx)
             yield df

@@ -96,16 +96,20 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
                 transforms=[
                     DropFeature("lastupdated"),
                     Normalize(),
-                    RollingFeatures(window=3, metric="mean"),
+                    RollingFeatures(window=3, metric="mean", groupby_level="ticker"),
                     ToTensor(),
                     Flatten(),
                 ],
             ),
         )
-        dl = DataLoader(ohlvc_dataset, batch_size=2)
-        for data in dl:
+        dl = DataLoader(ohlvc_dataset, batch_size=2, drop_last=True)
+        for i, data in enumerate(dl):
             # Shape is 30 because we have 5 features (x2 with 1 new rolling featgures) and 3 symbols
-            self.assertEqual(data.shape, Size([2, 30]))
+            self.assertEqual(
+                data.shape,
+                Size([2, 30]),
+                msg=f"Batch {i} failed because of shape {data.shape} != (2, 30)",
+            )
 
 
 class TestPricesCsvDataSet(unittest.TestCase):

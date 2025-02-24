@@ -187,12 +187,16 @@ class PortfolioManager:
     def _set_portfolio_market_price(self) -> None:
         """Set the current market prices for the portfolio's positions."""
         assets = self.portfolio.positions.groupby(level=0).sum().index.to_list()
-        prices = self.dataset[self.event_manager.current_time]["price"]
-        filtered_prices = prices.filter(assets)
-        if isinstance(filtered_prices, pd.Series):
-            self.portfolio.current_market_prices = filtered_prices
+        batch = self.dataset[self.event_manager.current_time]
+        if isinstance(batch, pd.DataFrame):
+            prices = batch["price"]
+            filtered_prices = prices.filter(assets)
+            if isinstance(filtered_prices, pd.Series):
+                self.portfolio.current_market_prices = filtered_prices
+            else:
+                raise ValueError("Prices df is not a series")
         else:
-            raise ValueError("Prices df is not a series")
+            raise ValueError("Batch is not a DataFrame")
 
     def handle_price_change(self, event: Event[PriceChangeData]) -> None:
         """Handle price change events and invalidate the portfolio's cached properties."""

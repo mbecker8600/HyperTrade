@@ -22,6 +22,7 @@ class RollingFeatures(Transform):
         columns (Optional[List[str]]): The list of columns to transform.
         min_periods (int): Minimum number of observations in window required for a value.
         metric (str | List[str]): Which metric(s) to compute. Examples: 'mean', 'std'.
+        groupby_level (Optional[int | str]): The level to group by for multi-index DataFrames.
 
     Raises:
         NotImplementedError: If the input is a torch.Tensor.
@@ -34,28 +35,56 @@ class RollingFeatures(Transform):
         self,
         window: int = 5,
         columns: Optional[List[str]] = None,
-        min_periods: int = 1,
         metric: str | List[str] = "mean",
+        groupby_level: Optional[int | str] = None,
     ) -> None:
         self.window = window
         self.columns = columns
-        self.min_periods = min_periods
         self.metric: List[str] = metric if isinstance(metric, list) else [metric]
+        self.groupby_level = groupby_level
 
     def __call__(self, df: pd.DataFrame | torch.Tensor) -> pd.DataFrame | torch.Tensor:
         if isinstance(df, torch.Tensor):
             raise NotImplementedError("RollingFeatures does not support torch.Tensor")
 
-        # If columns are not specified, apply to all columns
-        if self.columns is None:
-            self.columns = df.columns
+        if len(df) < self.window:
+            raise ValueError(
+                f"Window of {self.window} exceeds dataset length {len(df)}"
+            )
 
-        df = df.copy()
-        for col in self.columns:
-            if col in df.columns:
-                roll = df[col].rolling(window=self.window, min_periods=self.min_periods)
-                for metric in self.metric:
-                    df[f"{col}_rolling_{self.metric}_{self.window}"] = getattr(
-                        roll, metric
-                    )()
+        # If columns are not specified, apply to all columns
+        columns: List[str] = (
+            self.columns if self.columns is not None else list(df.columns)
+        )
+
+        if self.groupby_level is not None and isinstance(df.index, pd.MultiIndex):
+
+            def apply_rolling(sub_df: pd.DataFrame) -> pd.DataFrame:
+                for col in columns:
+                    if col in sub_df.columns:
+                        roll = sub_df[col].rolling(
+                            window=self.window, min_periods=self.window
+                        )
+                        for metric in self.metric:
+                            sub_df[f"{col}_rolling_{metric}_{self.window}"] = getattr(
+                                roll, metric
+                            )()
+                return sub_df.tail(1)
+
+            df = df.groupby(level=self.groupby_level, group_keys=False).apply(
+                apply_rolling
+            )
+        else:
+            df = df.copy()
+            for col in columns:
+                if col in df.columns:
+                    roll = df[col].rolling(window=self.window, min_periods=self.window)
+                    for metric in self.metric:
+                        df[f"{col}_rolling_{metric}_{self.window}"] = getattr(
+                            roll, metric
+                        )()
+
+            # Keep only the latest row
+            df = df.tail(1)
+
         return df

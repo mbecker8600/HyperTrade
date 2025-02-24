@@ -116,7 +116,7 @@ class DataSource(ABC):
 
     @property
     @abstractmethod
-    def format(self) -> DataSourceFormat: ...
+    def format(self) -> Optional[DataSourceFormat]: ...
 
     @format.setter
     @abstractmethod
@@ -124,11 +124,11 @@ class DataSource(ABC):
 
     @cached_property
     @abstractmethod
-    def mean(self) -> pd.Series: ...
+    def mean(self) -> pd.Series | pd.DataFrame: ...
 
     @cached_property
     @abstractmethod
-    def std(self) -> pd.Series: ...
+    def std(self) -> pd.Series | pd.DataFrame: ...
 
 
 class DataSourceFormat(DataSource):
@@ -165,9 +165,9 @@ class DataSourceFormat(DataSource):
         raise ValueError("Cannot change format of a DataSourceFormat")
 
     @cached_property
-    def mean(self) -> pd.Series:
+    def mean(self) -> pd.Series | pd.DataFrame:
         return self._datasource.mean
 
     @cached_property
-    def std(self) -> pd.Series:
+    def std(self) -> pd.Series | pd.DataFrame:
         return self._datasource.std

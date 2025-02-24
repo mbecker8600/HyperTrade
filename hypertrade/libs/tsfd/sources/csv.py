@@ -40,21 +40,24 @@ class CSVSource(DataSource):
         super().__init__(granularity)
         self._source = source
         self._kwargs = kwargs
+        self._format: Optional[DataSourceFormat] = None
+        self._index: pa.Index | pa.MultiIndex | pd.Index | pd.MultiIndex
+        if isinstance(self._source, pd.DataFrame):
+            self._index = cast(pd.Index | pd.MultiIndex, self._source.index)
+        else:
+            self._format = DefaultDataSourceFormat(self)
+            self._index = cast(pa.Index | pa.MultiIndex, self._format.schema.index)
 
-        self._format: DataSourceFormat = DefaultDataSourceFormat(self)
-        self._index: pa.Index | pa.MultiIndex = cast(
-            pa.Index | pa.MultiIndex, self._format.schema.index
-        )
         self._index_strategy = get_index_strategy(self._index)
 
     @property
-    def format(self) -> DataSourceFormat:
+    def format(self) -> Optional[DataSourceFormat]:
         return self._format
 
     @format.setter
     def format(self, value: DataSourceFormat) -> None:
         self._format = value
-        self._index = cast(pa.Index | pa.MultiIndex, self.format.schema.index)
+        self._index = cast(pa.Index | pa.MultiIndex, value.schema.index)
         self._index_strategy = get_index_strategy(self._index)
 
     @cached_property
@@ -68,7 +71,8 @@ class CSVSource(DataSource):
             )
         )
         data = data.sort_index()
-        self.format.schema.validate(data)
+        if self.format is not None:
+            self.format.schema.validate(data)
         return data
 
     def __len__(self) -> int:
@@ -85,6 +89,17 @@ class CSVSource(DataSource):
             return self.data
 
         if isinstance(timestamp, slice):
+            if all(
+                isinstance(x, int) or x is None
+                for x in [timestamp.start, timestamp.stop]
+            ):
+                start = self._index_strategy.get_timestamp_at_index(
+                    self.data, timestamp.start
+                )
+                stop = self._index_strategy.get_timestamp_at_index(
+                    self.data, timestamp.stop
+                )
+                timestamp = slice(start, stop, timestamp.step)
             data = self._index_strategy.loc_slice(self.data, timestamp)
             return data
 
@@ -102,10 +117,9 @@ class CSVSource(DataSource):
         return data
 
     @cached_property
-    def mean(self) -> pd.Series:
-        # self.data.groupby(level="ticker").mean(numeric_only=True)
-        return self.data.mean(numeric_only=True)
+    def mean(self) -> pd.Series | pd.DataFrame:
+        return self._index_strategy.mean(self.data)
 
     @cached_property
-    def std(self) -> pd.Series:
-        return self.data.std(numeric_only=True)
+    def std(self) -> pd.Series | pd.DataFrame:
+        return self._index_strategy.std(self.data)

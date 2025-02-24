@@ -14,6 +14,10 @@ class IndexStrategy(Protocol):
 
     def get_timestamp_at_index(self, df: pd.DataFrame, idx: int) -> pd.Timestamp: ...
 
+    def mean(self, df: pd.DataFrame) -> pd.DataFrame | pd.Series: ...
+
+    def std(self, df: pd.DataFrame) -> pd.DataFrame | pd.Series: ...
+
 
 class SingleIndexStrategy(IndexStrategy):
 
@@ -34,6 +38,18 @@ class SingleIndexStrategy(IndexStrategy):
     def get_timestamp_at_index(self, df: pd.DataFrame, idx: int) -> pd.Timestamp:
         index = df.index.unique().sort_values()
         return cast(pd.Timestamp, index[idx])
+
+    def mean(self, df: pd.DataFrame) -> pd.DataFrame | pd.Series:
+        result = df.mean(numeric_only=True)
+        if isinstance(result, (float, int)):
+            return pd.Series(result)
+        return result
+
+    def std(self, df: pd.DataFrame) -> pd.DataFrame | pd.Series:
+        result = df.std(numeric_only=True)
+        if isinstance(result, (float, int)):
+            return pd.Series(result)
+        return result
 
 
 class MultiIndexStrategy(IndexStrategy):
@@ -62,6 +78,14 @@ class MultiIndexStrategy(IndexStrategy):
     def get_timestamp_at_index(self, df: pd.DataFrame, idx: int) -> pd.Timestamp:
         index = df.index.get_level_values(0).unique().sort_values()
         return cast(pd.Timestamp, index[idx])
+
+    def mean(self, df: pd.DataFrame) -> pd.DataFrame | pd.Series:
+        result = df.groupby(level=1).mean(numeric_only=True)
+        return cast(pd.DataFrame | pd.Series, result)
+
+    def std(self, df: pd.DataFrame) -> pd.DataFrame | pd.Series:
+        result = df.groupby(level=1).std(numeric_only=True)
+        return cast(pd.DataFrame | pd.Series, result)
 
 
 def get_index_strategy(
