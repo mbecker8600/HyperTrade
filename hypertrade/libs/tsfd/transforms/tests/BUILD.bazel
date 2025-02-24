@@ -2,8 +2,8 @@ load("@pypi//:requirements.bzl", "requirement")
 load("@rules_python//python:defs.bzl", "py_test")
 
 py_test(
-    name = "normalize_tests",
-    srcs = ["normalize_tests.py"],
+    name = "scale_tests",
+    srcs = ["scale_tests.py"],
     data = [],
     deps = [
         "//hypertrade/libs/debugging:python_debugger",

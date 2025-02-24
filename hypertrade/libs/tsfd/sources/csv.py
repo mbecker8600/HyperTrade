@@ -103,8 +103,9 @@ class CSVSource(DataSource):
 
     @cached_property
     def mean(self) -> pd.Series:
-        return self.data.mean()
+        # self.data.groupby(level="ticker").mean(numeric_only=True)
+        return self.data.mean(numeric_only=True)
 
     @cached_property
     def std(self) -> pd.Series:
-        return self.data.std()
+        return self.data.std(numeric_only=True)

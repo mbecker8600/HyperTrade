@@ -5,16 +5,29 @@ import torch
 
 from hypertrade.libs.tsfd.transforms.interface import Transform
 
+"""
+Rolling feature transforms for computing moving statistics (e.g., rolling mean, rolling std).
+"""
+
 
 class RollingFeatures(Transform):
     """
-    Compute rolling metrics (e.g., moving average) for specified columns.
+    Computes rolling metrics for specified columns.
+
+    This transform applies a rolling window to compute one or more metrics (e.g.,
+    mean, std) for each specified column. It does not currently support tensors.
 
     Args:
-        window (int): Window size for the rolling calculation.
-        columns (list[str]): Columns to apply the rolling metric to.
-        min_periods (int): Minimum number of observations required.
-        metric (str): Which metric to apply ('mean', 'std', etc.).
+        window (int): The size of the rolling window in time steps (rows).
+        columns (Optional[List[str]]): The list of columns to transform.
+        min_periods (int): Minimum number of observations in window required for a value.
+        metric (str | List[str]): Which metric(s) to compute. Examples: 'mean', 'std'.
+
+    Raises:
+        NotImplementedError: If the input is a torch.Tensor.
+
+    Returns:
+        pd.DataFrame: The DataFrame with additional rolling metric columns.
     """
 
     def __init__(

@@ -4,13 +4,17 @@ import unittest
 import exchange_calendars as xcals
 import pandas as pd
 import pytz
+from torch import Size
+from torch.utils.data import DataLoader
 
 # import hypertrade.libs.debugging  # donotcommit
 from hypertrade.libs.tsfd.datasets.asset import OHLVCDataset, PricesDataset
 from hypertrade.libs.tsfd.sources.csv import CSVSource
 from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
+from hypertrade.libs.tsfd.transforms import Flatten, RollingFeatures, ToTensor
 from hypertrade.libs.tsfd.transforms.interface import Compose
 from hypertrade.libs.tsfd.transforms.scale import Normalize
+from hypertrade.libs.tsfd.transforms.util import DropFeature
 
 
 class TestOHLVCCsvDataSet(unittest.TestCase):
@@ -32,16 +36,20 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
         )
 
         data = ohlvc_dataset[pd.Timestamp("2018-12-03", tz=self.tz)]
+        self.assertIsInstance(data, pd.DataFrame)
         self.assertEqual(data.shape, (3, 6))
-        self.assertTrue(
-            all(
-                [
-                    ts == pd.Timestamp("2018-12-03", tz=self.tz)
-                    for ts in data.index.get_level_values(0).to_list()
-                ]
+        if isinstance(data, pd.DataFrame):
+            self.assertTrue(
+                all(
+                    [
+                        ts == pd.Timestamp("2018-12-03", tz=self.tz)
+                        for ts in data.index.get_level_values(0).to_list()
+                    ]
+                )
             )
-        )
-        self.assertEqual(data.loc[pd.IndexSlice[:, ["GE"]], :]["open"].values[0], 35.42)
+            self.assertEqual(
+                data.loc[pd.IndexSlice[:, ["GE"]], :]["open"].values[0], 35.42
+            )
 
     def test_filtering(self) -> None:
 
@@ -54,15 +62,17 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
         )
 
         data = ohlvc_dataset[pd.Timestamp("2018-12-03", tz=self.tz)]
+        self.assertIsInstance(data, pd.DataFrame)
         self.assertEqual(data.shape, (2, 6))
-        self.assertTrue(
-            all(
-                [
-                    ts == pd.Timestamp("2018-12-03", tz=self.tz)
-                    for ts in data.index.get_level_values(0).to_list()
-                ]
+        if isinstance(data, pd.DataFrame):
+            self.assertTrue(
+                all(
+                    [
+                        ts == pd.Timestamp("2018-12-03", tz=self.tz)
+                        for ts in data.index.get_level_values(0).to_list()
+                    ]
+                )
             )
-        )
 
     def test_iterator(self) -> None:
         ohlvc_dataset = OHLVCDataset(
@@ -81,15 +91,21 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
                 datasource=datasource,
             ),
             name="ohlvc",
-            transforms=Compose(datasource=datasource, transforms=[Normalize()]),
+            transforms=Compose(
+                datasource=datasource,
+                transforms=[
+                    DropFeature("lastupdated"),
+                    Normalize(),
+                    RollingFeatures(window=3, metric="mean"),
+                    ToTensor(),
+                    Flatten(),
+                ],
+            ),
         )
-
-    # def test_slice(self) -> None:
-    #     ohlvc_dataset = OHLVCDataset(
-    #         data_source=CSVSource(source=self.ohlvc_sample_data_path), name="ohlvc"
-    #     )
-
-    #     data = ohlvc_dataset[pd.Timestamp("2018-12-03") : pd.Timestamp("2018-12-06")]
+        dl = DataLoader(ohlvc_dataset, batch_size=2)
+        for data in dl:
+            # Shape is 30 because we have 5 features (x2 with 1 new rolling featgures) and 3 symbols
+            self.assertEqual(data.shape, Size([2, 30]))
 
 
 class TestPricesCsvDataSet(unittest.TestCase):
@@ -111,28 +127,34 @@ class TestPricesCsvDataSet(unittest.TestCase):
 
         # Fetch OCHLV data
         data = self.prices_dataset[pd.Timestamp("2018-12-31 09:30:00", tz=self.nytz)]
+        self.assertIsInstance(data, pd.DataFrame)
         self.assertEqual(len(data), 2)
-        self.assertEqual(set(data.index.to_list()), set(["GE", "BA"]))
-        self.assertEqual(data.loc["GE"].values[0], 35.37)
-        self.assertEqual(data.loc["BA"].values[0], 311.45)
+        if isinstance(data, pd.DataFrame):
+            self.assertEqual(set(data.index.to_list()), set(["GE", "BA"]))
+            self.assertEqual(data.loc["GE"].values[0], 35.37)
+            self.assertEqual(data.loc["BA"].values[0], 311.45)
 
     def test_current_price_market_close(self) -> None:
 
         # Fetch OCHLV data
         data = self.prices_dataset[pd.Timestamp("2018-12-31 16:00:00", tz=self.nytz)]
         self.assertEqual(len(data), 2)
-        self.assertEqual(set(data.index.to_list()), set(["GE", "BA"]))
-        self.assertEqual(data.loc["GE"].values[0], 35.61)
-        self.assertEqual(data.loc["BA"].values[0], 313.39)
+        self.assertIsInstance(data, pd.DataFrame)
+        if isinstance(data, pd.DataFrame):
+            self.assertEqual(set(data.index.to_list()), set(["GE", "BA"]))
+            self.assertEqual(data.loc["GE"].values[0], 35.61)
+            self.assertEqual(data.loc["BA"].values[0], 313.39)
 
     def test_current_price_before_open(self) -> None:
 
         # Fetch OCHLV data
         data = self.prices_dataset[pd.Timestamp("2018-12-31 8:00:00", tz=self.nytz)]
         self.assertEqual(len(data), 2)
-        self.assertEqual(set(data.index.to_list()), set(["GE", "BA"]))
-        self.assertEqual(data.loc["GE"].values[0], 35.33)
-        self.assertEqual(data.loc["BA"].values[0], 307.44)
+        self.assertIsInstance(data, pd.DataFrame)
+        if isinstance(data, pd.DataFrame):
+            self.assertEqual(set(data.index.to_list()), set(["GE", "BA"]))
+            self.assertEqual(data.loc["GE"].values[0], 35.33)
+            self.assertEqual(data.loc["BA"].values[0], 307.44)
 
 
 if __name__ == "__main__":

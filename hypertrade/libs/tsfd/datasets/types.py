@@ -9,6 +9,7 @@ from typing import (
 
 import pandas as pd
 from pandas._libs.tslibs.nattype import NaTType
+from torch import Tensor
 from torch.utils.data import IterableDataset
 
 from hypertrade.libs.tsfd.sources.types import DataSource
@@ -16,7 +17,7 @@ from hypertrade.libs.tsfd.transforms import Transform
 
 
 # trunk-ignore(mypy/misc)
-class TsfdDataset(IterableDataset[pd.DataFrame]):
+class TsfdDataset(IterableDataset[pd.DataFrame | Tensor]):
     """
     Abstract base class for all datasets. A dataset is a collection of data that can be
     fetched at a specific point in time. It adheres to a protocol compatible with
@@ -30,7 +31,7 @@ class TsfdDataset(IterableDataset[pd.DataFrame]):
     @abstractmethod
     def __getitem__(
         self, idx: pd.Timestamp | NaTType | slice | int
-    ) -> pd.DataFrame: ...
+    ) -> pd.DataFrame | Tensor: ...
 
     @abstractmethod
     def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame: ...
@@ -39,7 +40,7 @@ class TsfdDataset(IterableDataset[pd.DataFrame]):
     def __repr__(self) -> str: ...
 
     @abstractmethod
-    def __iter__(self) -> Generator[pd.DataFrame, Any, None]: ...
+    def __iter__(self) -> Generator[pd.DataFrame | Tensor, Any, None]: ...
 
 
 class TimeSeriesDataset(TsfdDataset):
@@ -66,7 +67,9 @@ class TimeSeriesDataset(TsfdDataset):
     def __len__(self) -> int:
         return len(self.data_source)
 
-    def __getitem__(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame:
+    def __getitem__(
+        self, idx: pd.Timestamp | NaTType | slice | int
+    ) -> pd.DataFrame | Tensor:
         df = self._load_data(idx)
         if self.transforms:
             df = self.transforms(df)
@@ -81,7 +84,7 @@ class TimeSeriesDataset(TsfdDataset):
     #     """Returns the start and end timestamps of the dataset."""
     #     return self.timestamps.min(), self.timestamps.max()
 
-    def __iter__(self) -> Generator[pd.DataFrame, Any, None]:
+    def __iter__(self) -> Generator[pd.DataFrame | Tensor, Any, None]:
         for idx in range(len(self)):
             df = self.__getitem__(idx)
             yield df

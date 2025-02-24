@@ -1,3 +1,7 @@
+"""
+Transforms for converting DataFrame data into PyTorch tensors, and optional flattening.
+"""
+
 import pandas as pd
 import torch
 
@@ -8,17 +12,14 @@ class ToTensor(Transform):
     """
     Converts the input DataFrame into a PyTorch tensor.
 
-    Usage:
-        >>> import pandas as pd
-        >>> from hypertrade.libs.tsfd.transforms.tensor import ToTensor
-        >>> df = pd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6]})
-        >>> tensorizer = ToTensor()
-        >>> tensor = tensorizer(df)
+    This transform expects a Pandas DataFrame and returns a torch.Tensor with
+    the same numeric values.
 
     Raises:
-        ValueError: If the input is already
-        a tensor when trying to call ToTensor transform.
+        ValueError: If the input is already a torch.Tensor.
 
+    Returns:
+        torch.Tensor: A tensor containing the numeric data from the original DataFrame.
     """
 
     def __call__(self, df: pd.DataFrame | torch.Tensor) -> pd.DataFrame | torch.Tensor:
@@ -31,7 +32,17 @@ class ToTensor(Transform):
 
 class Flatten(Transform):
     """
-    Flattens the input DataFrame or tensor into a 1D array."""
+    Flattens a torch.Tensor to a 1D array.
+
+    This transform currently supports only PyTorch tensors and raises a NotImplementedError
+    for DataFrames.
+
+    Raises:
+        NotImplementedError: If the input is a DataFrame.
+
+    Returns:
+        torch.Tensor: The flattened tensor.
+    """
 
     def __call__(self, df: pd.DataFrame | torch.Tensor) -> pd.DataFrame | torch.Tensor:
         if isinstance(df, torch.Tensor):

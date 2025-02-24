@@ -4,19 +4,28 @@ import torch
 from hypertrade.libs.tsfd.sources.types import DataSource
 from hypertrade.libs.tsfd.transforms.interface import FitTransform
 
+"""
+Normalizing or scaling transforms that require dataset statistics (e.g., mean, std).
+"""
+
 
 class Normalize(FitTransform):
     """
-    Applies mean-std normalization to each column in the DataFrame. The class is
-    initialized with a mean and standard deviation, then subtracts the mean from
-    each value and divides by the standard deviation.
+    Applies mean-std normalization to a DataFrame.
 
-    Usage:
-        >>> import pandas as pd
-        >>> from hypertrade.libs.tsfd.transforms.scale import Normalize
-        >>> df = pd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6]})
-        >>> normalizer = Normalize(mean=df.mean(), std=df.std())
-        >>> transformed_df = normalizer(df)
+    The fit step pulls `mean` and `std` from the given DataSource, then transform
+    subtracts the mean and divides by the std.
+
+    Usage example:
+        normalizer = Normalize()
+        normalizer.fit(your_datasource)
+        transformed_df = normalizer.transform(your_dataframe)
+
+    Raises:
+        NotImplementedError: If the input is a torch.Tensor.
+
+    Returns:
+        pd.DataFrame: The normalized DataFrame.
     """
 
     def fit(self, datasource: DataSource) -> None:
