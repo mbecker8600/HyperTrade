@@ -5,6 +5,7 @@ from typing import (
     Any,
     Generator,
     Optional,
+    Tuple,
 )
 
 import pandas as pd
@@ -42,6 +43,10 @@ class TsfdDataset(IterableDataset[pd.DataFrame | Tensor]):
     @abstractmethod
     def __iter__(self) -> Generator[pd.DataFrame | Tensor, Any, None]: ...
 
+    @property
+    @abstractmethod
+    def observation_shape(self) -> Tuple[int, ...]: ...
+
 
 class TimeSeriesDataset(TsfdDataset):
     """
@@ -63,6 +68,7 @@ class TimeSeriesDataset(TsfdDataset):
         self.full_data: pd.DataFrame = self.data_source.fetch()
         self.timestamps: pd.Index = self.full_data.index
         self.transforms = transforms
+        self._observation_shape: Optional[Tuple[int, ...]] = None
 
     def __len__(self) -> int:
         return len(self.data_source)
@@ -137,3 +143,24 @@ class TimeSeriesDataset(TsfdDataset):
         for idx in range(max_window, len(self)):
             df = self.__getitem__(idx)
             yield df
+
+    @property
+    def observation_shape(self) -> Tuple[int, ...]:
+        """
+        Dynamically computes (or returns cached) the shape of the data item
+        after transformations are applied. Useful for RL or other shape-sensitive applications.
+        """
+        if self._observation_shape is not None:
+            if self._observation_shape is None:
+                raise ValueError("Observation shape has not been set.")
+            return self._observation_shape
+
+        # Fetch a single item from the dataset – e.g., the first valid index
+        sample_idx = 0
+        if len(self) > 0:
+            sample_data = self[sample_idx]
+            if hasattr(sample_data, "shape"):
+                self._observation_shape = sample_data.shape
+        if self._observation_shape is None:
+            raise ValueError("Observation shape has not been set.")
+        return self._observation_shape

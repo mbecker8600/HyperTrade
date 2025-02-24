@@ -161,5 +161,66 @@ class TestPricesCsvDataSet(unittest.TestCase):
             self.assertEqual(data.loc["BA"].values[0], 307.44)
 
 
+class TestObservationShape(unittest.TestCase):
+    def setUp(self) -> None:
+        ws = os.path.dirname(__file__)
+        ohlvc_sample_data_path = os.path.join(ws, "../../tests/data/ohlvc/sample.csv")
+        self.cal = xcals.get_calendar("XNYS")
+        self.nytz = pytz.timezone("America/New_York")
+        self.datasource = OHLVCDataSourceFormat(
+            CSVSource(source=ohlvc_sample_data_path),
+        )
+
+    def test_no_transforms(self) -> None:
+        dataset_no_transforms = OHLVCDataset(
+            data_source=self.datasource, name="no_transforms"
+        )
+
+        data = dataset_no_transforms[pd.Timestamp("2018-12-31 8:00:00", tz=self.nytz)]
+        self.assertEquals(data.shape, dataset_no_transforms.observation_shape)
+        self.assertEquals(data.shape, (3, 6))
+
+    def test_normalization_transforms(self) -> None:
+        dataset_normalization_transforms = OHLVCDataset(
+            data_source=self.datasource,
+            name="normalization_transforms",
+            # BUG: Make the transform work when not using the compose function
+            transforms=Compose(
+                datasource=self.datasource,
+                transforms=[
+                    Normalize(),
+                ],
+            ),
+        )
+
+        data = dataset_normalization_transforms[
+            pd.Timestamp("2018-12-31 8:00:00", tz=self.nytz)
+        ]
+        self.assertEquals(
+            data.shape, dataset_normalization_transforms.observation_shape
+        )
+        self.assertEquals(data.shape, (3, 6))
+
+    def test_drop_feature_transforms(self) -> None:
+        dataset_normalization_transforms = OHLVCDataset(
+            data_source=self.datasource,
+            name="normalization_transforms",
+            transforms=Compose(
+                datasource=self.datasource,
+                transforms=[
+                    DropFeature(feature="lastupdated"),
+                ],
+            ),
+        )
+
+        data = dataset_normalization_transforms[
+            pd.Timestamp("2018-12-31 8:00:00", tz=self.nytz)
+        ]
+        self.assertEquals(
+            data.shape, dataset_normalization_transforms.observation_shape
+        )
+        self.assertEquals(data.shape, (3, 5))
+
+
 if __name__ == "__main__":
     unittest.main()
