@@ -21,6 +21,7 @@ py_library(
         "//hypertrade/libs/tsfd/sources:types",
         "//hypertrade/libs/tsfd/transforms:all",
         requirement("pandas"),
+        requirement("exchange_calendars"),
         requirement("torch"),
     ],
 )

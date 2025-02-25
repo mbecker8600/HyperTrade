@@ -6,13 +6,19 @@ It should be called at the beginning of the project to setup the logger within t
 """
 
 import sys
+import warnings
 
 from loguru import logger
 
 SIMULATION_TIME_KEY: str = "simulation_time"
 
 
-def initialize_logging(level: str = "INFO", colorize: bool = True) -> None:
+def initialize_logging(
+    level: str = "INFO", colorize: bool = True, suppress_pandas_warnings: bool = True
+) -> None:
+    if suppress_pandas_warnings:
+        warnings.filterwarnings("ignore", category=UserWarning)
+
     logger.remove()
     logger.add(
         sys.stderr,

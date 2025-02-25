@@ -24,6 +24,7 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
         self.ohlvc_sample_data_path = os.path.join(
             ws, "../../tests/data/ohlvc/sample.csv"
         )
+        self.cal = xcals.get_calendar("XNYS")
         self.tz = pytz.timezone("America/New_York")
 
     def test_single_index(self) -> None:
@@ -33,6 +34,7 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
                 CSVSource(source=self.ohlvc_sample_data_path),
             ),
             name="ohlvc",
+            trading_calendar=self.cal,
         )
 
         data = ohlvc_dataset[pd.Timestamp("2018-12-03", tz=self.tz)]
@@ -58,6 +60,7 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
                 CSVSource(source=self.ohlvc_sample_data_path)
             ),
             name="ohlvc",
+            trading_calendar=self.cal,
             symbols=["GE", "BA"],
         )
 
@@ -79,6 +82,7 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
             data_source=OHLVCDataSourceFormat(
                 CSVSource(source=self.ohlvc_sample_data_path)
             ),
+            trading_calendar=self.cal,
             name="ohlvc",
         )
         for data in ohlvc_dataset:
@@ -90,6 +94,7 @@ class TestOHLVCCsvDataSet(unittest.TestCase):
             data_source=OHLVCDataSourceFormat(
                 datasource=datasource,
             ),
+            trading_calendar=self.cal,
             name="ohlvc",
             transforms=Compose(
                 datasource=datasource,
@@ -173,17 +178,20 @@ class TestObservationShape(unittest.TestCase):
 
     def test_no_transforms(self) -> None:
         dataset_no_transforms = OHLVCDataset(
-            data_source=self.datasource, name="no_transforms"
+            data_source=self.datasource,
+            name="no_transforms",
+            trading_calendar=self.cal,
         )
 
         data = dataset_no_transforms[pd.Timestamp("2018-12-31 8:00:00", tz=self.nytz)]
-        self.assertEquals(data.shape, dataset_no_transforms.observation_shape)
-        self.assertEquals(data.shape, (3, 6))
+        self.assertEqual(data.shape, dataset_no_transforms.observation_shape)
+        self.assertEqual(data.shape, (3, 6))
 
     def test_normalization_transforms(self) -> None:
         dataset_normalization_transforms = OHLVCDataset(
             data_source=self.datasource,
             name="normalization_transforms",
+            trading_calendar=self.cal,
             # BUG: Make the transform work when not using the compose function
             transforms=Compose(
                 datasource=self.datasource,
@@ -196,14 +204,13 @@ class TestObservationShape(unittest.TestCase):
         data = dataset_normalization_transforms[
             pd.Timestamp("2018-12-31 8:00:00", tz=self.nytz)
         ]
-        self.assertEquals(
-            data.shape, dataset_normalization_transforms.observation_shape
-        )
-        self.assertEquals(data.shape, (3, 6))
+        self.assertEqual(data.shape, dataset_normalization_transforms.observation_shape)
+        self.assertEqual(data.shape, (3, 6))
 
     def test_drop_feature_transforms(self) -> None:
         dataset_normalization_transforms = OHLVCDataset(
             data_source=self.datasource,
+            trading_calendar=self.cal,
             name="normalization_transforms",
             transforms=Compose(
                 datasource=self.datasource,
@@ -216,10 +223,34 @@ class TestObservationShape(unittest.TestCase):
         data = dataset_normalization_transforms[
             pd.Timestamp("2018-12-31 8:00:00", tz=self.nytz)
         ]
-        self.assertEquals(
-            data.shape, dataset_normalization_transforms.observation_shape
+        self.assertEqual(data.shape, dataset_normalization_transforms.observation_shape)
+        self.assertEqual(data.shape, (3, 5))
+
+    def test_rolling_transforms(self) -> None:
+        dataset_normalization_transforms = OHLVCDataset(
+            data_source=self.datasource,
+            trading_calendar=self.cal,
+            name="normalization_transforms",
+            transforms=Compose(
+                datasource=self.datasource,
+                transforms=[
+                    DropFeature(feature="lastupdated"),
+                    RollingFeatures(window=3, metric="mean", groupby_level="ticker"),
+                ],
+            ),
         )
-        self.assertEquals(data.shape, (3, 5))
+
+        # Test with integer index
+        data = dataset_normalization_transforms[3]
+        self.assertEqual(data.shape, dataset_normalization_transforms.observation_shape)
+        self.assertEqual(data.shape, (3, 10))
+
+        # Test with timestamp index
+        data = dataset_normalization_transforms[
+            pd.Timestamp("2018-12-31 8:00:00", tz=self.nytz)
+        ]
+        self.assertEqual(data.shape, dataset_normalization_transforms.observation_shape)
+        self.assertEqual(data.shape, (3, 10))
 
 
 if __name__ == "__main__":

@@ -1,6 +1,8 @@
 # Description: Utility functions for RL training
+import os
 from typing import Tuple
 
+import exchange_calendars as xcals
 import pandas as pd
 import pytz
 import torch
@@ -41,6 +43,17 @@ from torchrl.objectives.ddpg import DDPGLoss
 from torchrl.objectives.utils import TargetNetUpdater, ValueEstimators
 
 from hypertrade.ai.rl.env import TradingEnvironment
+from hypertrade.libs.tsfd.datasets.asset import OHLVCDataset, PricesDataset
+from hypertrade.libs.tsfd.sources.csv import CSVSource
+from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
+from hypertrade.libs.tsfd.transforms import Compose as tsfd_Compose
+from hypertrade.libs.tsfd.transforms import (
+    DropFeature,
+    Flatten,
+    Normalize,
+    RollingFeatures,
+    ToTensor,
+)
 
 # ====================================================================
 # Environment utils
@@ -51,6 +64,39 @@ from hypertrade.ai.rl.env import TradingEnvironment
 def env_maker(cfg: DictConfig, env_type: str) -> EnvBase:
     device = cfg.env.device
     # FIXME: Change hardcoded symbols
+
+    # FIXME: This is a hack to get the testing data, but should clean this up.
+    # Use sample data for testing
+    ws = os.path.dirname(__file__)
+    sample_data_path = os.path.join(
+        ws, "../../libs/simulator/data/tests/data/ohlvc/sample.csv"
+    )
+
+    # Create an OCHLV data source using a CSV file
+    cal = xcals.get_calendar("XNYS")
+    datasource = OHLVCDataSourceFormat(
+        CSVSource(source=sample_data_path),
+    )
+    prices_dataset = PricesDataset(
+        data_source=datasource,
+        name="prices",
+        trading_calendar=cal,
+    )
+    features_dataset = OHLVCDataset(
+        data_source=datasource,
+        name="features",
+        transforms=tsfd_Compose(
+            datasource=datasource,
+            transforms=[
+                DropFeature("lastupdated"),
+                Normalize(),
+                RollingFeatures(window=3, metric="mean", groupby_level="ticker"),
+                ToTensor(),
+                Flatten(),
+            ],
+        ),
+    )
+
     if env_type == "train":
         start = pd.Timestamp(
             cfg.env.training_start, tz=pytz.timezone("America/New_York")
@@ -58,6 +104,8 @@ def env_maker(cfg: DictConfig, env_type: str) -> EnvBase:
         end = pd.Timestamp(cfg.env.training_end, tz=pytz.timezone("America/New_York"))
         return TradingEnvironment(
             symbols=["GE", "BA", "AAPL"],
+            prices_dataset=prices_dataset,
+            feature_dataset=features_dataset,
             min_start=start,
             max_end=end,
             env_type=env_type,
@@ -69,6 +117,8 @@ def env_maker(cfg: DictConfig, env_type: str) -> EnvBase:
         end = pd.Timestamp(cfg.env.eval_end)
         return TradingEnvironment(
             symbols=["GE", "BA", "AAPL"],
+            prices_dataset=prices_dataset,
+            feature_dataset=features_dataset,
             min_start=start,
             max_end=end,
             env_type=env_type,

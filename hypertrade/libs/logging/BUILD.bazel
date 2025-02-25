@@ -7,5 +7,7 @@ py_library(
     name = "py_setup",
     srcs = ["setup.py"],
     data = [],
-    deps = [requirement("loguru")],
+    deps = [
+        requirement("loguru"),
+    ],
 )

@@ -4,9 +4,9 @@ env:
   task: ""
   max_episode_steps: 730
   seed: 42
-  training_start: 2018-09-04
+  training_start: 2018-09-14
   training_end: 2018-12-31
-  eval_start: 2018-09-04
+  eval_start: 2018-09-14
   eval_end: 2018-12-31
   device: cuda:0
   transforms:

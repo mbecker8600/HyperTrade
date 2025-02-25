@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from abc import abstractmethod
+from datetime import timedelta
 from typing import (
     Any,
     Generator,
@@ -8,12 +9,13 @@ from typing import (
     Tuple,
 )
 
+import exchange_calendars as xcals
 import pandas as pd
 from pandas._libs.tslibs.nattype import NaTType
 from torch import Tensor
 from torch.utils.data import IterableDataset
 
-from hypertrade.libs.tsfd.sources.types import DataSource
+from hypertrade.libs.tsfd.sources.types import DataSource, Granularity
 from hypertrade.libs.tsfd.transforms import RollingFeatures, Transform
 
 
@@ -60,15 +62,15 @@ class TimeSeriesDataset(TsfdDataset):
     def __init__(
         self,
         data_source: DataSource,
+        trading_calendar: xcals.ExchangeCalendar,
         name: Optional[str] = None,
         transforms: Optional[Transform] = None,
     ) -> None:
         self.data_source = data_source
         self.name = name
-        self.full_data: pd.DataFrame = self.data_source.fetch()
-        self.timestamps: pd.Index = self.full_data.index
         self.transforms = transforms
         self._observation_shape: Optional[Tuple[int, ...]] = None
+        self.trading_calendar = trading_calendar
 
     def __len__(self) -> int:
         return len(self.data_source)
@@ -94,19 +96,19 @@ class TimeSeriesDataset(TsfdDataset):
             start, stop = idx.start, idx.stop
             # Expand the slice window backwards if start is a timestamp or int
             if isinstance(start, pd.Timestamp):
-                pos = self.timestamps.get_loc(start)
-                start_pos = max(pos - (window - 1), 0)
-                start = self.timestamps[start_pos]
+                start = self._get_start_date(
+                    start, window, self.data_source.granularity
+                )
             elif isinstance(start, int):
-                start = max(start - (window - 1), 0)
+                start = max(start - window, 0)
             extended_slice = slice(start, stop, idx.step)
             return self._load_data(extended_slice)
 
         # If idx is a single timestamp, convert it to a slice that includes extra rows before
         if isinstance(idx, pd.Timestamp):
-            pos = self.timestamps.get_loc(idx)
-            start_pos = max(pos - (window - 1), 0)
-            extended_slice = slice(self.timestamps[start_pos], idx)
+            start = self._get_start_date(idx, window, self.data_source.granularity)
+            stop = idx
+            extended_slice = slice(start, stop)
             return self._load_data(extended_slice)
 
         # If idx is an integer, shift it backwards
@@ -117,6 +119,26 @@ class TimeSeriesDataset(TsfdDataset):
 
         # Fallback
         return self._load_data(idx)
+
+    def _get_start_date(
+        self, ts: pd.Timestamp, window: int, granularity: Granularity
+    ) -> pd.Timestamp:
+        if granularity == Granularity.DAILY:
+            dist = 0
+            normalized_ts = self.trading_calendar.date_to_session(
+                ts.tz_localize(None).normalize()
+            )
+            proposed_start = normalized_ts - timedelta(days=window)
+            while dist < window:
+                # check if distance is correct
+                dist = self.trading_calendar.sessions_distance(
+                    proposed_start, normalized_ts
+                )
+                proposed_start = proposed_start - timedelta(days=window - dist)
+            return proposed_start
+        raise NotImplementedError(
+            "Rolling window is not supported for non-daily granularity."
+        )
 
     def _get_rolling_window(self) -> int:
         if not self.transforms:
@@ -133,10 +155,6 @@ class TimeSeriesDataset(TsfdDataset):
 
     def __repr__(self) -> str:  # Improved representation for easier debugging
         return f"{self.__class__.__name__}(name={self.name}, shape={len(self)})"
-
-    # def get_time_range(self) -> Tuple[pd.Timestamp, pd.Timestamp]:
-    #     """Returns the start and end timestamps of the dataset."""
-    #     return self.timestamps.min(), self.timestamps.max()
 
     def __iter__(self) -> Generator[pd.DataFrame | Tensor, Any, None]:
         max_window = self._get_rolling_window()
@@ -156,7 +174,7 @@ class TimeSeriesDataset(TsfdDataset):
             return self._observation_shape
 
         # Fetch a single item from the dataset – e.g., the first valid index
-        sample_idx = 0
+        sample_idx = self._get_rolling_window()
         if len(self) > 0:
             sample_data = self[sample_idx]
             if hasattr(sample_data, "shape"):

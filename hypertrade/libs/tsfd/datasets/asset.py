@@ -54,12 +54,18 @@ class OHLVCDataset(TimeSeriesDataset):
     def __init__(
         self,
         data_source: OhlvcDatasetAdapter,
+        trading_calendar: xcals.ExchangeCalendar,
         name: Optional[str] = None,
         symbols: Optional[List[str]] = None,
         granularity: Granularity = Granularity.DAILY,
         transforms: Optional[Transform] = None,
     ):
-        super().__init__(data_source, name, transforms=transforms)
+        super().__init__(
+            data_source,
+            name=name,
+            trading_calendar=trading_calendar,
+            transforms=transforms,
+        )
         self.symbols = symbols
         self.granularity = granularity
         self.data_source: OhlvcDatasetAdapter = data_source
@@ -149,11 +155,15 @@ class PricesDataset(TimeSeriesDataset):
         granularity: Granularity = Granularity.DAILY,
         transforms: Optional[Transform] = None,
     ):
-        super().__init__(data_source, name, transforms=transforms)
+        super().__init__(
+            data_source,
+            name=name,
+            trading_calendar=trading_calendar,
+            transforms=transforms,
+        )
         self.symbols = symbols
         self.data_source: PricesDatasetAdapter = data_source
         self.granularity = granularity
-        self.trading_calendar = trading_calendar
 
     def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame:
 

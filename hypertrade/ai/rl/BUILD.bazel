@@ -16,7 +16,13 @@ py_library(
     name = "utils",
     srcs = ["utils.py"],
     data = [],
-    deps = [requirement("pytz")],
+    deps = [
+        requirement("pytz"),
+        "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/sources:csv",
+        "//hypertrade/libs/tsfd/sources/formats:ohlvc",
+        "//hypertrade/libs/tsfd/transforms:all",
+    ],
 )
 
 py_binary(

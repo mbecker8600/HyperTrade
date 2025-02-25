@@ -14,7 +14,7 @@ from torchrl.envs import EnvBase
 
 from hypertrade.libs.simulator.engine import TradingEngine
 from hypertrade.libs.simulator.event.types import EVENT_TYPE
-from hypertrade.libs.tsfd.datasets.asset import PricesDataset
+from hypertrade.libs.tsfd.datasets.asset import PricesDataset, TimeSeriesDataset
 from hypertrade.libs.tsfd.sources.csv import CSVSource
 from hypertrade.libs.tsfd.sources.formats.ohlvc import OHLVCDataSourceFormat
 
@@ -26,6 +26,8 @@ class TradingEnvironment(EnvBase):
         symbols: List[str],
         min_start: pd.Timestamp,
         max_end: pd.Timestamp,
+        prices_dataset: PricesDataset,
+        feature_dataset: TimeSeriesDataset,
         env_type: str = "train",
         max_episode_steps: Optional[int] = None,
         capital_base: int = 100000,
@@ -36,8 +38,8 @@ class TradingEnvironment(EnvBase):
         self.rng: Optional[torch.Generator] = None
         self.observation_spec: Composite = Composite(
             allocations=Unbounded(shape=len(self.symbols), dtype=torch.float32),
-            historical_rolling_averages=Unbounded(
-                shape=len(self.symbols * 2 * 4),
+            features=Unbounded(
+                shape=feature_dataset.observation_shape,
                 dtype=torch.float32,  # TODO: refactor so this will stay in sync with the function call
             ),
             shape=(),
@@ -48,25 +50,9 @@ class TradingEnvironment(EnvBase):
         self.max_episode_steps = max_episode_steps
         self.capital_base = capital_base
 
-        # FIXME: This is a hack to get the testing data, but should clean this up.
-        # Use sample data for testing
-        ws = os.path.dirname(__file__)
-        sample_data_path = os.path.join(
-            ws, "../../libs/simulator/data/tests/data/ohlvc/sample.csv"
-        )
-
-        # Create an OCHLV data source using a CSV file
-        cal = xcals.get_calendar("XNYS")
-        self.ohlvc_dataset = PricesDataset(
-            data_source=OHLVCDataSourceFormat(
-                CSVSource(source=sample_data_path),
-            ),
-            name="prices",
-            trading_calendar=cal,
-        )
-
         self.trading_engine: Optional[TradingEngine] = None
-
+        self.features_dataset = feature_dataset
+        self.prices_dataset = prices_dataset
         self.state_spec = self.full_observation_spec.clone()
 
         self.action_spec: Bounded = Bounded(
@@ -109,7 +95,7 @@ class TradingEnvironment(EnvBase):
         self.trading_engine = TradingEngine(
             start_time=self.min_start,
             end_time=self.max_end,
-            prices_dataset=self.ohlvc_dataset,
+            prices_dataset=self.prices_dataset,
             capital_base=self.capital_base,
         )
         self.trading_engine.step_until_event(EVENT_TYPE.PRE_MARKET_OPEN)
@@ -117,10 +103,12 @@ class TradingEnvironment(EnvBase):
             "Intialized Trading Engine"
         )
 
+        features = self.features_dataset[self.trading_engine.current_time]
+
         out = TensorDict(
             {
                 "allocations": self._get_portfolio_allocations(),
-                "historical_rolling_averages": historical_rolling_averages,
+                "features": features,
             },
             tensordict.shape,
             device=self.device,
