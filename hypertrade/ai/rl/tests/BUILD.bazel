@@ -1,0 +1,22 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_test")
+
+py_test(
+    name = "env_tests",
+    srcs = ["env_tests.py"],
+    data = ["//hypertrade/libs/simulator/data/tests:data/ohlvc/sample.csv"],
+    deps = [
+        "//hypertrade/ai/rl:env",
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/logging:py_setup",
+        "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/sources:csv",
+        "//hypertrade/libs/tsfd/sources/formats:ohlvc",
+        "//hypertrade/libs/tsfd/transforms:all",
+        "//hypertrade/libs/tsfd/utils:time",
+        requirement("torchrl"),
+        requirement("pytz"),
+        requirement("exchange_calendars"),
+        requirement("tensordict"),
+    ],
+)

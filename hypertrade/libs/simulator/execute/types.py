@@ -50,6 +50,9 @@ class Order:
     def make_id() -> str:
         return uuid.uuid4().hex
 
+    def __repr__(self) -> str:
+        return f"Order({self.asset}, {self.amount}, {self.order_placed}, {self.filled}, {self.commission}, {self.order_status}, {self.id})"
+
 
 class Transaction:
     def __init__(

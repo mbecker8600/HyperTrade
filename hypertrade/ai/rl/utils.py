@@ -85,6 +85,7 @@ def env_maker(cfg: DictConfig, env_type: str) -> EnvBase:
     features_dataset = OHLVCDataset(
         data_source=datasource,
         name="features",
+        trading_calendar=cal,
         transforms=tsfd_Compose(
             datasource=datasource,
             transforms=[

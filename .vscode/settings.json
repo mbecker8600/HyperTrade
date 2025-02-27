@@ -6,7 +6,7 @@
   //   "**/bazel/**/*": "plaintext"
   // },
   "[python]": {
-    "editor.defaultFormatter": "trunk.io",
+    "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true
   },
   "[markdown]": {
@@ -18,7 +18,7 @@
     "editor.formatOnSave": true
   },
   "[starlark]": {
-    "editor.defaultFormatter": "trunk.io",
+    "editor.defaultFormatter": "BazelBuild.vscode-bazel",
     "editor.formatOnSave": true
   },
   "python.defaultInterpreterPath": "/usr/local/python/current/bin/python",

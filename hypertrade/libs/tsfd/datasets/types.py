@@ -126,7 +126,7 @@ class TimeSeriesDataset(TsfdDataset):
         if granularity == Granularity.DAILY:
             dist = 0
             normalized_ts = self.trading_calendar.date_to_session(
-                ts.tz_localize(None).normalize()
+                ts.tz_localize(None).normalize(), direction="previous"
             )
             proposed_start = normalized_ts - timedelta(days=window)
             while dist < window:
