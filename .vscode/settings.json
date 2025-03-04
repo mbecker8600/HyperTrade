@@ -26,5 +26,15 @@
   "mypy-type-checker.reportingScope": "workspace",
   "mypy-type-checker.preferDaemon": true,
   "python.analysis.typeCheckingMode": "off",
-  "mypyright.analysis.typeCheckingMode": "off"
+  "mypyright.analysis.typeCheckingMode": "off",
+  "files.watcherExclude": {
+    "**/bazel-*": true,
+    "**/node_modules/*/**": true,
+    "**/__pycache__": true,
+    "**/.trunk/*actions/": true,
+    "**/.trunk/*logs/": true,
+    "**/.trunk/*notifications/": true,
+    "**/.trunk/*out/": true,
+    "**/.trunk/*plugins/": true
+  }
 }
