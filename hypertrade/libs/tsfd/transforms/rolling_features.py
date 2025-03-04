@@ -62,7 +62,10 @@ class RollingFeatures(Transform):
             def apply_rolling(sub_df: pd.DataFrame) -> pd.DataFrame:
                 for col in columns:
                     if col in sub_df.columns:
-                        roll = sub_df[col].rolling(
+                        df_col = sub_df[col]
+                        if df_col is None:
+                            raise ValueError(f"Column {col} is not in the DataFrame")
+                        roll = df_col.rolling(
                             window=self.window, min_periods=self.window
                         )
                         for metric in self.metric:
@@ -78,7 +81,10 @@ class RollingFeatures(Transform):
             df = df.copy()
             for col in columns:
                 if col in df.columns:
-                    roll = df[col].rolling(window=self.window, min_periods=self.window)
+                    df_col = df[col]
+                    if df_col is None:
+                        raise ValueError(f"Column {col} is not in the DataFrame")
+                    roll = df_col.rolling(window=self.window, min_periods=self.window)
                     for metric in self.metric:
                         df[f"{col}_rolling_{metric}_{self.window}"] = getattr(
                             roll, metric

@@ -90,8 +90,7 @@ class TestRLTradingEnvironment(unittest.TestCase):
             max_end=cast_timestamp(end),
         )
 
-        tensordict = env.rollout(max_steps=20)
-        pass
+        env.rollout(max_steps=20)
 
 
 if __name__ == "__main__":

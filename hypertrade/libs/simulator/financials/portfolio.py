@@ -190,6 +190,8 @@ class PortfolioManager:
         batch = self.dataset[self.event_manager.current_time]
         if isinstance(batch, pd.DataFrame):
             prices = batch["price"]
+            if not isinstance(prices, pd.Series):
+                raise ValueError("Prices df is not a series")
             filtered_prices = prices.filter(assets)
             if isinstance(filtered_prices, pd.Series):
                 self.portfolio.current_market_prices = filtered_prices

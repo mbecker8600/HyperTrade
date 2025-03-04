@@ -1,9 +1,9 @@
-from typing import Type
+import math
+from typing import Dict, Type
 
 import pandas as pd
 from loguru import logger
 from pandas._libs.tslibs.nattype import NaTType
-import math
 
 from hypertrade.libs.service.locator import ServiceLocator, register_service
 from hypertrade.libs.simulator.assets import Asset
@@ -64,7 +64,7 @@ class BrokerService:
         return self.place_order_by_amount(asset, amount)
 
     def place_order_by_weights(
-        self, target_weights: dict[Asset | str, float]
+        self, target_weights: Dict[Asset, float] | Dict[str, float]
     ) -> list[Order]:
         """Place orders to achieve the target portfolio weights.
 
@@ -92,13 +92,18 @@ class BrokerService:
             batch = self.dataset[current_time]
             if not isinstance(batch, pd.DataFrame):
                 raise ValueError("Batch is not a DataFrame")
-            current_price = float(batch["price"].loc[asset.symbol])
+            price = batch["price"]
+            if not isinstance(price, pd.Series):
+                raise ValueError("Price is not a Series")
+            current_price = float(price.loc[asset.symbol])
 
             # Calculate target position
             target_position_value = current_portfolio_value * target_weight
             target_shares = math.floor(target_position_value / current_price)
 
             # Calculate trade amount
+            if current_positions is None:
+                raise ValueError("Current positions is None")
             if asset.symbol in current_positions.index:
                 current_shares = current_positions.loc[asset.symbol]
             else:
@@ -147,7 +152,10 @@ class BrokerService:
         batch = self.dataset[current_time]
         if not isinstance(batch, pd.DataFrame):
             raise ValueError("Batch is not a DataFrame")
-        current_price = float(batch["price"].loc[order.asset.symbol])
+        price = batch["price"]
+        if not isinstance(price, pd.Series):
+            raise ValueError("Price is not a Series")
+        current_price = float(price.loc[order.asset.symbol])
         transaction = Transaction(
             dt=current_time + self.execution_delay,
             order_id=order.id,

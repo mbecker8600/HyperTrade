@@ -21,9 +21,11 @@ py_test(
     deps = [
         "//hypertrade/libs/debugging:python_debugger",
         "//hypertrade/libs/logging:py_setup",
+        "//hypertrade/libs/service:locator",
         "//hypertrade/libs/simulator:assets",
         "//hypertrade/libs/simulator/event:service",
         "//hypertrade/libs/simulator/execute:broker",
+        "//hypertrade/libs/simulator/financials:portfolio",
         "//hypertrade/libs/tsfd/datasets:asset",
         "//hypertrade/libs/tsfd/sources:csv",
         "//hypertrade/libs/tsfd/sources/formats:ohlvc",

@@ -49,16 +49,26 @@ class OHLVCDataSourceFormat(
         data = {}
         for date in dates:
             open_ts = trading_calendar.session_open(date.tz_localize(None).normalize())
-            data[open_ts] = df.xs(date, level="date")["open"].to_dict()
+            open_data = df.xs(date, level="date")["open"]
+            if open_data is None:
+                raise ValueError(f"No open data found for the given timestamp {date}")
+            data[open_ts] = open_data.to_dict()
             close_ts = trading_calendar.session_close(
                 date.tz_localize(None).normalize()
             )
-            data[close_ts] = df.xs(date, level="date")["close"].to_dict()
+            close_data = df.xs(date, level="date")["close"]
+            if close_data is None:
+                raise ValueError(f"No close data found for the given timestamp {date}")
+            data[close_ts] = close_data.to_dict()
 
         # Convert to DataFrame in the schema format defined in `hypertrade.libs.tsfd.schemas.prices`
         df = pd.DataFrame.from_dict(data, orient="index")
         df_stacked = df.stack()
         df_multiindex = pd.DataFrame(df_stacked).reset_index()
+        if df_multiindex is None:
+            raise ValueError("No data found for the given timestamp")
         df_multiindex.columns = ["date", "ticker", "price"]
         df_multiindex = df_multiindex.set_index(["date", "ticker"]).sort_index()
+        if df_multiindex is None:
+            raise ValueError("No data found for the given timestamp")
         return df_multiindex

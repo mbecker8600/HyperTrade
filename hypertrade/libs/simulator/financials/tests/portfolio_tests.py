@@ -195,6 +195,8 @@ class TestPortfolio(unittest.TestCase):
         self.assertIsInstance(batch, pd.DataFrame)
         if isinstance(batch, pd.DataFrame):
             prices = batch["price"]
+            if not isinstance(prices, pd.Series):
+                raise ValueError("Prices df is not a series")
             prices = prices.filter([boeing_asset.symbol])
             if not isinstance(prices, pd.Series):
                 raise ValueError("Prices df is not a series")
@@ -213,6 +215,8 @@ class TestPortfolio(unittest.TestCase):
         self.assertIsInstance(batch, pd.DataFrame)
         if isinstance(batch, pd.DataFrame):
             prices = batch["price"]
+            if not isinstance(prices, pd.Series):
+                raise ValueError("Prices df is not a series")
             prices = prices.filter([boeing_asset.symbol])
             if not isinstance(prices, pd.Series):
                 raise ValueError("Prices df is not a series")

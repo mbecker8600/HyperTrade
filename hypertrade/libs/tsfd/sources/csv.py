@@ -71,6 +71,10 @@ class CSVSource(DataSource):
             )
         )
         data = data.sort_index()
+        if data is None:
+            raise ValueError(
+                "Source must be a DataFrame, but got a {}".format(type(data))
+            )
         if self.format is not None:
             self.format.schema.validate(data)
         return data

@@ -13,7 +13,6 @@ from torchrl.envs import EnvBase
 
 from hypertrade.libs.simulator.engine import TradingEngine
 from hypertrade.libs.simulator.event.types import EVENT_TYPE
-from hypertrade.libs.simulator.financials import portfolio
 from hypertrade.libs.tsfd.datasets.asset import PricesDataset, TimeSeriesDataset
 
 
@@ -79,7 +78,7 @@ class TradingEnvironment(EnvBase):
             self.trading_engine.portfolio_manager.portfolio.portfolio_value
         )
         # Step until desired event (e.g. MARKET_PRE_OPEN)
-        next_event = self.trading_engine.step_until_event(EVENT_TYPE.PRE_MARKET_OPEN)
+        self.trading_engine.step_until_event(EVENT_TYPE.PRE_MARKET_OPEN)
 
         next_portfolio_value = (
             self.trading_engine.portfolio_manager.portfolio.portfolio_value

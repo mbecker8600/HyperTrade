@@ -35,4 +35,4 @@ class DropFeature(Transform):
             raise ValueError(
                 "Drop feature should only be applied to DataFrames, not tensors"
             )
-        return df.drop(columns=self.feature)
+        return df.drop(columns=self.feature, inplace=False)
