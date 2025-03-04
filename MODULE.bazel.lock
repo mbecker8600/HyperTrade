@@ -247,7 +247,7 @@
         "bzlTransitiveDigest": "HTgM1jFhMOyV386EfN77wAJyJ6AuPyZ03amHZewTMr0=",
         "usagesDigest": "zcj0srQX8Om7VMQwXFkx1iziYFewVqB6Y++eftzLGYg=",
         "recordedFileInputs": {
-          "@@//third-party/requirements_lock.txt": "d9142840638a9cf77dd7fb4582089ffa64e758a1a4f90113a412da7cbc19e7a2",
+          "@@//third-party/requirements_lock.txt": "e82c41b112a85912b0cfedaa368a8b47034199858a5f46ac6af7c7f9f4252cd6",
           "@@protobuf+//python/requirements.txt": "983be60d3cec4b319dcab6d48aeb3f5b2f7c3350f26b3a9e97486c37967c73c5",
           "@@rules_fuzzing+//fuzzing/requirements.txt": "ab04664be026b632a0d2a2446c4f65982b7654f5b6851d2f9d399a19b7242a5b",
           "@@rules_python+//tools/publish/requirements_darwin.txt": "095d4a4f3d639dce831cd493367631cd51b53665292ab20194bac2c0c6458fa8",
@@ -1295,6 +1295,15 @@
               "requirement": "nvidia-nvtx-cu12==12.4.127 --hash=sha256:641dccaaa1139f3ffb0d3164b4b84f9d253397e38246a4f2f36728b48566d485 --hash=sha256:781e950d9b9f60d8241ccea575b32f5105a5baf4c2351cab5256a24869f12a1a --hash=sha256:7959ad635db13edf4fc65c06a6e9f9e55fc2f92596db928d169c0bb031e88ef3"
             }
           },
+          "pypi_310_objprint": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pypi//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_10_12_host//:python",
+              "repo": "pypi_310",
+              "requirement": "objprint==0.3.0 --hash=sha256:489083bfc8baf0526f8fd6af74673799511532636f0ce4141133255ded773405 --hash=sha256:b5d83f9d62db5b95353bb42959106e1cd43010dcaa3eed1ad8d7d0b2df9b2d5a"
+            }
+          },
           "pypi_310_omegaconf": {
             "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
             "attributes": {
@@ -1959,6 +1968,15 @@
               "python_interpreter_target": "@@rules_python++python+python_3_10_12_host//:python",
               "repo": "pypi_310",
               "requirement": "urllib3==2.3.0 --hash=sha256:1cee9ad369867bfdbbb48b7dd50374c0967a0bb7710050facf0dd6911440e3df --hash=sha256:f8c5449b3cf0861679ce7e0503c7b44b5ec981bec0d1d3795a07f1ba96f0204d"
+            }
+          },
+          "pypi_310_viztracer": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pypi//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_10_12_host//:python",
+              "repo": "pypi_310",
+              "requirement": "viztracer==1.0.2 --hash=sha256:01feb66558942c6ac21d07400c95a6254709d5e050bb2cd9ace6bee989da413f --hash=sha256:0a692cf12acbb7e053dedabeb4f7dbe474c31105e926466007e1b63853ada134 --hash=sha256:0b74ebbe396f2f7a327f08abb1aa2d719436bb144443fa31c01cf37dd6242739 --hash=sha256:0c114f56839e78113f3721e013a6742aca74acfef987eae2ba7c670533950c82 --hash=sha256:105ad6ead0bad92ee5f626ea074fc6d5136f3c61e619eb10dcd80a062bafd751 --hash=sha256:128d3bc262916255536713ca8c7a8b0a16560a398655f0c8fe202797e39c3c2a --hash=sha256:1395aeff65082e8f38240c7ce9167d1cfa5702204439770f17ba991bf4a6cfb5 --hash=sha256:150e2b0fd7b9ad2010b57406fd2fcfa85f9325e60efa662c23b686fa58913468 --hash=sha256:1892d02eaf7a7f04ee9d5dc819588c741a876194919aa583d3eb25ae3477e48d --hash=sha256:34340b27079ae39ac47b7d8be982c6e9b4f00d7f8366e7d5de4801fb53d7dce4 --hash=sha256:356a506666dde9d0617a08af5f8b3f621e1578382a4ee9f37fb9d86be119e8cd --hash=sha256:37f9bcc2bd42cde5c4b4fb1ee4c65b795a1c4ed2636876abb49cc6e67721d72e --hash=sha256:3d672f71e141d2ac55997eadcec73906bb51e13958e3fbf044d8cc5056a08e27 --hash=sha256:52a18ece85b128886ba6bfefb4146915c990bf6315d52f08911da9aaedc5c971 --hash=sha256:52cc06b8ce4a807e7c98182f64ac48f4e1c5e3802dff556f74176c8fc7d97fec --hash=sha256:5d7964ae404427c6feea6460a1bccd88fd9898b36bf256fd0a3b20c3ec556e92 --hash=sha256:7088654daee4f50b17cc52f8ceb24a242f31539bbb344a5bc6fc459d9fc3de15 --hash=sha256:75b92ec1fa28a885dc9d31d128212782f68352f492b503d9715d81052ba04142 --hash=sha256:76c0dafc48d37f2fc946942fd0792cf33b7cea92c668e24848008266cb99fe38 --hash=sha256:7b4991549a5b6ab7d8c234e1eb2e6aea32b1a9dc29d0fb7a18404c9876d8dc4b --hash=sha256:7bb501611557c17763ae3125305eedf5bc1fb248d8fea905e4ec823d260909d9 --hash=sha256:7faf27fc4897c923cb5d653ee0d19a4d25e77761e8025c8a777dae2c931d3df1 --hash=sha256:83f3fbc9530808ac048942acaa684ffca3a850de0b098783f67de059bf460764 --hash=sha256:88b0370ef122bee7cd8f0a984aa0eea8cb0e155bc2ebcf2f5f62e51ff234eb36 --hash=sha256:8ce63e45642fdf7e46e5c143929272de6b40c7c38a6a5be02169729e8b215c14 --hash=sha256:8d5c412c2f3bf6d05a0bc5f50e4bce3642a863a001f0d3b290c6bd7085f045ca --hash=sha256:8df898910342766cdb0e29fc95c3c144b68cc924a54c79f00032e5ae5e862885 --hash=sha256:a264f547310155b5984f39a56e0fb366d79f7c63da386a41ff3b11a9e1398b83 --hash=sha256:a53ef805e306a3b77901dbad7a2f2fa7e47339b0fc0703dccd3cd8100676c234 --hash=sha256:ab74530315ad8989455a6ab950e869c20214a568cb7a270eadcedba9161d5e8e --hash=sha256:bc6884306f4c2b269cefd8519249f0ab455e03f9d8c4df4518b6f8238b72aeca --hash=sha256:c056a9c2902027b9e4b5b732b646f164d954c4f4d9a8e766b793d9a59efd7f20 --hash=sha256:c083764e65b35bf102bc3339c0c48304a468b9a7e1200f64b31142976fdcbf8a --hash=sha256:c3d6f7eb31d89ae0428771b2a093eb9a7e90baa52c61512c444c21b211e754cb --hash=sha256:c664f5f9381aed70d8aeb76b13abe8585d2643d9c099d45ba7a3d4857caa0f4b --hash=sha256:d0a1dee9aa3b275696fd1ace221c1b9f349233c48e12b298c1e5a1ef3d1a2e92 --hash=sha256:d2680b2bda7b8c42a1a32b391034d58e7ace81a4c601c727a333598bf70df794 --hash=sha256:e3e5f3bb880f52042783576538a21654b16fd3224754844d0fcf5875ca7de144 --hash=sha256:efcf92a0d087c4e8609c248b0f2d7b2026a7124f942bbffcf9ad05792fd282c2 --hash=sha256:f0ba07dff91cdb7a489376f35206594c90b211367abfcb109c7c59f5b6691c18 --hash=sha256:f158a2a1aeb5d14f2413d222db63124dd422d91cdeb6affa1a108950738f8f02 --hash=sha256:f8b2f550d76e36317cff367bcb75615ec8529b9ff0b59bc5b4f687c5ee6883bc"
             }
           },
           "pypi_310_wcwidth": {
@@ -4540,6 +4558,7 @@
                 "nvidia_nccl_cu12": "{\"pypi_310_nvidia_nccl_cu12\":[{\"version\":\"3.10\"}]}",
                 "nvidia_nvjitlink_cu12": "{\"pypi_310_nvidia_nvjitlink_cu12\":[{\"version\":\"3.10\"}]}",
                 "nvidia_nvtx_cu12": "{\"pypi_310_nvidia_nvtx_cu12\":[{\"version\":\"3.10\"}]}",
+                "objprint": "{\"pypi_310_objprint\":[{\"version\":\"3.10\"}]}",
                 "omegaconf": "{\"pypi_310_omegaconf\":[{\"version\":\"3.10\"}]}",
                 "orjson": "{\"pypi_310_orjson\":[{\"version\":\"3.10\"}]}",
                 "overrides": "{\"pypi_310_overrides\":[{\"version\":\"3.10\"}]}",
@@ -4614,6 +4633,7 @@
                 "tzdata": "{\"pypi_310_tzdata\":[{\"version\":\"3.10\"}]}",
                 "uri_template": "{\"pypi_310_uri_template\":[{\"version\":\"3.10\"}]}",
                 "urllib3": "{\"pypi_310_urllib3\":[{\"version\":\"3.10\"}]}",
+                "viztracer": "{\"pypi_310_viztracer\":[{\"version\":\"3.10\"}]}",
                 "wcwidth": "{\"pypi_310_wcwidth\":[{\"version\":\"3.10\"}]}",
                 "webcolors": "{\"pypi_310_webcolors\":[{\"version\":\"3.10\"}]}",
                 "webencodings": "{\"pypi_310_webencodings\":[{\"version\":\"3.10\"}]}",
@@ -4727,6 +4747,7 @@
                 "nvidia_nccl_cu12",
                 "nvidia_nvjitlink_cu12",
                 "nvidia_nvtx_cu12",
+                "objprint",
                 "omegaconf",
                 "orjson",
                 "overrides",
@@ -4801,6 +4822,7 @@
                 "tzdata",
                 "uri_template",
                 "urllib3",
+                "viztracer",
                 "wcwidth",
                 "webcolors",
                 "webencodings",

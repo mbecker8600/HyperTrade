@@ -35,3 +35,19 @@ py_binary(
 
 - Open notebook with kernel set to running server. Note, you need the token from
   the console output to login.
+
+## Profiling
+
+### Latency profiling: Viztracer
+
+1. Add Viztracer to beginning of main function
+
+```python
+from viztracer import VizTracer
+...
+with VizTracer(output_file="/workspaces/HyperTrade/optional.json") as tracer:
+  # do something
+```
+
+1. Open trace on Perfetto
+[Perfetto](https://ui.perfetto.dev/)
