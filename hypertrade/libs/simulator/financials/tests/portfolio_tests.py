@@ -6,7 +6,7 @@ import pandas as pd
 import pytz
 from loguru import logger
 
-import hypertrade.libs.debugging  # donotcommit
+# import hypertrade.libs.debugging  # donotcommit
 from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.event.service import EventManager
