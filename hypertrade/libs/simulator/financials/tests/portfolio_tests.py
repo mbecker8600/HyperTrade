@@ -6,7 +6,7 @@ import pandas as pd
 import pytz
 from loguru import logger
 
-# import hypertrade.libs.debugging  # donotcommit
+import hypertrade.libs.debugging  # donotcommit
 from hypertrade.libs.logging.setup import initialize_logging
 from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.event.service import EventManager
@@ -230,6 +230,47 @@ class TestPortfolio(unittest.TestCase):
             logger.debug(
                 "Ending test Portfolio.current_portfolio_weights with a single asset"
             )
+
+    def test_portfolio_sell_positions(self) -> None:
+        """Test negative amount (selling) for portfolio.update()"""
+        logger.info("Testing selling positions with portfolio.update()")
+        portfolio = Portfolio(capital_base=1000.0)
+        # Buy 10 shares
+        portfolio.update(
+            tx=Transaction(
+                asset=Asset(
+                    sid=1, symbol="BA", asset_name="Boeing", price_multiplier=1.0
+                ),
+                amount=10,
+                dt=cast_timestamp(
+                    pd.Timestamp(
+                        "2018-12-26 09:30:00", tz=pytz.timezone("America/New_York")
+                    )
+                ),
+                price=100.0,
+                order_id="test_buy",
+            )
+        )
+        self.assertEqual(portfolio.cash, 0.0)
+        self.assertEqual(len(portfolio.positions), 1)
+        # Sell 5 shares
+        portfolio.update(
+            tx=Transaction(
+                asset=Asset(
+                    sid=1, symbol="BA", asset_name="Boeing", price_multiplier=1.0
+                ),
+                amount=-5,
+                dt=cast_timestamp(
+                    pd.Timestamp(
+                        "2018-12-26 09:31:00", tz=pytz.timezone("America/New_York")
+                    )
+                ),
+                price=110.0,
+                order_id="test_sell",
+            )
+        )
+        self.assertEqual(portfolio.cash, 550.0)
+        self.assertEqual(len(portfolio.positions), 1)
 
 
 if __name__ == "__main__":

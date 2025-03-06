@@ -49,5 +49,4 @@ with VizTracer(output_file="/workspaces/HyperTrade/optional.json") as tracer:
   # do something
 ```
 
-1. Open trace on Perfetto
-[Perfetto](https://ui.perfetto.dev/)
+1. Open trace on Perfetto [Perfetto](https://ui.perfetto.dev/)

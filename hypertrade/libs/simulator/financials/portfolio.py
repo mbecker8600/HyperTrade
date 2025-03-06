@@ -84,11 +84,44 @@ class Portfolio:
         self.cash = capital_base
         self._current_market_prices: pd.Series = pd.Series()
 
+    def _apply_fifo_sell(self, tx: Transaction) -> None:
+        """Apply a FIFO strategy for selling."""
+        asset_positions = self.positions.xs(tx.asset.symbol, level=0, drop_level=False)
+        if asset_positions is None or asset_positions.empty:
+            # nothing to sell
+            raise ValueError(
+                f"Asset positions is None for {tx.asset.symbol}. Can't sell"
+            )
+        # sort positions by ascending dt
+        asset_positions = asset_positions.sort_index(level=1)
+        shares_to_sell = abs(tx.amount)
+
+        # trunk-ignore(pyright/reportOptionalMemberAccess)
+        for idx in asset_positions.index:
+            row_amount = self.positions.loc[idx, "amount"]
+            if row_amount <= shares_to_sell:
+                # remove entire row
+                shares_to_sell -= row_amount
+                self.positions.drop(idx, inplace=True)
+            else:
+                # partially reduce the row
+                self.positions.loc[idx, "amount"] = row_amount - shares_to_sell
+                shares_to_sell = 0
+                break
+
+    # TODO: Modify the Transaction and update method to properly handle Short positions
+    # Because the current implementation is only for Long positions
     def update(self, tx: Transaction) -> None:
-        """Update the portfolio given a processed transaction"""
-        # Set the positions dataframe (indexed by (symbol, time)) to the number of shares and cost basis (i.e. original price)
-        self.positions.loc[(tx.asset.symbol, tx.dt), :] = [tx.amount, tx.price]
-        self.cash -= tx.amount * tx.price
+        """Update the portfolio given a processed transaction."""
+        if tx.amount < 0:
+            # SELL operation using FIFO
+            self.cash -= tx.amount * tx.price
+            # TODO: Turn this into a strategy pattern
+            self._apply_fifo_sell(tx)
+        else:
+            # BUY operation
+            self.positions.loc[(tx.asset.symbol, tx.dt), :] = [tx.amount, tx.price]
+            self.cash -= tx.amount * tx.price
 
     @property
     def current_market_prices(self) -> pd.Series:

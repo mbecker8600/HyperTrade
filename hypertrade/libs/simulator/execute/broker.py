@@ -10,7 +10,11 @@ from hypertrade.libs.simulator.assets import Asset
 from hypertrade.libs.simulator.event.service import EventManager
 from hypertrade.libs.simulator.event.types import EVENT_TYPE, Event
 from hypertrade.libs.simulator.execute.commission import CommissionModel, NoCommission
-from hypertrade.libs.simulator.execute.types import Order, Transaction
+from hypertrade.libs.simulator.execute.types import (
+    EXECUTION_STRATEGY,
+    Order,
+    Transaction,
+)
 from hypertrade.libs.simulator.financials.portfolio import PortfolioManager
 from hypertrade.libs.tsfd.datasets.asset import PricesDataset
 
@@ -64,7 +68,9 @@ class BrokerService:
         return self.place_order_by_amount(asset, amount)
 
     def place_order_by_weights(
-        self, target_weights: Dict[Asset, float] | Dict[str, float]
+        self,
+        target_weights: Dict[Asset, float] | Dict[str, float],
+        execution_strategy: EXECUTION_STRATEGY = EXECUTION_STRATEGY.FIFO,
     ) -> list[Order]:
         """Place orders to achieve the target portfolio weights.
 
@@ -116,7 +122,12 @@ class BrokerService:
                 )
                 continue
 
-            order = Order(asset=asset, amount=trade_amount, order_placed=delayed_time)
+            order = Order(
+                asset=asset,
+                amount=trade_amount,
+                order_placed=delayed_time,
+                execution_strategy=execution_strategy,
+            )
             self.event_manager.schedule_event(
                 Event(event_type=EVENT_TYPE.ORDER_PLACED, payload=order),
                 delay=(
@@ -128,11 +139,21 @@ class BrokerService:
             orders.append(order)
         return orders
 
-    def place_order_by_amount(self, asset: Asset, amount: int) -> Order:
+    def place_order_by_amount(
+        self,
+        asset: Asset,
+        amount: int,
+        execution_strategy: EXECUTION_STRATEGY = EXECUTION_STRATEGY.FIFO,
+    ) -> Order:
         current_time = self.event_manager.current_time
         delayed_time = self._get_maybe_delayed_time()
 
-        order = Order(asset=asset, amount=amount, order_placed=delayed_time)
+        order = Order(
+            asset=asset,
+            amount=amount,
+            order_placed=delayed_time,
+            execution_strategy=execution_strategy,
+        )
         self.event_manager.schedule_event(
             Event(event_type=EVENT_TYPE.ORDER_PLACED, payload=order),
             delay=(
@@ -162,7 +183,11 @@ class BrokerService:
             asset=order.asset,
             amount=order.amount,
             price=current_price,
+            execution_strategy=order.execution_strategy,
         )
+        # Optionally set transaction.lot_strategy for Portfolio to consume:
+        # transaction.lot_strategy = "FIFO"
+
         logger.bind(simulation_time=current_time).debug(
             f"Trade executed for {order}: {current_price}"
         )
