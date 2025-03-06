@@ -62,7 +62,7 @@ class TestTradingEngine(unittest.TestCase):
         cal = xcals.get_calendar("XNYS")
         ohlvc_dataset = PricesDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath=sample_data_path),
+                CSVSource(source=sample_data_path),
             ),
             symbols=["GE", "BA"],
             name="prices",
@@ -117,7 +117,7 @@ class TestTradingEngine(unittest.TestCase):
         cal = xcals.get_calendar("XNYS")
         ohlvc_dataset = PricesDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath=sample_data_path),
+                CSVSource(source=sample_data_path),
             ),
             symbols=["GE", "BA"],
             name="prices",

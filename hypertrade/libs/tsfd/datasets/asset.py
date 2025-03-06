@@ -9,6 +9,7 @@ from hypertrade.libs.tsfd.datasets.types import TimeSeriesDataset
 from hypertrade.libs.tsfd.schemas.ohlvc import ohlvc_schema
 from hypertrade.libs.tsfd.schemas.prices import prices_schema
 from hypertrade.libs.tsfd.sources.types import DataSource, Granularity
+from hypertrade.libs.tsfd.transforms import Transform
 from hypertrade.libs.tsfd.utils.dataframe import get_index_strategy
 from hypertrade.libs.tsfd.utils.time import cast_timestamp
 
@@ -34,7 +35,7 @@ class OHLVCDataset(TimeSeriesDataset):
     Usage:
         ohlvc_dataset = OHLVCDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath="path/to/data.csv"),
+                CSVSource(source="path/to/data.csv"),
             ),
             name="ohlvc_example",
             symbols=["AAPL", "MSFT"],
@@ -53,11 +54,18 @@ class OHLVCDataset(TimeSeriesDataset):
     def __init__(
         self,
         data_source: OhlvcDatasetAdapter,
+        trading_calendar: xcals.ExchangeCalendar,
         name: Optional[str] = None,
         symbols: Optional[List[str]] = None,
         granularity: Granularity = Granularity.DAILY,
+        transforms: Optional[Transform] = None,
     ):
-        super().__init__(data_source, name)
+        super().__init__(
+            data_source,
+            name=name,
+            trading_calendar=trading_calendar,
+            transforms=transforms,
+        )
         self.symbols = symbols
         self.granularity = granularity
         self.data_source: OhlvcDatasetAdapter = data_source
@@ -124,7 +132,7 @@ class PricesDataset(TimeSeriesDataset):
         ```python
         prices_dataset = PricesDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath="path/to/data.csv")
+                CSVSource(source="path/to/data.csv")
             ),
             name="prices",
             symbols=["GE", "BA"],
@@ -145,12 +153,17 @@ class PricesDataset(TimeSeriesDataset):
         name: Optional[str] = None,
         symbols: Optional[List[str]] = None,
         granularity: Granularity = Granularity.DAILY,
+        transforms: Optional[Transform] = None,
     ):
-        super().__init__(data_source, name)
+        super().__init__(
+            data_source,
+            name=name,
+            trading_calendar=trading_calendar,
+            transforms=transforms,
+        )
         self.symbols = symbols
         self.data_source: PricesDatasetAdapter = data_source
         self.granularity = granularity
-        self.trading_calendar = trading_calendar
 
     def _load_data(self, idx: pd.Timestamp | NaTType | slice | int) -> pd.DataFrame:
 

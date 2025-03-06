@@ -52,7 +52,8 @@
         "liamrwilkins.mypy-ini-intellisense",
         "mashin.mypyright",
         "trunk.io",
-        "Gruntfuggly.todo-tree"
+        "Gruntfuggly.todo-tree",
+        "ms-azuretools.vscode-docker"
       ]
     }
   },

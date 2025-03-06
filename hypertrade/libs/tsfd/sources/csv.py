@@ -24,36 +24,59 @@ class CSVSource(DataSource):
     """
 
     def __init__(
-        self, filepath: str, granularity: Granularity = Granularity.DAILY, **kwargs: Any
+        self,
+        source: str | pd.DataFrame,
+        granularity: Granularity = Granularity.DAILY,
+        **kwargs: Any
     ) -> None:
-        super().__init__(granularity)
-        self._filepath = filepath
-        self._kwargs = kwargs
+        """
 
-        self._format: DataSourceFormat = DefaultDataSourceFormat(self)
-        self._index: pa.Index | pa.MultiIndex = cast(
-            pa.Index | pa.MultiIndex, self._format.schema.index
-        )
+        Args:
+            source (str | pd.DataFrame): The source of the data. If a string, it is treated as a file path.
+            granularity (Granularity, optional): The granularity of the data. Defaults to Granularity.DAILY.
+            **kwargs (Any): Additional keyword arguments to pass to the pandas read_csv function.
+
+        """
+        super().__init__(granularity)
+        self._source = source
+        self._kwargs = kwargs
+        self._format: Optional[DataSourceFormat] = None
+        self._index: pa.Index | pa.MultiIndex | pd.Index | pd.MultiIndex
+        if isinstance(self._source, pd.DataFrame):
+            self._index = cast(pd.Index | pd.MultiIndex, self._source.index)
+        else:
+            self._format = DefaultDataSourceFormat(self)
+            self._index = cast(pa.Index | pa.MultiIndex, self._format.schema.index)
+
         self._index_strategy = get_index_strategy(self._index)
 
     @property
-    def format(self) -> DataSourceFormat:
+    def format(self) -> Optional[DataSourceFormat]:
         return self._format
 
     @format.setter
     def format(self, value: DataSourceFormat) -> None:
         self._format = value
-        self._index = cast(pa.Index | pa.MultiIndex, self.format.schema.index)
+        self._index = cast(pa.Index | pa.MultiIndex, value.schema.index)
         self._index_strategy = get_index_strategy(self._index)
 
     @cached_property
     def data(self) -> pd.DataFrame:
         index_col = cast(List[str], self._index.names)
-        data = pd.read_csv(
-            self._filepath, parse_dates=True, index_col=index_col, **self._kwargs
+        data = (
+            self._source
+            if isinstance(self._source, pd.DataFrame)
+            else pd.read_csv(
+                self._source, parse_dates=True, index_col=index_col, **self._kwargs
+            )
         )
         data = data.sort_index()
-        self.format.schema.validate(data)
+        if data is None:
+            raise ValueError(
+                "Source must be a DataFrame, but got a {}".format(type(data))
+            )
+        if self.format is not None:
+            self.format.schema.validate(data)
         return data
 
     def __len__(self) -> int:
@@ -70,6 +93,17 @@ class CSVSource(DataSource):
             return self.data
 
         if isinstance(timestamp, slice):
+            if all(
+                isinstance(x, int) or x is None
+                for x in [timestamp.start, timestamp.stop]
+            ):
+                start = self._index_strategy.get_timestamp_at_index(
+                    self.data, timestamp.start
+                )
+                stop = self._index_strategy.get_timestamp_at_index(
+                    self.data, timestamp.stop
+                )
+                timestamp = slice(start, stop, timestamp.step)
             data = self._index_strategy.loc_slice(self.data, timestamp)
             return data
 
@@ -85,3 +119,11 @@ class CSVSource(DataSource):
         # Return data at timestamp
         data = self._index_strategy.loc(self.data, timestamp)
         return data
+
+    @cached_property
+    def mean(self) -> pd.Series | pd.DataFrame:
+        return self._index_strategy.mean(self.data)
+
+    @cached_property
+    def std(self) -> pd.Series | pd.DataFrame:
+        return self._index_strategy.std(self.data)

@@ -15,6 +15,10 @@ class ORDER_STATUS(enum.Enum):
     HELD = 5
 
 
+class EXECUTION_STRATEGY(enum.Enum):
+    FIFO = 1
+
+
 class Order:
 
     def __init__(
@@ -25,6 +29,7 @@ class Order:
         filled: int = 0,
         commission: int = 0,
         order_status: ORDER_STATUS = ORDER_STATUS.OPEN,
+        execution_strategy: EXECUTION_STRATEGY = EXECUTION_STRATEGY.FIFO,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -34,6 +39,7 @@ class Order:
                   a positive sign indicates a buy
                   a negative sign indicates a sell
         @filled - how many shares of the order have been filled so far
+        @execution_strategy - the strategy to use when executing the order
         @commission - commision amount on order
         """
 
@@ -44,19 +50,30 @@ class Order:
         self.order_placed = order_placed
         self.filled = filled
         self.commission = commission
+        self.execution_strategy = execution_strategy
         self.order_status = order_status
 
     @staticmethod
     def make_id() -> str:
         return uuid.uuid4().hex
 
+    def __repr__(self) -> str:
+        return f"Order({self.asset}, {self.amount}, {self.order_placed}, {self.filled}, {self.commission}, {self.order_status}, {self.id})"
+
 
 class Transaction:
     def __init__(
-        self, asset: Asset, amount: int, dt: pd.Timestamp, price: float, order_id: str
+        self,
+        asset: Asset,
+        amount: int,
+        dt: pd.Timestamp,
+        price: float,
+        order_id: str,
+        execution_strategy: EXECUTION_STRATEGY = EXECUTION_STRATEGY.FIFO,
     ) -> None:
         self.asset = asset
         self.amount = amount
         self.dt = dt
         self.price = price
         self.order_id = order_id
+        self.execution_strategy = execution_strategy

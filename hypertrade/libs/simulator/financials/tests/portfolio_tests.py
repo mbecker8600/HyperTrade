@@ -30,7 +30,7 @@ class TestPortfolioService(unittest.TestCase):
         self.cal = xcals.get_calendar("XNYS")
         self.ohlvc_dataset = PricesDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath=sample_data_path),
+                CSVSource(source=sample_data_path),
             ),
             symbols=["GE", "BA"],
             name="prices",
@@ -143,7 +143,7 @@ class TestPortfolio(unittest.TestCase):
         self.cal = xcals.get_calendar("XNYS")
         self.ohlvc_dataset = PricesDataset(
             data_source=OHLVCDataSourceFormat(
-                CSVSource(filepath=sample_data_path),
+                CSVSource(source=sample_data_path),
             ),
             symbols=["GE", "BA"],
             name="prices",
@@ -191,35 +191,86 @@ class TestPortfolio(unittest.TestCase):
             price=tx_price,
             order_id="testing",
         )
+        batch = self.ohlvc_dataset[self.event_manager.current_time]
+        self.assertIsInstance(batch, pd.DataFrame)
+        if isinstance(batch, pd.DataFrame):
+            prices = batch["price"]
+            if not isinstance(prices, pd.Series):
+                raise ValueError("Prices df is not a series")
+            prices = prices.filter([boeing_asset.symbol])
+            if not isinstance(prices, pd.Series):
+                raise ValueError("Prices df is not a series")
+            portfolio.update(tx=tx)
+            portfolio.current_market_prices = prices
+            self.assertEqual(portfolio.cash, capital_base - (n_shares * tx_price))
 
-        prices = self.ohlvc_dataset[self.event_manager.current_time]["price"]
-        prices = prices.filter([boeing_asset.symbol])
-        if not isinstance(prices, pd.Series):
-            raise ValueError("Prices df is not a series")
-        portfolio.update(tx=tx)
-        portfolio.current_market_prices = prices
-        self.assertEqual(portfolio.cash, capital_base - (n_shares * tx_price))
-
-        weights = portfolio.current_portfolio_weights
-        self.assertEqual(weights[boeing_asset.symbol], 1.0)
-        # portfolio value shouldn't change because market value hasn't changed yet.
-        self.assertEqual(portfolio.portfolio_value, 1000)
-        self.assertEqual(portfolio.positions_value, tx_price)
+            weights = portfolio.current_portfolio_weights
+            self.assertEqual(weights[boeing_asset.symbol], 1.0)
+            # portfolio value shouldn't change because market value hasn't changed yet.
+            self.assertEqual(portfolio.portfolio_value, 1000)
+            self.assertEqual(portfolio.positions_value, tx_price)
 
         next(self.event_manager)  # Simulate to the next market event
-        prices = self.ohlvc_dataset[self.event_manager.current_time]["price"]
-        prices = prices.filter([boeing_asset.symbol])
-        if not isinstance(prices, pd.Series):
-            raise ValueError("Prices df is not a series")
-        portfolio.current_market_prices = prices
-        self.assertEqual(weights[boeing_asset.symbol], 1.0)
-        # Now the portfolio value should change because the market value has changed.
-        self.assertAlmostEqual(portfolio.portfolio_value, 1014.88, places=2)
-        self.assertEqual(portfolio.positions_value, 305.06)
+        batch = self.ohlvc_dataset[self.event_manager.current_time]
+        self.assertIsInstance(batch, pd.DataFrame)
+        if isinstance(batch, pd.DataFrame):
+            prices = batch["price"]
+            if not isinstance(prices, pd.Series):
+                raise ValueError("Prices df is not a series")
+            prices = prices.filter([boeing_asset.symbol])
+            if not isinstance(prices, pd.Series):
+                raise ValueError("Prices df is not a series")
+            portfolio.current_market_prices = prices
+            weights = portfolio.current_portfolio_weights
+            self.assertEqual(weights[boeing_asset.symbol], 1.0)
+            # Now the portfolio value should change because the market value has changed.
+            self.assertAlmostEqual(portfolio.portfolio_value, 1014.88, places=2)
+            self.assertEqual(portfolio.positions_value, 305.06)
 
-        logger.debug(
-            "Ending test Portfolio.current_portfolio_weights with a single asset"
+            logger.debug(
+                "Ending test Portfolio.current_portfolio_weights with a single asset"
+            )
+
+    def test_portfolio_sell_positions(self) -> None:
+        """Test negative amount (selling) for portfolio.update()"""
+        logger.info("Testing selling positions with portfolio.update()")
+        portfolio = Portfolio(capital_base=1000.0)
+        # Buy 10 shares
+        portfolio.update(
+            tx=Transaction(
+                asset=Asset(
+                    sid=1, symbol="BA", asset_name="Boeing", price_multiplier=1.0
+                ),
+                amount=10,
+                dt=cast_timestamp(
+                    pd.Timestamp(
+                        "2018-12-26 09:30:00", tz=pytz.timezone("America/New_York")
+                    )
+                ),
+                price=100.0,
+                order_id="test_buy",
+            )
         )
+        self.assertEqual(portfolio.cash, 0.0)
+        self.assertEqual(len(portfolio.positions), 1)
+        # Sell 5 shares
+        portfolio.update(
+            tx=Transaction(
+                asset=Asset(
+                    sid=1, symbol="BA", asset_name="Boeing", price_multiplier=1.0
+                ),
+                amount=-5,
+                dt=cast_timestamp(
+                    pd.Timestamp(
+                        "2018-12-26 09:31:00", tz=pytz.timezone("America/New_York")
+                    )
+                ),
+                price=110.0,
+                order_id="test_sell",
+            )
+        )
+        self.assertEqual(portfolio.cash, 550.0)
+        self.assertEqual(len(portfolio.positions), 1)
 
 
 if __name__ == "__main__":

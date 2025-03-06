@@ -14,6 +14,7 @@ py_library(
         "//hypertrade/libs/simulator:assets",
         "//hypertrade/libs/simulator/event:service",
         "//hypertrade/libs/simulator/event:types",
+        "//hypertrade/libs/simulator/financials:portfolio",
         "//hypertrade/libs/tsfd/datasets:asset",
         requirement("loguru"),
         requirement("pandas"),

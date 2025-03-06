@@ -1,6 +1,8 @@
 load("@pypi//:requirements.bzl", "requirement")
 load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 
+package(default_visibility = ["//visibility:public"])
+
 py_library(
     name = "env",
     srcs = ["env.py"],
@@ -16,17 +18,28 @@ py_library(
     name = "utils",
     srcs = ["utils.py"],
     data = [],
-    deps = [],
+    deps = [
+        requirement("pytz"),
+        "//hypertrade/libs/tsfd/datasets:asset",
+        "//hypertrade/libs/tsfd/sources:csv",
+        "//hypertrade/libs/tsfd/sources/formats:ohlvc",
+        "//hypertrade/libs/tsfd/transforms:all",
+    ],
 )
 
 py_binary(
     name = "ddpg",
     srcs = ["ddpg.py"],
-    data = ["//hypertrade/ai/rl:config.yaml"],
+    data = [
+        "//hypertrade/ai/rl:config.yaml",
+        "//hypertrade/libs/simulator/data/tests:data/ohlvc/sample.csv",
+    ],
     main = "ddpg.py",
     deps = [
         ":env",
         ":utils",
+        "//hypertrade/libs/debugging:python_debugger",
+        "//hypertrade/libs/logging:py_setup",
         requirement("torchrl"),
         requirement("omegaconf"),
         requirement("hydra-core"),

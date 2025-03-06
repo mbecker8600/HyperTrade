@@ -84,11 +84,44 @@ class Portfolio:
         self.cash = capital_base
         self._current_market_prices: pd.Series = pd.Series()
 
+    def _apply_fifo_sell(self, tx: Transaction) -> None:
+        """Apply a FIFO strategy for selling."""
+        asset_positions = self.positions.xs(tx.asset.symbol, level=0, drop_level=False)
+        if asset_positions is None or asset_positions.empty:
+            # nothing to sell
+            raise ValueError(
+                f"Asset positions is None for {tx.asset.symbol}. Can't sell"
+            )
+        # sort positions by ascending dt
+        asset_positions = asset_positions.sort_index(level=1)
+        shares_to_sell = abs(tx.amount)
+
+        # trunk-ignore(pyright/reportOptionalMemberAccess)
+        for idx in asset_positions.index:
+            row_amount = self.positions.loc[idx, "amount"]
+            if row_amount <= shares_to_sell:
+                # remove entire row
+                shares_to_sell -= row_amount
+                self.positions.drop(idx, inplace=True)
+            else:
+                # partially reduce the row
+                self.positions.loc[idx, "amount"] = row_amount - shares_to_sell
+                shares_to_sell = 0
+                break
+
+    # TODO: Modify the Transaction and update method to properly handle Short positions
+    # Because the current implementation is only for Long positions
     def update(self, tx: Transaction) -> None:
-        """Update the portfolio given a processed transaction"""
-        # Set the positions dataframe (indexed by (symbol, time)) to the number of shares and cost basis (i.e. original price)
-        self.positions.loc[(tx.asset.symbol, tx.dt), :] = [tx.amount, tx.price]
-        self.cash -= tx.amount * tx.price
+        """Update the portfolio given a processed transaction."""
+        if tx.amount < 0:
+            # SELL operation using FIFO
+            self.cash -= tx.amount * tx.price
+            # TODO: Turn this into a strategy pattern
+            self._apply_fifo_sell(tx)
+        else:
+            # BUY operation
+            self.positions.loc[(tx.asset.symbol, tx.dt), :] = [tx.amount, tx.price]
+            self.cash -= tx.amount * tx.price
 
     @property
     def current_market_prices(self) -> pd.Series:
@@ -187,12 +220,18 @@ class PortfolioManager:
     def _set_portfolio_market_price(self) -> None:
         """Set the current market prices for the portfolio's positions."""
         assets = self.portfolio.positions.groupby(level=0).sum().index.to_list()
-        prices = self.dataset[self.event_manager.current_time]["price"]
-        filtered_prices = prices.filter(assets)
-        if isinstance(filtered_prices, pd.Series):
-            self.portfolio.current_market_prices = filtered_prices
+        batch = self.dataset[self.event_manager.current_time]
+        if isinstance(batch, pd.DataFrame):
+            prices = batch["price"]
+            if not isinstance(prices, pd.Series):
+                raise ValueError("Prices df is not a series")
+            filtered_prices = prices.filter(assets)
+            if isinstance(filtered_prices, pd.Series):
+                self.portfolio.current_market_prices = filtered_prices
+            else:
+                raise ValueError("Prices df is not a series")
         else:
-            raise ValueError("Prices df is not a series")
+            raise ValueError("Batch is not a DataFrame")
 
     def handle_price_change(self, event: Event[PriceChangeData]) -> None:
         """Handle price change events and invalidate the portfolio's cached properties."""

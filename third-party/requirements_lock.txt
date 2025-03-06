@@ -8,32 +8,32 @@ absl-py==2.1.0 \
     --hash=sha256:526a04eadab8b4ee719ce68f204172ead1027549089702d99b9059f129ff1308 \
     --hash=sha256:7820790efbb316739cde8b4e19357243fc3608a152024288513dd968d7d959ff
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   tensorboard
 annotated-types==0.7.0 \
     --hash=sha256:1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53 \
     --hash=sha256:aff07c09a53a08bc8cfccb9c85b05f1aa9a2a6f23728d790723543408344ce89
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pydantic
 antlr4-python3-runtime==4.9.3 \
     --hash=sha256:f224469b4168294902bb1efa80a8bf7855f24c99aef99cbefc1bcd3cce77881b
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   hydra-core
     #   omegaconf
 anyio==4.8.0 \
     --hash=sha256:1d9fe889df5212298c0c0723fa20479d1b94883a2df44bd3897aa91083316f7a \
     --hash=sha256:b5011f270ab5eb0abf13385f851315585cc37ef330dd88e27ec3d34d651fd47a
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   httpx
     #   jupyter-server
 argon2-cffi==23.1.0 \
     --hash=sha256:879c3e79a2729ce768ebb7d36d4609e3a78a4ca2ec3a9f12286ca057e3d0db08 \
     --hash=sha256:c670642b78ba29641818ab2e68bd4e6a78ba53b7eff7b4c3815ae16abf91c7ea
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-server
 argon2-cffi-bindings==21.2.0 \
     --hash=sha256:20ef543a89dee4db46a1a6e206cd015360e5a75822f76df533845c3cbaf72670 \
@@ -58,50 +58,50 @@ argon2-cffi-bindings==21.2.0 \
     --hash=sha256:f1152ac548bd5b8bcecfb0b0371f082037e47128653df2e8ba6e914d384f3c3e \
     --hash=sha256:f9f8b450ed0547e3d473fdc8612083fd08dd2120d6ac8f73828df9b7d45bb351
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   argon2-cffi
 arrow==1.3.0 \
     --hash=sha256:c728b120ebc00eb84e01882a6f5e7927a53960aa990ce7dd2b10f39005a67f80 \
     --hash=sha256:d4540617648cb5f895730f1ad8c82a65f2dad0166f57b75f3ca54759c4d67a85
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   isoduration
 asttokens==3.0.0 \
     --hash=sha256:0dcd8baa8d62b0c1d118b399b2ddba3c4aff271d0d7a9e0d4c1681c79035bbc7 \
     --hash=sha256:e3078351a059199dd5138cb1c706e6430c05eff2ff136af5eb4790f9d28932e2
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   stack-data
 async-lru==2.0.4 \
     --hash=sha256:b8a59a5df60805ff63220b2a0c5b5393da5521b113cd5465a44eb037d81a5627 \
     --hash=sha256:ff02944ce3c288c5be660c42dbcca0742b32c3b279d6dceda655190240b99224
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyterlab
 attrs==25.1.0 \
     --hash=sha256:1c97078a80c814273a76b2a298a932eb681c87415c11dee0a6921de7f1b02c3e \
     --hash=sha256:c75a69e28a550a7e93789579c22aa26b0f5b83b75dc4e08fe092980051e1090a
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jsonschema
     #   referencing
 babel==2.17.0 \
     --hash=sha256:0c54cffb19f690cdcc52a3b50bcbf71e07a808d1c80d549f2459b9d2cf0afb9d \
     --hash=sha256:4d0b53093fdfb4b21c92b5213dba5a1b23885afa8383709427046b21c366e5f2
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyterlab-server
 beautifulsoup4==4.13.3 \
     --hash=sha256:1bd32405dacc920b42b83ba01644747ed77456a65760e285fbc47633ceddaf8b \
     --hash=sha256:99045d7d3f08f91f0d656bc9b7efbae189426cd913d830294a15eefa0ea4df16
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nbconvert
 bleach[css]==6.2.0 \
     --hash=sha256:117d9c6097a7c3d22fd578fcd8d35ff1e125df6736f554da4e432fdd63f31e5e \
     --hash=sha256:123e894118b8a599fd80d3ec1a6d4cc7ce4e5882b1317a7e1ba69b56e95f991f
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nbconvert
 bottleneck==1.4.2 \
     --hash=sha256:037315c56605128a39f77d19af6a6019dc8c21a63694a4bfef3c026ed963be2e \
@@ -141,13 +141,13 @@ bottleneck==1.4.2 \
     --hash=sha256:eb0c611d15b0fd8f511d288e8964e4725b4b3b0d9d310880cf0ff6b8dd03c859 \
     --hash=sha256:fa8e8e1799dea5483ce6669462660f9d9a95649f6f98a80d315b84ec89f449f4
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   empyrical-reloaded
 certifi==2024.12.14 \
     --hash=sha256:1275f7a45be9464efc1173084eaa30f866fe2e47d389406136d332ed4967ec56 \
     --hash=sha256:b650d30f370c2b724812bee08008be0c4163b163ddaec3f2546c1caf65f191db
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   httpcore
     #   httpx
     #   requests
@@ -220,7 +220,7 @@ cffi==1.17.1 \
     --hash=sha256:f7f5baafcc48261359e14bcd6d9bff6d4b28d9103847c9e136694cb0501aef87 \
     --hash=sha256:fc48c783f9c87e60831201f2cce7f3b2e4846bf4d8728eabe54d60700b318a0b
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   argon2-cffi-bindings
 charset-normalizer==3.4.1 \
     --hash=sha256:0167ddc8ab6508fe81860a57dd472b2ef4060e8d378f0cc555707126830f2537 \
@@ -316,24 +316,24 @@ charset-normalizer==3.4.1 \
     --hash=sha256:fd4ec41f914fa74ad1b8304bbc634b3de73d2a0889bd32076342a573e0779e00 \
     --hash=sha256:ffc9202a29ab3920fa812879e95a9e78b2465fd10be7fcbd042899695d75e616
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   requests
 click==8.1.8 \
     --hash=sha256:63c132bbbed01578a06712a2d1f497bb62d9c1c0d329b7903a866228027263b2 \
     --hash=sha256:ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 cloudpickle==3.1.0 \
     --hash=sha256:81a929b6e3c7335c863c771d673d105f02efdb89dfaba0c90495d1c64796601b \
     --hash=sha256:fe11acda67f61aaaec473e3afe030feb131d78a43461b718185363384f1ba12e
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   tensordict
     #   torchrl
 comm==0.2.2 \
     --hash=sha256:3fd7a84065306e07bea1773df6eb8282de51ba82f77c72f9c85716ab11fe980e \
     --hash=sha256:e6fb86cb70ff661ee8c9c14e7d36d6de3b4066f1441be4063df9c5009f0a64d3
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipykernel
     #   ipywidgets
 contourpy==1.3.1 \
@@ -392,18 +392,18 @@ contourpy==1.3.1 \
     --hash=sha256:efa874e87e4a647fd2e4f514d5e91c7d493697127beb95e77d2f7561f6905bd9 \
     --hash=sha256:f611e628ef06670df83fce17805c344710ca5cde01edfdc72751311da8585375
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   matplotlib
 cycler==0.12.1 \
     --hash=sha256:85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30 \
     --hash=sha256:88bb128f02ba341da8ef447245a9e138fae777f6a23943da4540077d3601eb1c
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   matplotlib
 dataclasses-json==0.5.7 \
     --hash=sha256:bc285b5f892094c3a53d558858a88553dd6a61a11ab1a8128a0e554385dcc5dd \
     --hash=sha256:c2c11bc8214fbf709ffc369d11446ff6945254a7f09128154a7620613d8fda90
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 debugpy==1.8.11 \
     --hash=sha256:0e22f846f4211383e6a416d04b4c13ed174d24cc5d43f5fd52e7821d0ebc8920 \
     --hash=sha256:116bf8342062246ca749013df4f6ea106f23bc159305843491f64672a55af2e5 \
@@ -432,55 +432,55 @@ debugpy==1.8.11 \
     --hash=sha256:ce291a5aca4985d82875d6779f61375e959208cdf09fcec40001e65fb0a54768 \
     --hash=sha256:d8768edcbeb34da9e11bcb8b5c2e0958d25218df7a6e56adf415ef262cd7b6d1
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipykernel
 decorator==5.1.1 \
     --hash=sha256:637996211036b6385ef91435e4fae22989472f9d571faba8927ba8253acbc330 \
     --hash=sha256:b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipython
 defusedxml==0.7.1 \
     --hash=sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69 \
     --hash=sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nbconvert
 empyrical-reloaded==0.5.11 \
     --hash=sha256:40ece30b61bbeb03d1a20d64e803a8715da56dbec47d74dcf9df5fffb32b1b2d \
     --hash=sha256:f1ef13ad9cca6f66863e7f1436520002068b8f1737a80ced1feb5e1b59e67440
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pyfolio-reloaded
 exceptiongroup==1.2.2 \
     --hash=sha256:3111b9d131c238bec2f8f516e123e14ba243563fb135d3fe885990585aa7795b \
     --hash=sha256:47c2edf7c6738fafb49fd34290706d1a1a2f4d1c6df275526b62cbb4aa5393cc
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   anyio
     #   ipython
     #   pytest
 exchange-calendars==4.7 \
     --hash=sha256:460208317ee123f180ba50b3df2951d347bbce042546909f0fdb3d1521ad8bc4 \
     --hash=sha256:e8e202b139867ca5a5523d8ddee56cf9aa4610483214a3c79f3ea5bb5efb3276
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 executing==2.1.0 \
     --hash=sha256:8d63781349375b5ebccc3142f4b30350c0cd9c79f921cde38be2be4637e98eaf \
     --hash=sha256:8ea27ddd260da8150fa5a708269c4a10e76161e2496ec3e587da9e3c0fe4b9ab
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   stack-data
 fastjsonschema==2.21.1 \
     --hash=sha256:794d4f0a58f848961ba16af7b9c85a3e88cd360df008c59aac6fc5ae9323b5d4 \
     --hash=sha256:c9e5b7e908310918cf494a434eeb31384dd84a98b57a30bcb1f535015b554667
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nbformat
 filelock==3.16.1 \
     --hash=sha256:2082e5703d51fbf98ea75855d9d5527e33d8ff23099bec374a134febee6946b0 \
     --hash=sha256:c249fbfcd5db47e5e2d6d62198e565475ee65e4831e2561c8e313fa7eb961435
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
     #   triton
 fonttools==4.55.3 \
@@ -535,19 +535,19 @@ fonttools==4.55.3 \
     --hash=sha256:f9e736f60f4911061235603a6119e72053073a12c6d7904011df2d8fad2c0e35 \
     --hash=sha256:fb594b5a99943042c702c550d5494bdd7577f6ef19b0bc73877c948a63184a32
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   matplotlib
 fqdn==1.5.1 \
     --hash=sha256:105ed3677e767fb5ca086a0c1f4bb66ebc3c100be518f0e0d755d9eae164d89f \
     --hash=sha256:3a179af3761e4df6eb2e026ff9e1a3033d3587bf980a0b1b2e1e5d08d7358014
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jsonschema
 fsspec==2024.12.0 \
     --hash=sha256:670700c977ed2fb51e0d9f9253177ed20cbde4a3e5c0283cc5385b5870c8533f \
     --hash=sha256:b520aed47ad9804237ff878b504267a3b0b441e97508bd6d2d8774e3db85cee2
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 grpcio==1.70.0 \
     --hash=sha256:0495c86a55a04a874c7627fd33e5beaee771917d92c0e6d9d797628ac40e7655 \
@@ -606,35 +606,35 @@ grpcio==1.70.0 \
     --hash=sha256:fe9dbd916df3b60e865258a8c72ac98f3ac9e2a9542dcb72b7a34d236242a5ce \
     --hash=sha256:ff4a8112a79464919bb21c18e956c54add43ec9a4850e3949da54f61c241a4a6
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   tensorboard
 h11==0.14.0 \
     --hash=sha256:8f19fbbe99e72420ff35c00b27a34cb9937e902a8b810e2c88300c6f0a3b699d \
     --hash=sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   httpcore
 httpcore==1.0.7 \
     --hash=sha256:8551cb62a169ec7162ac7be8d4817d561f60e08eaa485234898414bb5a8a0b4c \
     --hash=sha256:a3fff8f43dc260d5bd363d9f9cf1830fa3a458b332856f34282de498ed420edd
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   httpx
 httpx==0.28.1 \
     --hash=sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc \
     --hash=sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyterlab
 hydra-core==1.3.2 \
     --hash=sha256:8a878ed67216997c3e9d88a8e72e7b4767e81af37afb4ea3334b269a4390a824 \
     --hash=sha256:fa0238a9e31df3373b35b0bfb672c34cc92718d21f81311d8996a16de1141d8b
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 idna==3.10 \
     --hash=sha256:12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9 \
     --hash=sha256:946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   anyio
     #   httpx
     #   jsonschema
@@ -643,19 +643,19 @@ inflection==0.5.1 \
     --hash=sha256:1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417 \
     --hash=sha256:f38b2b640938a4f35ade69ac3d053042959b62a0f1076a5bbaa1b9526605a8a2
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nasdaq-data-link
 iniconfig==2.0.0 \
     --hash=sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3 \
     --hash=sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pytest
 ipykernel==6.29.5 \
     --hash=sha256:afdb66ba5aa354b09b91379bac28ae4afebbb30e8b39510c9690afb7a10421b5 \
     --hash=sha256:f093a22c4a40f8828f8e330a9c297cb93dcab13bd9678ded6de8e5cf81c56215
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter
     #   jupyter-console
     #   jupyterlab
@@ -664,7 +664,7 @@ ipython==8.31.0 \
     --hash=sha256:46ec58f8d3d076a61d128fe517a51eb730e3aaf0c184ea8c17d16e366660c6a6 \
     --hash=sha256:b6a2274606bec6166405ff05e54932ed6e5cfecaca1fc05f2cacde7bb074d70b
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipykernel
     #   ipywidgets
     #   jupyter-console
@@ -673,31 +673,31 @@ ipython-genutils==0.2.0 \
     --hash=sha256:72dd37233799e619666c9f639a9da83c34013a73e8bbc79a7a6348d93c61fab8 \
     --hash=sha256:eb2e116e75ecef9d4d228fdc66af54269afa26ab4463042e33785b887c628ba8
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nbclassic
 ipywidgets==8.1.5 \
     --hash=sha256:3290f526f87ae6e77655555baba4f36681c555b8bdbbff430b70e52c34c86245 \
     --hash=sha256:870e43b1a35656a80c18c9503bbf2d16802db1cb487eec6fab27d683381dde17
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter
 isoduration==20.11.0 \
     --hash=sha256:ac2f9015137935279eac671f94f89eb00584f940f5dc49462a0c4ee692ba1bd9 \
     --hash=sha256:b2904c2a4228c3d44f409c8ae8e2370eb21a26f7ac2ec5446df141dde3452042
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jsonschema
 jedi==0.19.2 \
     --hash=sha256:4770dc3de41bde3966b02eb84fbcf557fb33cce26ad23da12c742fb50ecb11f0 \
     --hash=sha256:a8ef22bde8490f57fe5c7681a3c83cb58874daf72b4784de3cce5b6ef6edb5b9
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipython
 jinja2==3.1.5 \
     --hash=sha256:8fefff8dc3034e27bb80d67c671eb8a9bc424c0ef4c0826edbff304cceff43bb \
     --hash=sha256:aba0f4dc9ed8013c424088f68a5c226f7d6097ed89b246d7749c2ec4175c6adb
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-server
     #   jupyterlab
     #   jupyterlab-server
@@ -707,25 +707,25 @@ joblib==1.4.2 \
     --hash=sha256:06d478d5674cbc267e7496a410ee875abd68e4340feff4490bcb7afb88060ae6 \
     --hash=sha256:2382c5816b2636fbd20a09e0f4e9dad4736765fdfb7dca582943b9c1366b3f0e
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   scikit-learn
 json5==0.10.0 \
     --hash=sha256:19b23410220a7271e8377f81ba8aacba2fdd56947fbb137ee5977cbe1f5e8dfa \
     --hash=sha256:e66941c8f0a02026943c52c2eb34ebeb2a6f819a0be05920a6f5243cd30fd559
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyterlab-server
 jsonpointer==3.0.0 \
     --hash=sha256:13e088adc14fca8b6aa8177c044e12701e6ad4b28ff10e65f2267a90109c9942 \
     --hash=sha256:2b2d729f2091522d61c3b31f82e11870f60b68f43fbc705cb76bf4b832af59ef
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jsonschema
 jsonschema[format-nongpl]==4.23.0 \
     --hash=sha256:d71497fef26351a33265337fa77ffeb82423f3ea21283cd9467bb03999266bc4 \
     --hash=sha256:fbadb6f8b144a8f8cf9f0b89ba94501d143e50411a1278633f56a7acf7fd5566
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-events
     #   jupyterlab-server
     #   nbformat
@@ -733,17 +733,17 @@ jsonschema-specifications==2024.10.1 \
     --hash=sha256:0f38b83639958ce1152d02a7f062902c41c8fd20d558b0c34344292d417ae272 \
     --hash=sha256:a09a0680616357d9a0ecf05c12ad234479f549239d0f5b55f3deea67475da9bf
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jsonschema
 jupyter==1.1.1 \
     --hash=sha256:7a59533c22af65439b24bbe60373a4e95af8f16ac65a6c00820ad378e3f7cc83 \
     --hash=sha256:d55467bceabdea49d7e3624af7e33d59c37fff53ed3a350e1ac957bed731de7a
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 jupyter-client==8.6.3 \
     --hash=sha256:35b3a0947c4a6e9d589eb97d7d4cd5e90f910ee73101611f01283732bd6d9419 \
     --hash=sha256:e8a19cc986cc45905ac3362915f410f3af85424b4c0905e94fa5f2cb08e8f23f
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipykernel
     #   jupyter-console
     #   jupyter-server
@@ -752,13 +752,13 @@ jupyter-console==6.6.3 \
     --hash=sha256:309d33409fcc92ffdad25f0bcdf9a4a9daa61b6f341177570fdac03de5352485 \
     --hash=sha256:566a4bf31c87adbfadf22cdf846e3069b59a71ed5da71d6ba4d8aaad14a53539
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter
 jupyter-core==5.7.2 \
     --hash=sha256:4f7315d2f6b4bcf2e3e7cb6e46772eba760ae459cd1f59d29eb57b0a01bd7409 \
     --hash=sha256:aa5f8d32bbf6b431ac830496da7392035d6f61b4f54872f15c4bd2a9c3f536d9
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipykernel
     #   jupyter-client
     #   jupyter-console
@@ -771,19 +771,19 @@ jupyter-events==0.12.0 \
     --hash=sha256:6464b2fa5ad10451c3d35fabc75eab39556ae1e2853ad0c0cc31b656731a97fb \
     --hash=sha256:fc3fce98865f6784c9cd0a56a20644fc6098f21c8c33834a8d9fe383c17e554b
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-server
 jupyter-lsp==2.2.5 \
     --hash=sha256:45fbddbd505f3fbfb0b6cb2f1bc5e15e83ab7c79cd6e89416b248cb3c00c11da \
     --hash=sha256:793147a05ad446f809fd53ef1cd19a9f5256fd0a2d6b7ce943a982cb4f545001
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyterlab
 jupyter-server==2.15.0 \
     --hash=sha256:872d989becf83517012ee669f09604aa4a28097c0bd90b2f424310156c2cdae3 \
     --hash=sha256:9d446b8697b4f7337a1b7cdcac40778babdd93ba614b6d68ab1c0c918f1c4084
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-lsp
     #   jupyterlab
     #   jupyterlab-server
@@ -793,33 +793,33 @@ jupyter-server-terminals==0.5.3 \
     --hash=sha256:41ee0d7dc0ebf2809c668e0fc726dfaf258fcd3e769568996ca731b6194ae9aa \
     --hash=sha256:5ae0295167220e9ace0edcfdb212afd2b01ee8d179fe6f23c899590e9b8a5269
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-server
 jupyterlab==4.3.5 \
     --hash=sha256:571bbdee20e4c5321ab5195bc41cf92a75a5cff886be5e57ce78dfa37a5e9fdb \
     --hash=sha256:c779bf72ced007d7d29d5bcef128e7fdda96ea69299e19b04a43635a7d641f9d
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter
     #   notebook
 jupyterlab-pygments==0.3.0 \
     --hash=sha256:721aca4d9029252b11cfa9d185e5b5af4d54772bb8072f9b7036f4170054d35d \
     --hash=sha256:841a89020971da1d8693f1a99997aefc5dc424bb1b251fd6322462a1b8842780
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nbconvert
 jupyterlab-server==2.27.3 \
     --hash=sha256:e697488f66c3db49df675158a77b3b017520d772c6e1548c7d9bcc5df7944ee4 \
     --hash=sha256:eb36caca59e74471988f0ae25c77945610b887f777255aa21f8065def9e51ed4
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyterlab
     #   notebook
 jupyterlab-widgets==3.0.13 \
     --hash=sha256:a2966d385328c1942b683a8cd96b89b8dd82c8b8f81dda902bb2bc06d46f5bed \
     --hash=sha256:e3cda2c233ce144192f1e29914ad522b2f4c40e77214b0cc97377ca3d323db54
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipywidgets
 kiwisolver==1.4.8 \
     --hash=sha256:01c3d31902c7db5fb6182832713d3b4122ad9317c2c5877d0539227d96bb2e50 \
@@ -903,13 +903,13 @@ kiwisolver==1.4.8 \
     --hash=sha256:ed33ca2002a779a2e20eeb06aea7721b6e47f2d4b8a8ece979d8ba9e2a167e34 \
     --hash=sha256:fc2ace710ba7c1dfd1a3b42530b62b9ceed115f19a1656adefce7b1782a37794
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   matplotlib
 korean-lunar-calendar==0.3.1 \
     --hash=sha256:392757135c492c4f42a604e6038042953c35c6f449dda5f27e3f86a7f9c943e5 \
     --hash=sha256:eb2c485124a061016926bdea6d89efdf9b9fdbf16db55895b6cf1e5bec17b857
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   exchange-calendars
 libcst==1.5.1 \
     --hash=sha256:00f3d2f32ee081bad3394546b0b9ac5e31686d3b5cfe4892d716d2ba65f9ec08 \
@@ -953,11 +953,11 @@ libcst==1.5.1 \
     --hash=sha256:f053a5deb6a214972dbe9fa26ecd8255edb903de084a3d7715bf9e9da8821c50 \
     --hash=sha256:f3ffb8135c09e41e8cf710b152c33e9b7f1d0d0b9f242bae0c502eb082fdb1fb \
     --hash=sha256:fbccb016b1ac6d892344300dcccc8a16887b71bb7f875ba56c0ed6c1a7ade8be
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 loguru==0.7.3 \
     --hash=sha256:19480589e77d47b8d85b2c827ad95d49bf31b0dcde16593892eb51dd18706eb6 \
     --hash=sha256:31a33c10c8e1e10422bfd431aeb5d351c7cf7fa671e3c4df004162264b28220c
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 lxml==5.3.0 \
     --hash=sha256:01220dca0d066d1349bd6a1726856a78f7929f3878f7e2ee83c296c69495309e \
     --hash=sha256:02ced472497b8362c8e902ade23e3300479f4f43e45f4105c85ef43b8db85229 \
@@ -1098,13 +1098,13 @@ lxml==5.3.0 \
     --hash=sha256:f914c03e6a31deb632e2daa881fe198461f4d06e57ac3d0e05bbcab8eae01945 \
     --hash=sha256:fb66442c2546446944437df74379e9cf9e9db353e61301d1a0e26482f43f0dd8
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pandas-datareader
 markdown==3.7 \
     --hash=sha256:2ae2471477cfd02dbbf038d5d9bc226d40def84b4fe2986e49b59b6b472bbed2 \
     --hash=sha256:7eb6df5690b81a1d7942992c97fad2938e956e79df20cbc6186e9c3a77b1c803
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   tensorboard
 markupsafe==3.0.2 \
     --hash=sha256:0bff5e0ae4ef2e1ae4fdf2dfd5b76c75e5c2fa4132d05fc1b0dabcd20c7e28c4 \
@@ -1169,7 +1169,7 @@ markupsafe==3.0.2 \
     --hash=sha256:f8b3d067f2e40fe93e1ccdd6b2e1d16c43140e76f02fb1319a05cf2b79d99430 \
     --hash=sha256:fcabf5ff6eea076f859677f5f0b6b5c1a51e70a376b0579e0eadef8db48c6b50
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jinja2
     #   nbconvert
     #   werkzeug
@@ -1177,14 +1177,14 @@ marshmallow==3.23.2 \
     --hash=sha256:bcaf2d6fd74fb1459f8450e85d994997ad3e70036452cbfa4ab685acb19479b3 \
     --hash=sha256:c448ac6455ca4d794773f00bae22c2f351d62d739929f761dce5eacb5c468d7f
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   dataclasses-json
     #   marshmallow-enum
 marshmallow-enum==1.5.1 \
     --hash=sha256:38e697e11f45a8e64b4a1e664000897c659b60aa57bfa18d44e226a9920b6e58 \
     --hash=sha256:57161ab3dbfde4f57adeb12090f39592e992b9c86d206d02f6bd03ebec60f072
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   dataclasses-json
 matplotlib==3.10.0 \
     --hash=sha256:01d2b19f13aeec2e759414d3bfe19ddfb16b13a1250add08d46d5ff6f9be83c6 \
@@ -1222,33 +1222,33 @@ matplotlib==3.10.0 \
     --hash=sha256:d907fddb39f923d011875452ff1eca29a9e7f21722b873e90db32e5d8ddff12e \
     --hash=sha256:fd44fc75522f58612ec4a33958a7e5552562b7705b42ef1b4f8c0818e304a363
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pyfolio-reloaded
     #   seaborn
 matplotlib-inline==0.1.7 \
     --hash=sha256:8423b23ec666be3d16e16b60bdd8ac4e86e840ebd1dd11a30b9f117f2fa0ab90 \
     --hash=sha256:df192d39a4ff8f21b1895d72e6a13f5fcc5099f00fa84384e0ea28c2cc0653ca
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipykernel
     #   ipython
 mistune==3.1.1 \
     --hash=sha256:02106ac2aa4f66e769debbfa028509a275069dcffce0dfa578edd7b991ee700a \
     --hash=sha256:e0740d635f515119f7d1feb6f9b192ee60f0cc649f80a8f944f905706a21654c
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nbconvert
 more-itertools==10.6.0 \
     --hash=sha256:2cd7fad1009c31cc9fb6a035108509e6547547a7a738374f10bd49a09eb3ee3b \
     --hash=sha256:6eb054cb4b6db1473f6e15fcc676a08e4732548acd47c708f0e179c2c7c01e89
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nasdaq-data-link
 mpmath==1.3.0 \
     --hash=sha256:7a28eb2a9774d00c7bc92411c19a89209d5da7c4c9a9e227be8330a23a25b91f \
     --hash=sha256:a0b2b9fe80bbcd81a6647ff13108738cfb482d481d826cc0e02f5b35e5c88d2c
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   sympy
 mypy==1.14.1 \
     --hash=sha256:07ba89fdcc9451f2ebb02853deb6aaaa3d2239a236669a63ab3801bbf923ef5c \
@@ -1289,39 +1289,39 @@ mypy==1.14.1 \
     --hash=sha256:f2a0ecc86378f45347f586e4163d1769dd81c5a223d577fe351f26b179e148b1 \
     --hash=sha256:f995e511de847791c3b11ed90084a7a0aafdc074ab88c5a9711622fe4751138c \
     --hash=sha256:fad79bfe3b65fe6a1efaed97b445c3d37f7be9fdc348bdb2d7cac75579607c89
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 mypy-extensions==1.0.0 \
     --hash=sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d \
     --hash=sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   mypy
     #   typing-inspect
 nasdaq-data-link==1.0.4 \
     --hash=sha256:214a620551da1c7521476839fb96f932234d4d78e7ba44310722709ca37b0691
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 nbclassic==1.2.0 \
     --hash=sha256:61cc3612dae9d418d6c3577f7c6d8dad1d6a81b68e7a12585483283d5c92ec37 \
     --hash=sha256:736ec50483a54485971db213be9207e34e51fc144c78343625b69917423644ba
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 nbclient==0.10.2 \
     --hash=sha256:4ffee11e788b4a27fabeb7955547e4318a5298f34342a4bfd01f2e1faaeadc3d \
     --hash=sha256:90b7fc6b810630db87a6d0c2250b1f0ab4cf4d3c27a299b0cde78a4ed3fd9193
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nbconvert
 nbconvert==7.16.6 \
     --hash=sha256:1375a7b67e0c2883678c48e506dc320febb57685e5ee67faa51b18a90f3a712b \
     --hash=sha256:576a7e37c6480da7b8465eefa66c17844243816ce1ccc372633c6b71c3c0f582
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter
     #   jupyter-server
 nbformat==5.10.4 \
     --hash=sha256:322168b14f937a5d11362988ecac2a4952d3d8e3a2cbeb2319584631226d5b3a \
     --hash=sha256:3b48d6c8fbca4b299bf3982ea7db1af21580e4fec269ad087b9e81588891200b
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-server
     #   nbclient
     #   nbconvert
@@ -1329,26 +1329,26 @@ nest-asyncio==1.6.0 \
     --hash=sha256:6f172d5449aca15afd6c646851f4e31e02c598d553a667e38cafa997cfec55fe \
     --hash=sha256:87af6efd6b5e897c81050477ef65c62e2b2f35d51703cae01aff2905b1852e1c
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipykernel
     #   nbclassic
 networkx==3.4.2 \
     --hash=sha256:307c3669428c5362aab27c8a1260aa8f47c4e91d3891f48be0141738d8d053e1 \
     --hash=sha256:df5d4365b724cf81b8c6a7312509d0c22386097011ad1abe274afd5e9d3bbc5f
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 notebook==7.3.2 \
     --hash=sha256:705e83a1785f45b383bf3ee13cb76680b92d24f56fb0c7d2136fe1d850cd3ca8 \
     --hash=sha256:e5f85fc59b69d3618d73cf27544418193ff8e8058d5bf61d315ce4f473556288
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter
 notebook-shim==0.2.4 \
     --hash=sha256:411a5be4e9dc882a074ccbcae671eda64cceb068767e9a3419096986560e1cef \
     --hash=sha256:b4b2cfa1b65d98307ca24361f5b30fe785b53c3fd07b7a47e89acb5e6ac638cb
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyterlab
     #   nbclassic
     #   notebook
@@ -1409,7 +1409,7 @@ numpy==2.2.1 \
     --hash=sha256:f9b57eaa3b0cd8db52049ed0330747b0364e899e8a606a624813452b8203d5f7 \
     --hash=sha256:fce4f615f8ca31b2e61aa0eb5865a21e14f5629515c9151850aa936c02a1ee51
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   bottleneck
     #   contourpy
     #   empyrical-reloaded
@@ -1430,7 +1430,7 @@ nvidia-cublas-cu12==12.4.5.8 \
     --hash=sha256:2fc8da60df463fdefa81e323eef2e36489e1c94335b5358bcb38360adf75ac9b \
     --hash=sha256:5a796786da89203a0657eda402bcdcec6180254a8ac22d72213abc42069522dc
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nvidia-cudnn-cu12
     #   nvidia-cusolver-cu12
     #   torch
@@ -1439,68 +1439,68 @@ nvidia-cuda-cupti-cu12==12.4.127 \
     --hash=sha256:79279b35cf6f91da114182a5ce1864997fd52294a87a16179ce275773799458a \
     --hash=sha256:9dec60f5ac126f7bb551c055072b69d85392b13311fcc1bcda2202d172df30fb
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 nvidia-cuda-nvrtc-cu12==12.4.127 \
     --hash=sha256:0eedf14185e04b76aa05b1fea04133e59f465b6f960c0cbf4e37c3cb6b0ea198 \
     --hash=sha256:a178759ebb095827bd30ef56598ec182b85547f1508941a3d560eb7ea1fbf338 \
     --hash=sha256:a961b2f1d5f17b14867c619ceb99ef6fcec12e46612711bcec78eb05068a60ec
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 nvidia-cuda-runtime-cu12==12.4.127 \
     --hash=sha256:09c2e35f48359752dfa822c09918211844a3d93c100a715d79b59591130c5e1e \
     --hash=sha256:64403288fa2136ee8e467cdc9c9427e0434110899d07c779f25b5c068934faa5 \
     --hash=sha256:961fe0e2e716a2a1d967aab7caee97512f71767f852f67432d572e36cb3a11f3
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 nvidia-cudnn-cu12==9.1.0.70 \
     --hash=sha256:165764f44ef8c61fcdfdfdbe769d687e06374059fbb388b6c89ecb0e28793a6f \
     --hash=sha256:6278562929433d68365a07a4a1546c237ba2849852c0d4b2262a486e805b977a
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 nvidia-cufft-cu12==11.2.1.3 \
     --hash=sha256:5dad8008fc7f92f5ddfa2101430917ce2ffacd86824914c82e28990ad7f00399 \
     --hash=sha256:d802f4954291101186078ccbe22fc285a902136f974d369540fd4a5333d1440b \
     --hash=sha256:f083fc24912aa410be21fa16d157fed2055dab1cc4b6934a0e03cba69eb242b9
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 nvidia-curand-cu12==10.3.5.147 \
     --hash=sha256:1f173f09e3e3c76ab084aba0de819c49e56614feae5c12f69883f4ae9bb5fad9 \
     --hash=sha256:a88f583d4e0bb643c49743469964103aa59f7f708d862c3ddb0fc07f851e3b8b \
     --hash=sha256:f307cc191f96efe9e8f05a87096abc20d08845a841889ef78cb06924437f6771
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 nvidia-cusolver-cu12==11.6.1.9 \
     --hash=sha256:19e33fa442bcfd085b3086c4ebf7e8debc07cfe01e11513cc6d332fd918ac260 \
     --hash=sha256:d338f155f174f90724bbde3758b7ac375a70ce8e706d70b018dd3375545fc84e \
     --hash=sha256:e77314c9d7b694fcebc84f58989f3aa4fb4cb442f12ca1a9bde50f5e8f6d1b9c
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 nvidia-cusparse-cu12==12.3.1.170 \
     --hash=sha256:9bc90fb087bc7b4c15641521f31c0371e9a612fc2ba12c338d3ae032e6b6797f \
     --hash=sha256:9d32f62896231ebe0480efd8a7f702e143c98cfaa0e8a76df3386c1ba2b54df3 \
     --hash=sha256:ea4f11a2904e2a8dc4b1833cc1b5181cde564edd0d5cd33e3c168eff2d1863f1
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nvidia-cusolver-cu12
     #   torch
 nvidia-nccl-cu12==2.21.5 \
     --hash=sha256:8579076d30a8c24988834445f8d633c697d42397e92ffc3f63fa26766d25e0a0
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 nvidia-nvjitlink-cu12==12.4.127 \
     --hash=sha256:06b3b9b25bf3f8af351d664978ca26a16d2c5127dbd53c0497e28d1fb9611d57 \
     --hash=sha256:4abe7fef64914ccfa909bc2ba39739670ecc9e820c83ccc7a6ed414122599b83 \
     --hash=sha256:fd9020c501d27d135f983c6d3e244b197a7ccad769e34df53a42e276b0e25fa1
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nvidia-cusolver-cu12
     #   nvidia-cusparse-cu12
     #   torch
@@ -1509,13 +1509,19 @@ nvidia-nvtx-cu12==12.4.127 \
     --hash=sha256:781e950d9b9f60d8241ccea575b32f5105a5baf4c2351cab5256a24869f12a1a \
     --hash=sha256:7959ad635db13edf4fc65c06a6e9f9e55fc2f92596db928d169c0bb031e88ef3
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
+objprint==0.3.0 \
+    --hash=sha256:489083bfc8baf0526f8fd6af74673799511532636f0ce4141133255ded773405 \
+    --hash=sha256:b5d83f9d62db5b95353bb42959106e1cd43010dcaa3eed1ad8d7d0b2df9b2d5a
+    # via
+    #   -r third-party/requirements.txt
+    #   viztracer
 omegaconf==2.3.0 \
     --hash=sha256:7b4df175cdb08ba400f45cae3bdcae7ba8365db4d165fc65fd04b050ab63b46b \
     --hash=sha256:d5d4b6d29955cc50ad50c46dc269bcd92c6e00f5f90d23ab5fee7bfca4ba4cc7
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   hydra-core
 orjson==3.10.13 \
     --hash=sha256:003721c72930dbb973f25c5d8e68d0f023d6ed138b14830cc94e57c6805a2eab \
@@ -1594,19 +1600,19 @@ orjson==3.10.13 \
     --hash=sha256:f47c9e7d224b86ffb086059cdcf634f4b3f32480f9838864aa09022fe2617ce2 \
     --hash=sha256:f81b26c03f5fb5f0d0ee48d83cea4d7bc5e67e420d209cc1a990f5d1c62f9be0
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   tensordict
 overrides==7.7.0 \
     --hash=sha256:55158fa3d93b98cc75299b1e67078ad9003ca27945c76162c1c0766d6f91820a \
     --hash=sha256:c7ed9d062f78b8e4c1a7b70bd8796b35ead4d9f510227ef9c5dc7626c60d7e49
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-server
 packaging==24.2 \
     --hash=sha256:09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759 \
     --hash=sha256:c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   hydra-core
     #   ipykernel
     #   jupyter-events
@@ -1664,7 +1670,7 @@ pandas==2.2.3 \
     --hash=sha256:f3a255b2c19987fbbe62a9dfd6cff7ff2aa9ccab3fc75218fd4b7530f01efa24 \
     --hash=sha256:fffb8ae78d8af97f849404f21411c95062db1496aeb3e56f146f0355c9989319
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   empyrical-reloaded
     #   exchange-calendars
     #   nasdaq-data-link
@@ -1675,33 +1681,33 @@ pandas==2.2.3 \
 pandas-datareader==0.10.0 \
     --hash=sha256:0b95ff3635bc3ee1a6073521b557ab0e3c39d219f4a3b720b6b0bc6e8cdb4bb7 \
     --hash=sha256:9fc3c63d39bc0c10c2683f1c6d503ff625020383e38f6cbe14134826b454d5a6
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 pandera==0.22.1 \
     --hash=sha256:091ebc353383ba642e5a20ee0df763ed2059ab99cb4b2ac3e83f482de8493645 \
     --hash=sha256:2a35531b4b533ac83e606a6dcc3cd41561774ff3d872117228e931f22e72f330
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 pandocfilters==1.5.1 \
     --hash=sha256:002b4a555ee4ebc03f8b66307e287fa492e4a77b4ea14d3f934328297bb4939e \
     --hash=sha256:93be382804a9cdb0a7267585f157e5d1731bbe5545a85b268d6f5fe6232de2bc
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nbconvert
 parso==0.8.4 \
     --hash=sha256:a418670a20291dacd2dddc80c377c5c3791378ee1e8d12bffc35420643d43f18 \
     --hash=sha256:eb3a7b58240fb99099a345571deecc0f9540ea5f4dd2fe14c2a99d6b281ab92d
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jedi
 peewee==3.17.3 \
     --hash=sha256:ef15f90b628e41a584be8306cdc3243c51f73ce88b06154d9572f6d0284a0169
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   empyrical-reloaded
 pexpect==4.9.0 \
     --hash=sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523 \
     --hash=sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipython
 pillow==11.1.0 \
     --hash=sha256:015c6e863faa4779251436db398ae75051469f7c903b043a48f078e437656f83 \
@@ -1776,31 +1782,31 @@ pillow==11.1.0 \
     --hash=sha256:f86d3a7a9af5d826744fabf4afd15b9dfef44fe69a98541f666f66fbb8d3fef9 \
     --hash=sha256:fbd43429d0d7ed6533b25fc993861b8fd512c42d04514a0dd6337fb3ccf22761
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   matplotlib
 platformdirs==4.3.6 \
     --hash=sha256:357fb2acbc885b0419afd3ce3ed34564c13c9b95c89360cd9563f73aa5e2b907 \
     --hash=sha256:73e575e1408ab8103900836b97580d5307456908a03e92031bab39e4554cc3fb
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-core
 pluggy==1.5.0 \
     --hash=sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1 \
     --hash=sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pytest
 prometheus-client==0.21.1 \
     --hash=sha256:252505a722ac04b0456be05c05f75f45d760c2911ffc45f2a06bcaed9f3ae3fb \
     --hash=sha256:594b45c410d6f4f8888940fe80b5cc2521b305a1fafe1c58609ef715a001f301
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-server
 prompt-toolkit==3.0.50 \
     --hash=sha256:544748f3860a2623ca5cd6d2795e7a14f3d0e1c3c9728359013f79877fc89bab \
     --hash=sha256:9b6427eb19e479d98acff65196a307c555eb567989e6d88ebbb1b509d9779198
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipython
     #   jupyter-console
 protobuf==5.29.3 \
@@ -1816,7 +1822,7 @@ protobuf==5.29.3 \
     --hash=sha256:c027e08a08be10b67c06bf2370b99c811c466398c357e615ca88c91c07f0910f \
     --hash=sha256:daaf63f70f25e8689c072cfad4334ca0ac1d1e05a92fc15c54eb9cf23c3efd84
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   tensorboard
 psutil==6.1.1 \
     --hash=sha256:018aeae2af92d943fdf1da6b58665124897cfc94faa2ca92098838f83e1b1bca \
@@ -1837,39 +1843,39 @@ psutil==6.1.1 \
     --hash=sha256:f35cfccb065fff93529d2afb4a2e89e363fe63ca1e4a5da22b603a85833c2649 \
     --hash=sha256:fc0ed7fe2231a444fc219b9c42d0376e0a9a1a72f16c5cfa0f68d19f1a0663e8
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipykernel
     #   testslide
 ptyprocess==0.7.0 \
     --hash=sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35 \
     --hash=sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pexpect
     #   terminado
 pure-eval==0.2.3 \
     --hash=sha256:1db8e35b67b3d218d818ae653e27f06c3aa420901fa7b081ca98cbedc874e0d0 \
     --hash=sha256:5f4e983f40564c576c7c8635ae88db5956bb2229d7e9237d03b3c0b0190eaf42
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   stack-data
 py-cpuinfo==9.0.0 \
     --hash=sha256:3cdbbf3fac90dc6f118bfd64384f309edeadd902d7c8fb17f02ffa1fc3f49690 \
     --hash=sha256:859625bc251f64e21f077d099d4162689c762b5d6a4c3c97553d56241c9674d5
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pytest-benchmark
 pycparser==2.22 \
     --hash=sha256:491c8be9c040f5390f5bf44a5b07752bd07f56edf992381b05c701439eec10f6 \
     --hash=sha256:c3702b6d3dd8c7abc1afa565d7e63d53a1d0bd86cdc24edd75470f4de499cfcc
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   cffi
 pydantic==2.10.5 \
     --hash=sha256:278b38dbbaec562011d659ee05f63346951b3a248a6f3642e1bc68894ea2b4ff \
     --hash=sha256:4dd4e322dbe55472cb7ca7e73f4b63574eecccf2835ffa2af9021ce113c83c53
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pandera
 pydantic-core==2.27.2 \
     --hash=sha256:00bad2484fa6bda1e216e7345a798bd37c68fb2d97558edd584942aa41b7d278 \
@@ -1973,17 +1979,17 @@ pydantic-core==2.27.2 \
     --hash=sha256:fa8e459d4954f608fa26116118bb67f56b93b209c39b008277ace29937453dc9 \
     --hash=sha256:fd1aea04935a508f62e0d0ef1f5ae968774a32afc306fb8545e06f5ff5cdf3ad
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pydantic
 pyfolio-reloaded==0.9.8 \
     --hash=sha256:1722ecead01d29867b7765353400d65759204a56a0e732a66880bd9f3e9090b5 \
     --hash=sha256:771ed93ec9e2ead408c421ce0a196acbd1288d1f286634689957334ec13105e9
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 pygments==2.18.0 \
     --hash=sha256:786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199 \
     --hash=sha256:b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipython
     #   jupyter-console
     #   nbconvert
@@ -1992,29 +1998,29 @@ pyluach==2.2.0 \
     --hash=sha256:9063a25387cd7624276fd0656508bada08aa8a6f22e8db352844cd858e69012b \
     --hash=sha256:d1eb49d6292087e9290f4661ae01b60c8c933704ec8c9cef82673b349ff96adf
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   exchange-calendars
 pyparsing==3.2.1 \
     --hash=sha256:506ff4f4386c4cec0590ec19e6302d3aedb992fdc02c761e90416f158dacf8e1 \
     --hash=sha256:61980854fd66de3a90028d679a954d5f2623e83144b5afe5ee86f43d762e5f0a
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   matplotlib
 pytest==8.3.4 \
     --hash=sha256:50e16d954148559c9a74109af1eaf0c945ba2d8f30f0a3d3335edde19788b6f6 \
     --hash=sha256:965370d062bce11e73868e0335abac31b4d3de0e82f4007408d242b4f8610761
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pytest-benchmark
 pytest-benchmark==5.1.0 \
     --hash=sha256:922de2dfa3033c227c96da942d1878191afa135a29485fb942e85dff1c592c89 \
     --hash=sha256:9ea661cdc292e8231f7cd4c10b0319e56a2118e2c09d9f50e1b3d150d2aca105
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 python-dateutil==2.9.0.post0 \
     --hash=sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3 \
     --hash=sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   arrow
     #   jupyter-client
     #   matplotlib
@@ -2024,13 +2030,13 @@ python-json-logger==3.2.1 \
     --hash=sha256:8eb0554ea17cb75b05d2848bc14fb02fbdbd9d6972120781b974380bfa162008 \
     --hash=sha256:cdc17047eb5374bd311e748b42f99d71223f3b0e186f4206cc5d52aefe85b090
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-events
 pytz==2024.2 \
     --hash=sha256:2aa355083c50a0f93fa581709deac0c9ad65cca8a9e9beac660adcbd493c798a \
     --hash=sha256:31c7c1817eb7fae7ca4b8c7ee50c72f93aa2dd863de768e1ef4245d426aa0725
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pandas
     #   pyfolio-reloaded
 pyyaml==6.0.2 \
@@ -2088,7 +2094,7 @@ pyyaml==6.0.2 \
     --hash=sha256:f753120cb8181e736c57ef7636e83f31b9c0d1722c516f7e86cf15b7aa57ff12 \
     --hash=sha256:ff3824dc5261f50c9b0dfb3be22b4567a6f938ccce4587b38952d85fd9e9afe4
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-events
     #   libcst
     #   omegaconf
@@ -2203,7 +2209,7 @@ pyzmq==26.2.0 \
     --hash=sha256:fc4f7a173a5609631bb0c42c23d12c49df3966f89f496a51d3eb0ec81f4519d6 \
     --hash=sha256:fdb5b3e311d4d4b0eb8b3e8b4d1b0a512713ad7e6a68791d0923d1aec433d919
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipykernel
     #   jupyter-client
     #   jupyter-console
@@ -2212,7 +2218,7 @@ referencing==0.36.2 \
     --hash=sha256:df2e89862cd09deabbdba16944cc3f10feb6b3e6f18e902f7cc25609a34775aa \
     --hash=sha256:e8699adbbf8b5c7de96d8ffa0eb5c158b3beafce084968e2ea8bb08c6794dcd0
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jsonschema
     #   jsonschema-specifications
     #   jupyter-events
@@ -2220,7 +2226,7 @@ requests==2.32.3 \
     --hash=sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760 \
     --hash=sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyterlab-server
     #   nasdaq-data-link
     #   pandas-datareader
@@ -2228,14 +2234,14 @@ rfc3339-validator==0.1.4 \
     --hash=sha256:138a2abdf93304ad60530167e51d2dfb9549521a836871b88d7f4695d0022f6b \
     --hash=sha256:24f6ec1eda14ef823da9e36ec7113124b39c04d50a4d3d3a3c2859577e7791fa
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jsonschema
     #   jupyter-events
 rfc3986-validator==0.1.1 \
     --hash=sha256:2f235c432ef459970b4306369336b9d5dbdda31b510ca1e327636e01f528bfa9 \
     --hash=sha256:3d44bde7921b3b9ec3ae4e3adca370438eccebc676456449b145d533b240d055
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jsonschema
     #   jupyter-events
 rpds-py==0.22.3 \
@@ -2343,7 +2349,7 @@ rpds-py==0.22.3 \
     --hash=sha256:fda7cb070f442bf80b642cd56483b5548e43d366fe3f39b98e67cce780cded00 \
     --hash=sha256:feea821ee2a9273771bae61194004ee2fc33f8ec7db08117ef9147d4bbcbca8e
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jsonschema
     #   referencing
 scikit-learn==1.6.1 \
@@ -2378,7 +2384,7 @@ scikit-learn==1.6.1 \
     --hash=sha256:e8ca8cb270fee8f1f76fa9bfd5c3507d60c6438bbee5687f81042e2bb98e5a97 \
     --hash=sha256:fa909b1a36e000a03c382aade0bd2063fd5680ff8b8e501660c0f59f021a6415
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pyfolio-reloaded
 scipy==1.15.1 \
     --hash=sha256:033a75ddad1463970c96a88063a1df87ccfddd526437136b6ee81ff0312ebdf6 \
@@ -2422,7 +2428,7 @@ scipy==1.15.1 \
     --hash=sha256:f735bc41bd1c792c96bc426dece66c8723283695f02df61dcc4d0a707a42fc54 \
     --hash=sha256:f82fcf4e5b377f819542fbc8541f7b5fbcf1c0017d0df0bc22c781bf60abc4d8
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   empyrical-reloaded
     #   pyfolio-reloaded
     #   scikit-learn
@@ -2430,19 +2436,19 @@ seaborn==0.13.2 \
     --hash=sha256:636f8336facf092165e27924f223d3c62ca560b1f2bb5dff7ab7fad265361987 \
     --hash=sha256:93e60a40988f4d65e9f4885df477e2fdaff6b73a9ded434c1ab356dd57eefff7
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pyfolio-reloaded
 send2trash==1.8.3 \
     --hash=sha256:0c31227e0bd08961c7665474a3d1ef7193929fedda4233843689baa056be46c9 \
     --hash=sha256:b18e7a3966d99871aefeb00cfbcfdced55ce4871194810fc71f4aa484b953abf
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-server
 six==1.17.0 \
     --hash=sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274 \
     --hash=sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   nasdaq-data-link
     #   python-dateutil
     #   rfc3339-validator
@@ -2451,39 +2457,39 @@ sniffio==1.3.1 \
     --hash=sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2 \
     --hash=sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   anyio
 soupsieve==2.6 \
     --hash=sha256:e2e68417777af359ec65daac1057404a3c8a5455bb8abc36f1a9866ab1a51abb \
     --hash=sha256:e72c4ff06e4fb6e4b5a9f0f55fe6e81514581fca1515028625d0f299c602ccc9
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   beautifulsoup4
 stack-data==0.6.3 \
     --hash=sha256:836a778de4fec4dcd1dcd89ed8abff8a221f58308462e1c4aa2a3cf30148f0b9 \
     --hash=sha256:d5558e0c25a4cb0853cddad3d77da9891a08cb85dd9f9f91b9f8cd66e511e695
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipython
 sympy==1.13.1 \
     --hash=sha256:9cebf7e04ff162015ce31c9c6c9144daa34a93bd082f54fd8f12deca4f47515f \
     --hash=sha256:db36cdc64bf61b9b24578b6f7bab1ecdd2452cf008f34faa33776680c26d66f8
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 tabulate==0.9.0 \
     --hash=sha256:0095b12bf5966de529c0feb1fa08671671b3368eec77d7ef7ab114be2c068b3c \
     --hash=sha256:024ca478df22e9340661486f85298cff5f6dcdba14f3813e8830015b9ed1948f
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 tensorboard==2.19.0 \
     --hash=sha256:5e71b98663a641a7ce8a6e70b0be8e1a4c0c45d48760b076383ac4755c35b9a0
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 tensorboard-data-server==0.7.2 \
     --hash=sha256:7e0610d205889588983836ec05dc098e80f97b7e7bbff7e994ebb78f578d0ddb \
     --hash=sha256:9fe5d24221b29625dbc7328b0436ca7fc1c23de4acf4d272f1180856e32f9f60 \
     --hash=sha256:ef687163c24185ae9754ed5650eb5bc4d84ff257aabdc33f0cc6f74d8ba54530
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   tensorboard
 tensordict==0.6.2 \
     --hash=sha256:1bfb1d41877fc19b709a7ad20c3b36f19224e5013263989de8e994bd98559fda \
@@ -2495,29 +2501,29 @@ tensordict==0.6.2 \
     --hash=sha256:a00aea0dd7d38026b7e4721d3e4c9759fed99829d8f3d337f4f5174c42138c87 \
     --hash=sha256:e5132b369ac9e84eb0e9e28d1954f6d1370e06927ab3c502e02a6d35a1ed629a
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torchrl
 terminado==0.18.1 \
     --hash=sha256:a4468e1b37bb318f8a86514f65814e1afc977cf29b3992a4500d9dd305dcceb0 \
     --hash=sha256:de09f2c4b85de4765f7714688fff57d3e75bad1f909b589fde880460c753fd2e
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-server
     #   jupyter-server-terminals
 testslide==2.7.1 \
     --hash=sha256:d25890d5c383f673fac44a5f9e2561b7118d04f29f2c2b3d4f549e6db94cb34d
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 threadpoolctl==3.5.0 \
     --hash=sha256:082433502dd922bf738de0d8bcc4fdcbf0979ff44c42bd40f5af8a282f6fa107 \
     --hash=sha256:56c1e26c150397e58c4926da8eeee87533b1e32bef131bd4bf6a2f45f3185467
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   scikit-learn
 tinycss2==1.4.0 \
     --hash=sha256:10c0972f6fc0fbee87c3edb76549357415e94548c1ae10ebccdea16fb404a9b7 \
     --hash=sha256:3a49cf47b7675da0b15d0c6e1df8df4ebd96e9394bb905a5775adb0d884c5289
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   bleach
 tomli==2.2.1 \
     --hash=sha256:023aa114dd824ade0100497eb2318602af309e5a55595f76b626d6d9f3b7b0a6 \
@@ -2553,7 +2559,7 @@ tomli==2.2.1 \
     --hash=sha256:ece47d672db52ac607a3d9599a9d48dcb2f2f735c6c2d1f34130085bb12b112a \
     --hash=sha256:f4039b9cbc3048b2416cc57ab3bda989a6fcf9b36cf8937f01a6e731b64f80d7
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyterlab
     #   mypy
     #   pytest
@@ -2561,7 +2567,7 @@ toolz==1.0.0 \
     --hash=sha256:292c8f1c4e7516bf9086f8850935c799a874039c8bcf959d47b600e4c44a6236 \
     --hash=sha256:2c86e3d9a04798ac556793bced838816296a2f085017664e4995cb40a1047a02
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   exchange-calendars
 torch==2.5.1 \
     --hash=sha256:1f3b7fb3cf7ab97fae52161423f81be8c6b8afac8d9760823fd623994581e1a3 \
@@ -2582,7 +2588,7 @@ torch==2.5.1 \
     --hash=sha256:de5b7d6740c4b636ef4db92be922f0edc425b65ed78c5076c43c42d362a45457 \
     --hash=sha256:ed231a4b3a5952177fafb661213d690a72caaad97d5824dd4fc17ab9e15cec03
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   tensordict
     #   torchrl
 torchrl==0.6.0 \
@@ -2598,7 +2604,7 @@ torchrl==0.6.0 \
     --hash=sha256:c4d23fbd5c057d06c4d19b4c3331fe17f6c6390c849cd7cd5fb44386e486cc56 \
     --hash=sha256:d26a9fc3dcbcc04c0d718c53c6f4af8336e7482bca03137c5de4ba4989176065 \
     --hash=sha256:d978c4714f10137927f5ae47196130d2924f84ff551aaa8053c2c4d15e0e77f2
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 tornado==6.4.2 \
     --hash=sha256:072ce12ada169c5b00b7d92a99ba089447ccc993ea2143c9ede887e0937aa803 \
     --hash=sha256:1a017d239bd1bb0919f72af256a970624241f070496635784d9bf0db640d3fec \
@@ -2612,7 +2618,7 @@ tornado==6.4.2 \
     --hash=sha256:c82c46813ba483a385ab2a99caeaedf92585a1f90defb5693351fa7e4ea0bf73 \
     --hash=sha256:e828cce1123e9e44ae2a50a9de3055497ab1d0aeb440c5ac23064d9e44880da1
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipykernel
     #   jupyter-client
     #   jupyter-server
@@ -2622,12 +2628,12 @@ tornado==6.4.2 \
 tqdm==4.67.1 \
     --hash=sha256:26445eca388f82e72884e0d580d5464cd801a3ea01e63e5601bdff9ba6a48de2 \
     --hash=sha256:f8aef9c52c08c13a65f30ea34f4e5aac3fd1a34959879d7e59e63027286627f2
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 traitlets==5.14.3 \
     --hash=sha256:9ed0579d3502c94b4b3732ac120375cda96f923114522847de4b3bb98b96b6b7 \
     --hash=sha256:b74e89e397b1ed28cc831db7aea759ba6640cb3de13090ca145426688ff1ac4f
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   comm
     #   ipykernel
     #   ipython
@@ -2649,30 +2655,30 @@ triton==3.1.0 \
     --hash=sha256:aafa9a20cd0d9fee523cd4504aa7131807a864cd77dcf6efe7e981f18b8c6c11 \
     --hash=sha256:c8182f42fd8080a7d39d666814fa36c5e30cc00ea7eeeb1a2983dbb4c99a0fdc
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   torch
 typeguard==2.13.3 \
     --hash=sha256:00edaa8da3a133674796cf5ea87d9f4b4c367d77476e185e80251cc13dfbb8c4 \
     --hash=sha256:5e3e3be01e887e7eafae5af63d1f36c849aaa94e3a0112097312aabfa16284f1
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   pandera
     #   testslide
 types-python-dateutil==2.9.0.20241206 \
     --hash=sha256:18f493414c26ffba692a72369fea7a154c502646301ebfe3d56a04b3767284cb \
     --hash=sha256:e248a4bc70a486d3e3ec84d0dc30eec3a5f979d6e7ee4123ae043eedbb987f53
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   arrow
 types-pytz==2024.2.0.20241221 \
     --hash=sha256:06d7cde9613e9f7504766a0554a270c369434b50e00975b3a4a0f6eed0f2c1a9 \
     --hash=sha256:8fc03195329c43637ed4f593663df721fef919b60a969066e22606edf0b53ad5
-    # via -r third-party/requirements.in
+    # via -r third-party/requirements.txt
 typing-extensions==4.12.2 \
     --hash=sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d \
     --hash=sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   anyio
     #   async-lru
     #   beautifulsoup4
@@ -2688,64 +2694,108 @@ typing-inspect==0.9.0 \
     --hash=sha256:9ee6fc59062311ef8547596ab6b955e1b8aa46242d854bfc78f4f6b0eff35f9f \
     --hash=sha256:b23fc42ff6f6ef6954e4852c1fb512cdd18dbea03134f91f856a95ccc9461f78
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   dataclasses-json
     #   pandera
 tzdata==2024.2 \
     --hash=sha256:7d85cc416e9382e69095b7bdf4afd9e3880418a2413feec7069d533d6b4e31cc \
     --hash=sha256:a48093786cdcde33cad18c2555e8532f34422074448fbc874186f0abd79565cd
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   exchange-calendars
     #   pandas
 uri-template==1.3.0 \
     --hash=sha256:0e00f8eb65e18c7de20d595a14336e9f337ead580c70934141624b6d1ffdacc7 \
     --hash=sha256:a44a133ea12d44a0c0f06d7d42a52d71282e77e2f937d8abd5655b8d56fc1363
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jsonschema
 urllib3==2.3.0 \
     --hash=sha256:1cee9ad369867bfdbbb48b7dd50374c0967a0bb7710050facf0dd6911440e3df \
     --hash=sha256:f8c5449b3cf0861679ce7e0503c7b44b5ec981bec0d1d3795a07f1ba96f0204d
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   requests
+viztracer==1.0.2 \
+    --hash=sha256:01feb66558942c6ac21d07400c95a6254709d5e050bb2cd9ace6bee989da413f \
+    --hash=sha256:0a692cf12acbb7e053dedabeb4f7dbe474c31105e926466007e1b63853ada134 \
+    --hash=sha256:0b74ebbe396f2f7a327f08abb1aa2d719436bb144443fa31c01cf37dd6242739 \
+    --hash=sha256:0c114f56839e78113f3721e013a6742aca74acfef987eae2ba7c670533950c82 \
+    --hash=sha256:105ad6ead0bad92ee5f626ea074fc6d5136f3c61e619eb10dcd80a062bafd751 \
+    --hash=sha256:128d3bc262916255536713ca8c7a8b0a16560a398655f0c8fe202797e39c3c2a \
+    --hash=sha256:1395aeff65082e8f38240c7ce9167d1cfa5702204439770f17ba991bf4a6cfb5 \
+    --hash=sha256:150e2b0fd7b9ad2010b57406fd2fcfa85f9325e60efa662c23b686fa58913468 \
+    --hash=sha256:1892d02eaf7a7f04ee9d5dc819588c741a876194919aa583d3eb25ae3477e48d \
+    --hash=sha256:34340b27079ae39ac47b7d8be982c6e9b4f00d7f8366e7d5de4801fb53d7dce4 \
+    --hash=sha256:356a506666dde9d0617a08af5f8b3f621e1578382a4ee9f37fb9d86be119e8cd \
+    --hash=sha256:37f9bcc2bd42cde5c4b4fb1ee4c65b795a1c4ed2636876abb49cc6e67721d72e \
+    --hash=sha256:3d672f71e141d2ac55997eadcec73906bb51e13958e3fbf044d8cc5056a08e27 \
+    --hash=sha256:52a18ece85b128886ba6bfefb4146915c990bf6315d52f08911da9aaedc5c971 \
+    --hash=sha256:52cc06b8ce4a807e7c98182f64ac48f4e1c5e3802dff556f74176c8fc7d97fec \
+    --hash=sha256:5d7964ae404427c6feea6460a1bccd88fd9898b36bf256fd0a3b20c3ec556e92 \
+    --hash=sha256:7088654daee4f50b17cc52f8ceb24a242f31539bbb344a5bc6fc459d9fc3de15 \
+    --hash=sha256:75b92ec1fa28a885dc9d31d128212782f68352f492b503d9715d81052ba04142 \
+    --hash=sha256:76c0dafc48d37f2fc946942fd0792cf33b7cea92c668e24848008266cb99fe38 \
+    --hash=sha256:7b4991549a5b6ab7d8c234e1eb2e6aea32b1a9dc29d0fb7a18404c9876d8dc4b \
+    --hash=sha256:7bb501611557c17763ae3125305eedf5bc1fb248d8fea905e4ec823d260909d9 \
+    --hash=sha256:7faf27fc4897c923cb5d653ee0d19a4d25e77761e8025c8a777dae2c931d3df1 \
+    --hash=sha256:83f3fbc9530808ac048942acaa684ffca3a850de0b098783f67de059bf460764 \
+    --hash=sha256:88b0370ef122bee7cd8f0a984aa0eea8cb0e155bc2ebcf2f5f62e51ff234eb36 \
+    --hash=sha256:8ce63e45642fdf7e46e5c143929272de6b40c7c38a6a5be02169729e8b215c14 \
+    --hash=sha256:8d5c412c2f3bf6d05a0bc5f50e4bce3642a863a001f0d3b290c6bd7085f045ca \
+    --hash=sha256:8df898910342766cdb0e29fc95c3c144b68cc924a54c79f00032e5ae5e862885 \
+    --hash=sha256:a264f547310155b5984f39a56e0fb366d79f7c63da386a41ff3b11a9e1398b83 \
+    --hash=sha256:a53ef805e306a3b77901dbad7a2f2fa7e47339b0fc0703dccd3cd8100676c234 \
+    --hash=sha256:ab74530315ad8989455a6ab950e869c20214a568cb7a270eadcedba9161d5e8e \
+    --hash=sha256:bc6884306f4c2b269cefd8519249f0ab455e03f9d8c4df4518b6f8238b72aeca \
+    --hash=sha256:c056a9c2902027b9e4b5b732b646f164d954c4f4d9a8e766b793d9a59efd7f20 \
+    --hash=sha256:c083764e65b35bf102bc3339c0c48304a468b9a7e1200f64b31142976fdcbf8a \
+    --hash=sha256:c3d6f7eb31d89ae0428771b2a093eb9a7e90baa52c61512c444c21b211e754cb \
+    --hash=sha256:c664f5f9381aed70d8aeb76b13abe8585d2643d9c099d45ba7a3d4857caa0f4b \
+    --hash=sha256:d0a1dee9aa3b275696fd1ace221c1b9f349233c48e12b298c1e5a1ef3d1a2e92 \
+    --hash=sha256:d2680b2bda7b8c42a1a32b391034d58e7ace81a4c601c727a333598bf70df794 \
+    --hash=sha256:e3e5f3bb880f52042783576538a21654b16fd3224754844d0fcf5875ca7de144 \
+    --hash=sha256:efcf92a0d087c4e8609c248b0f2d7b2026a7124f942bbffcf9ad05792fd282c2 \
+    --hash=sha256:f0ba07dff91cdb7a489376f35206594c90b211367abfcb109c7c59f5b6691c18 \
+    --hash=sha256:f158a2a1aeb5d14f2413d222db63124dd422d91cdeb6affa1a108950738f8f02 \
+    --hash=sha256:f8b2f550d76e36317cff367bcb75615ec8529b9ff0b59bc5b4f687c5ee6883bc
+    # via -r third-party/requirements.txt
 wcwidth==0.2.13 \
     --hash=sha256:3da69048e4540d84af32131829ff948f1e022c1c6bdb8d6102117aac784f6859 \
     --hash=sha256:72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   prompt-toolkit
 webcolors==24.11.1 \
     --hash=sha256:515291393b4cdf0eb19c155749a096f779f7d909f7cceea072791cb9095b92e9 \
     --hash=sha256:ecb3d768f32202af770477b8b65f318fa4f566c22948673a977b00d589dd80f6
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jsonschema
 webencodings==0.5.1 \
     --hash=sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78 \
     --hash=sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   bleach
     #   tinycss2
 websocket-client==1.8.0 \
     --hash=sha256:17b44cc997f5c498e809b22cdf2d9c7a9e71c02c8cc2b6c56e7c2d1239bfa526 \
     --hash=sha256:3239df9f44da632f96012472805d40a23281a991027ce11d2f45a6f24ac4c3da
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyter-server
 werkzeug==3.1.3 \
     --hash=sha256:54b78bf3716d19a65be4fceccc0d1d7b89e608834989dfae50ea87564639213e \
     --hash=sha256:60723ce945c19328679790e3282cc758aa4a6040e4bb330f53d30fa546d44746
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   tensorboard
 widgetsnbextension==4.0.13 \
     --hash=sha256:74b2692e8500525cc38c2b877236ba51d34541e6385eeed5aec15a70f88a6c71 \
     --hash=sha256:ffcb67bc9febd10234a362795f643927f4e0c05d9342c727b65d2384f8feacb6
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   ipywidgets
 
 # The following packages are considered to be unsafe in a requirements file:
@@ -2753,6 +2803,6 @@ setuptools==75.8.0 \
     --hash=sha256:c5afc8f407c626b8313a86e10311dd3f661c6cd9c09d4bf8c15c0e11f9f2b0e6 \
     --hash=sha256:e3982f444617239225d675215d51f6ba05f845d4eec313da4418fdbb56fb27e3
     # via
-    #   -r third-party/requirements.in
+    #   -r third-party/requirements.txt
     #   jupyterlab
     #   tensorboard

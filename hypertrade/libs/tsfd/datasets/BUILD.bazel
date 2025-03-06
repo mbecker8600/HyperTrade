@@ -19,7 +19,9 @@ py_library(
     data = [],
     deps = [
         "//hypertrade/libs/tsfd/sources:types",
+        "//hypertrade/libs/tsfd/transforms:all",
         requirement("pandas"),
+        requirement("exchange_calendars"),
         requirement("torch"),
     ],
 )
@@ -33,6 +35,7 @@ py_library(
         "//hypertrade/libs/tsfd/schemas:ohlvc",
         "//hypertrade/libs/tsfd/schemas:prices",
         "//hypertrade/libs/tsfd/sources:types",
+        "//hypertrade/libs/tsfd/transforms:all",
         "//hypertrade/libs/tsfd/utils:dataframe",
         requirement("pandas"),
         requirement("exchange_calendars"),

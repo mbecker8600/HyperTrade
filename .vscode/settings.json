@@ -1,10 +1,12 @@
 {
   "python.analysis.autoImportCompletions": true,
-  "editor.formatOnSave": true,
   "files.autoSave": "onFocusChange",
   "bazel.buildifierFixOnFormat": true,
+  // "files.associations": {
+  //   "**/bazel/**/*": "plaintext"
+  // },
   "[python]": {
-    "editor.defaultFormatter": "trunk.io",
+    "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true
   },
   "[markdown]": {
@@ -16,7 +18,7 @@
     "editor.formatOnSave": true
   },
   "[starlark]": {
-    "editor.defaultFormatter": "trunk.io",
+    "editor.defaultFormatter": "BazelBuild.vscode-bazel",
     "editor.formatOnSave": true
   },
   "python.defaultInterpreterPath": "/usr/local/python/current/bin/python",
@@ -24,5 +26,15 @@
   "mypy-type-checker.reportingScope": "workspace",
   "mypy-type-checker.preferDaemon": true,
   "python.analysis.typeCheckingMode": "off",
-  "mypyright.analysis.typeCheckingMode": "off"
+  "mypyright.analysis.typeCheckingMode": "off",
+  "files.watcherExclude": {
+    "**/bazel-*": true,
+    "**/node_modules/*/**": true,
+    "**/__pycache__": true,
+    "**/.trunk/*actions/": true,
+    "**/.trunk/*logs/": true,
+    "**/.trunk/*notifications/": true,
+    "**/.trunk/*out/": true,
+    "**/.trunk/*plugins/": true
+  }
 }

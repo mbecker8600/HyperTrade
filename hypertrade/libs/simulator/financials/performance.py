@@ -56,9 +56,11 @@ class PerformanceTracker:
             self.daily_returns.loc[date] = (
                 portfolio.portfolio_value - self._previous_portfolio.portfolio_value
             ) / self._previous_portfolio.portfolio_value
-
+        grouped_positions = portfolio.positions.groupby(level=0).sum()["amount"]
+        if grouped_positions is None:
+            raise ValueError("No positions held on this day")
         current_positions_df = pd.DataFrame(
-            portfolio.positions.groupby(level=0).sum()["amount"].to_dict(),
+            grouped_positions.to_dict(),
             index=pd.Index([date]),
         )
         self.daily_positions = pd.concat(

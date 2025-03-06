@@ -18,14 +18,12 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
         self.ohlvc_sample_data_path = os.path.join(
             ws, "../../tests/data/ohlvc/sample.csv"
         )
-        self.csv_source = OHLVCDataSourceFormat(
-            CSVSource(filepath=self.ohlvc_sample_data_path)
-        )
+        self.csv_source = OHLVCDataSourceFormat(CSVSource(self.ohlvc_sample_data_path))
         self.bad_schema_ohlvc_sample_data_path = os.path.join(
             ws, "../../tests/data/ohlvc/bad_schema.csv"
         )
         self.bad_csv_source = OHLVCDataSourceFormat(
-            CSVSource(filepath=self.bad_schema_ohlvc_sample_data_path)
+            CSVSource(self.bad_schema_ohlvc_sample_data_path)
         )
         self.tz = pytz.timezone("America/New_York")
 
@@ -87,6 +85,7 @@ class TestOHLVCCsvDatasource(unittest.TestCase):
         data = self.csv_source.fetch(
             timestamp=pd.Timestamp("2018-12-03 09:30:00", tz=self.tz)
         )
+        # trunk-ignore(pyright/reportOptionalMemberAccess)
         self.assertEqual(data.xs("GE", level="ticker")["open"].values[0], 35.42)
 
 
@@ -98,9 +97,7 @@ class TestHeadlineCsvDatasource(unittest.TestCase):
         ohlvc_sample_data_path = os.path.join(
             ws, "../../tests/data/news/headline_sample.csv"
         )
-        self.csv_source = HeadlineDataSourceFormat(
-            CSVSource(filepath=ohlvc_sample_data_path)
-        )
+        self.csv_source = HeadlineDataSourceFormat(CSVSource(ohlvc_sample_data_path))
         self.tz = pytz.timezone("America/New_York")
 
     def test_full_data_load(self) -> None:
